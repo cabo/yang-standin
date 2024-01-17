@@ -1,7 +1,7 @@
 ---
 v: 3
 
-docname: draft-bormann-cbor-yang-standin
+docname: draft-bormann-cbor-yang-standin-latest
 title: "Stand-in Tags for YANG-CBOR"
 date:
 
