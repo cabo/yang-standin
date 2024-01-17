@@ -1,0 +1,371 @@
+
+
+
+
+Concise Binary Object Representation Maintenance and ExtensionsC. Bormann
+Internet-Draft                                    Universität Bremen TZI
+Intended status: Standards Track                         17 January 2024
+Expires: 20 July 2024
+
+
+                      Stand-in Tags for YANG-CBOR
+                 draft-bormann-cbor-yang-standin-latest
+
+Abstract
+
+   YANG (RFC 7950) is a data modeling language used to model
+   configuration data, state data, parameters and results of Remote
+   Procedure Call (RPC) operations or actions, and notifications.
+
+   YANG-CBOR (RFC 9254) defines encoding rules for YANG in the Concise
+   Binary Object Representation (CBOR) (RFC 8949).  While the overall
+   structure of YANG-CBOR is encoded in an efficient, binary format,
+   YANG itself has its roots in XML and therefore traditionally encodes
+   some information such as date/times and IP addresses/prefixes in a
+   verbose text form.
+
+   This document defines how to use existing CBOR tags for this kind of
+   information in YANG-CBOR as a "stand-in" for the text-based
+   information that would be found in the original form of YANG-CBOR.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-bormann-cbor-yang-standin/.
+
+   Discussion of this document takes place on the CBOR (Concise Binary
+   Object Representation Maintenance and Extensions) Working Group
+   mailing list (mailto:cbor@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/cbor/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/cbor/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/cabo/yang-standin.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 20 July 2024.
+
+Copyright Notice
+
+   Copyright (c) 2024 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Conventions and Definitions
+   3.  Stand-In Tags
+     3.1.  ietf-yang-types: Tag 1 (Date/Time) and Tag 100 (Date)
+     3.2.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
+   4.  Using Stand-In Tags
+     4.1.  The Role of the Schema
+   5.  Negotiation
+   6.  Security Considerations
+   7.  IANA Considerations
+     7.1.  stand-in tags?
+     7.2.  media-type parameters
+   8.  Normative References
+   Acknowledgments
+   Author's Address
+
+1.  Introduction
+
+   (see abstract)
+
+2.  Conventions and Definitions
+
+   The terminology of [RFC9254] applies.
+
+   Legacy representation:  The (often text-based) representation for a
+      YANG data item as used in YANG-XML, YANG-JSON, and (unchanged)
+      YANG-CBOR.
+
+   Stand-in tag:  A CBOR tag that can supply the information that is
+      equivalent to a legacy representation in a more efficient format
+      (e.g., using binary data).
+
+   Round Trip:  A pair of conversions from a legacy representation to a
+      stand-in tag and back to a legacy representation.  By definition
+      of these conversions, a round trip needs to retain the semantic
+      information of the original legacy representation.
+
+   Unambiguous Round Trip:  A Round Trip that provides exactly the same
+      legacy representation (not just semantically equivalent).  The
+      stand-in tag is also said to "unambiguously stand in" for the
+      legacy representation.
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  Stand-In Tags
+
+   This document defines two sets of stand-in tags.  Where information
+   starts out in a legacy representation, these tags are only used when
+   an Unambiguous Round Trip can be achieved.
+
+3.1.  ietf-yang-types: Tag 1 (Date/Time) and Tag 100 (Date)
+
+   Section 3 of [I-D.schoenw-netmod-rfc6991-bis] defines the following
+   types in ietf-yang-types:
+
+   +=============+========+==================================+========+
+   | YANG type   | base   | specification                    | stand- |
+   |             | type   |                                  | in     |
+   +=============+========+==================================+========+
+   | date-and-   | string | [RFC6021]                        | tag 1  |
+   | time        |        |                                  |        |
+   +-------------+--------+----------------------------------+--------+
+   | date-with-  | string | [I-D.schoenw-netmod-rfc6991-bis] | (none) |
+   | zone-offset |        |                                  |        |
+   +-------------+--------+----------------------------------+--------+
+   | date-no-    | string | [I-D.schoenw-netmod-rfc6991-bis] | tag    |
+   | zone        |        |                                  | 100    |
+   +-------------+--------+----------------------------------+--------+
+
+            Table 1: Legacy representations in ietf-yang-types
+
+   Tag 1 (Section 3.4.2 of RFC 8949 [STD94]) can unambiguously stand in
+   for all date-and-time values that:
+
+   *  do not specify a time zone (note that
+      [I-D.schoenw-netmod-rfc6991-bis] uses the legacy "-00:00" format
+      for time-zone-free date-times)
+
+   *  are not an inserted leap second (23:59:60 or 23:59:61)
+
+   *  do not have trailing zeroes in the fractional part of the seconds.
+
+   *  do not have fractional parts of the seconds with a precision that
+      cannot be represented in floating-point tag content in a tag 1.
+
+   All other date-and-time values stay in legacy representation.
+
+   Tag 1 uses an integer tag content for all date-and-time values
+   without fractional seconds and a floating-point tag content for
+   values that have fractional seconds given.
+
+   Tag 100 [RFC8943] can unambiguously stand in for all date-no-zone
+   values.
+
+3.2.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
+
+   Section 4 of [I-D.schoenw-netmod-rfc6991-bis] defines in ietf-inet-
+   types:
+
+   +=============+============+================================+======+
+   |YANG type    |base type   |specification                   |stand-|
+   |             |            |                                |in    |
+   +=============+============+================================+======+
+   |ip-address   |union       |[RFC6021]                       |(see  |
+   |             |            |                                |union)|
+   +-------------+------------+--------------------------------+------+
+   |ipv4-address |string      |[RFC6021]                       |tag 52|
+   +-------------+------------+--------------------------------+------+
+   |ipv6-address |string      |[RFC6021]                       |tag 54|
+   +-------------+------------+--------------------------------+------+
+   |ip-address-  |union       |RFC 6991                        |(see  |
+   |no-zone      |            |                                |union)|
+   +-------------+------------+--------------------------------+------+
+   |ipv4-address-|ipv4-address|RFC 6991                        |tag 52|
+   |no-zone      |            |                                |      |
+   +-------------+------------+--------------------------------+------+
+   |ipv6-address-|ipv6-address|RFC 6991                        |tag 54|
+   |no-zone      |            |                                |      |
+   +-------------+------------+--------------------------------+------+
+   |ip-address-  |union       |[I-D.schoenw-netmod-rfc6991-bis]|(see  |
+   |link-local   |            |                                |union)|
+   +-------------+------------+--------------------------------+------+
+   |ipv4-address-|ipv4-address|[I-D.schoenw-netmod-rfc6991-bis]|tag 52|
+   |link-local   |            |                                |      |
+   +-------------+------------+--------------------------------+------+
+   |ipv6-address-|ipv6-address|[I-D.schoenw-netmod-rfc6991-bis]|tag 54|
+   |link-local   |            |                                |      |
+   +-------------+------------+--------------------------------+------+
+   |ip-prefix    |union       |[RFC6021]                       |(see  |
+   |             |            |                                |union)|
+   +-------------+------------+--------------------------------+------+
+   |ipv4-prefix  |string      |[RFC6021]                       |tag 52|
+   +-------------+------------+--------------------------------+------+
+   |ipv6-prefix  |string      |[RFC6021]                       |tag 54|
+   +-------------+------------+--------------------------------+------+
+   |ip-address-  |union       |[I-D.schoenw-netmod-rfc6991-bis]|(see  |
+   |and-prefix   |            |                                |union)|
+   +-------------+------------+--------------------------------+------+
+   |ipv4-address-|string      |[I-D.schoenw-netmod-rfc6991-bis]|tag 52|
+   |and-prefix   |            |                                |      |
+   +-------------+------------+--------------------------------+------+
+   |ipv6-address-|string      |[I-D.schoenw-netmod-rfc6991-bis]|tag 54|
+   |and-prefix   |            |                                |      |
+   +-------------+------------+--------------------------------+------+
+
+            Table 2: Legacy representations in ietf-yang-types
+
+   TO DO: Define usage of tags 54 and 52 for the cases we actually
+   support.  Addresses that have zones given cannot use tag 54/52.
+   Addresses with leading zeros cannot use tag 54/52.  Addresses that do
+   not comply with [RFC5952] cannot use tag 54.
+
+   TO DO: Check how the unions in [RFC6021] and
+   [I-D.schoenw-netmod-rfc6991-bis] interact with this.  E.g., the union
+   ip-address needs to be parsed to decide between tag 54 and tag 52.
+
+4.  Using Stand-In Tags
+
+4.1.  The Role of the Schema
+
+   One approach of introducing stand-in tags in a produced would be to
+   match any text string it produces against the format of the legacy
+   representations and put in a stand-in tag instead.  We call this the
+   schema-agnostic approach.
+
+   It is probably more efficient to trigger producing a stand-in tag
+   from schema information available while producing the YANG-CBOR.
+   However, that entangles the use of stand-in tags with the need schema
+   information; the algorithm for deciding about the use of the stand-in
+   tag needs to have enough schema information available to make this
+   decision.
+
+   Not all values of a schema type can be represented by a tag such that
+   an unambiguous round trip is achieved.  This document aims at an
+   unambiguous round trip.  ISSUE: Can we maybe live with round trips
+   that aren't unambiguous?
+
+5.  Negotiation
+
+   Introducing stand-in tags in YANG-CBOR requires some form of consent
+   between the producer and the consumer of YANG-CBOR information:
+
+   *  A producer that creates YANG-CBOR containing stand-in tags needs
+      to know whether the consumer supports stand-in tags, and,
+      possibly, which specific stand-in tags it supports.  We speak
+      about the _capability_ of a consumer to consume stand-in tags.  A
+      producer MUST NOT employ stand-in tags unless it knows about the
+      capabilities of the consumer.  A consumer SHOULD indicate its
+      capabilities for consuming stand-in tags.
+
+   *  A consumer may not want to implement certain legacy text-based
+      representations where more efficient (and easy to implement)
+      stand-in tags are available.  This places a _requirement_ on the
+      producer (which needs to have the _capability_ to produce YANG-
+      CBOR where those stand-in tags are used, in place of legacy
+      representations).  A producer MUST NOT employ legacy
+      representations where stand-in tags are _required_ by the
+      consumer.  A consumer that has requirements for only receiving
+      stand-in tags in place of legacy representations, MUST indicate
+      this to the producer.
+
+   ISSUE: Where do we put those two aspects of negotiation?
+
+   *  NETCONF negotiation
+
+   *  yang-library
+
+   *  media-type parameters
+
+   *  ?
+
+6.  Security Considerations
+
+   TODO Security
+
+7.  IANA Considerations
+
+7.1.  stand-in tags?
+
+   ISSUE: Do we want to have a separate registry for stand-in tags?
+
+   They already are CBOR tags and thus in the in the registry, but might
+   get lost in the bulk of that (and are only identified as YANG-CBOR
+   stand-in Tags in the specification).
+
+7.2.  media-type parameters
+
+   ISSUE: Should the use of stand-in tags be mentioned in the various
+   YANG-CBOR-based media types (as a media type parameter)?  Compare how
+   application/yang-data+cbor can use id=name/id=sid to indicate another
+   encoding decision.
+
+8.  Normative References
+
+   [I-D.schoenw-netmod-rfc6991-bis]
+              Schönwälder, J., "Common YANG Data Types", Work in
+              Progress, Internet-Draft, draft-schoenw-netmod-rfc6991-
+              bis-01, 11 March 2019,
+              <https://datatracker.ietf.org/doc/html/draft-schoenw-
+              netmod-rfc6991-bis-01>.
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC5952]  Kawamura, S. and M. Kawashima, "A Recommendation for IPv6
+              Address Text Representation", RFC 5952,
+              DOI 10.17487/RFC5952, August 2010,
+              <https://www.rfc-editor.org/rfc/rfc5952>.
+
+   [RFC6021]  Schoenwaelder, J., Ed., "Common YANG Data Types",
+              RFC 6021, DOI 10.17487/RFC6021, October 2010,
+              <https://www.rfc-editor.org/rfc/rfc6021>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+   [RFC8943]  Jones, M., Nadalin, A., and J. Richter, "Concise Binary
+              Object Representation (CBOR) Tags for Date", RFC 8943,
+              DOI 10.17487/RFC8943, November 2020,
+              <https://www.rfc-editor.org/rfc/rfc8943>.
+
+   [RFC9254]  Veillette, M., Ed., Petrov, I., Ed., Pelov, A., Bormann,
+              C., and M. Richardson, "Encoding of Data Modeled with YANG
+              in the Concise Binary Object Representation (CBOR)",
+              RFC 9254, DOI 10.17487/RFC9254, July 2022,
+              <https://www.rfc-editor.org/rfc/rfc9254>.
+
+   [STD94]    Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949, December 2020.
+
+              <https://www.rfc-editor.org/info/std94>
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Author's Address
+
+   Carsten Bormann
+   Universität Bremen TZI
+   Postfach 330440
+   D-28359 Bremen
+   Germany
+   Phone: +49-421-218-63921
+   Email: cabo@tzi.org
