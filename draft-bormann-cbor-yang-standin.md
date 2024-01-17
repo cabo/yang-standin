@@ -40,6 +40,7 @@ author:
 
 normative:
   RFC9254: yang-cbor
+  RFC9164: cbor-ip
   I-D.schoenw-netmod-rfc6991-bis: legacy-bis
   RFC5952:
   RFC8943: date
@@ -156,11 +157,82 @@ ipv6-address-and-prefix | string | {{-legacy-bis}} | tag 54
 ipv4-address-and-prefix | string | {{-legacy-bis}} | tag 52
 {: title="Legacy representations in ietf-yang-types"}
 
-TO DO: Define usage of tags 54 and 52 for the cases we actually
-support.
-Addresses that have zones given cannot use tag 54/52.
-Addresses with leading zeros cannot use tag 54/52.
-Addresses that do not comply with {{RFC5952}} cannot use tag 54.
+The encoder MAY normalize IPv6 addresses and prefixes that do not comply with {{RFC5952}}
+but can be converted into the stand-in representation. The encoder implementation SHOULD be clear
+about whether this normalization is employed or not.
+
+If the schema specifies `ip-prefix`, the encoder MAY normalize prefixes with
+non-zero bits after the prefix end. The encoder implementation SHOULD be clear
+about whether this normalization is employed or not.
+
+If the schema specifies a union between `ip-prefix` and `ip-address-and-prefix` (or a union of their subtypes),
+the encoder MUST prefer the `ip-address-and-prefix` stand-in over `ip-prefix`
+format. Specifically, it the schema allows to encode 2001:db8:1234::/48 both as
+`54([48, h'20010db81234'])` and `54([h'20010db81234', 48])`, the latter MUST be used.
+
+Adapted examples from {{-cbor-ip}}:
+
+Stand-in representation of IPv6 address 2001:db8:1234:deed:beef:cafe:face:feed
+is `54(h'20010db81234deedbeefcafefacefeed')`.
+
+CBOR encoding of stand-in (19 bytes):
+
+```
+D8 36                                  # tag(54)
+   50                                  # bytes(16)
+      20010DB81234DEEDBEEFCAFEFACEFEED
+```
+
+CBOR encoding of legacy representation (40 bytes):
+
+```
+78 26                                   # text(38)
+   323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
+```
+
+Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is
+`54([48, h'20010db81234'])`.
+
+CBOR encoding of stand-in (12 bytes):
+
+```
+D8 36                 # tag(54)
+   82                 # array(2)
+      18 30           # unsigned(48)
+      46              # bytes(6)
+         20010DB81234 # " \u0001\r\xB8\u00124"
+```
+
+CBOR encoding of legacy representation (19 bytes):
+
+```
+72                                      # text(18)
+   323030313A6462383A313233343A3A2F3438 # "2001:db8:1234::/48"
+```
+
+Stand-in representation of IPv6 link-local address fe80::0202:02ff:ffff:fe03:0303/64%eth0 is
+`54([h'fe8000000000020202fffffffe030303', 64, 'eth0'])`.
+
+CBOR encoding of stand-in (27 bytes):
+
+```
+D8 36                                   # tag(54)
+   83                                   # array(3)
+      50                                # bytes(16)
+         FE8000000000020202FFFFFFFE030303
+      18 40                             # unsigned(64)
+      44                                # bytes(4)
+         65746830                       # "eth0"
+```
+
+CBOR encoding of legacy representation (40 bytes):
+
+```
+78 26                                   # text(38)
+   666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
+```
+
+TO DO: adapt more examples from {{-cbor-ip}}
 
 TO DO: Check how the unions in {{-yang-types}} and {{-legacy-bis}} interact
 with this.  E.g., the union ip-address needs to be parsed to decide
