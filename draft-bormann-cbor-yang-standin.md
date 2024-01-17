@@ -28,6 +28,15 @@ author:
     country: Germany
     phone: +49-421-218-63921
     email: cabo@tzi.org
+  - name: Maria Matejka
+    org: CZ.NIC
+    street: Milesovska 1136/5
+    city: Praha
+    code: 13000
+    country: Czechia
+    email:
+    - maria.matejka@nic.cz
+    - mq@jmq.cz
 
 normative:
   RFC9254: yang-cbor
