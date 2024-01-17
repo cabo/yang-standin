@@ -140,20 +140,20 @@ Tag 100 {{-date}} can unambiguously stand in for all `date-no-zone` values.
 
 YANG type | base type | specification | stand-in
 ip-address | union | {{-yang-types}} | (see union)
-ipv4-address | string | {{-yang-types}} | tag 52
 ipv6-address | string | {{-yang-types}} | tag 54
+ipv4-address | string | {{-yang-types}} | tag 52
 ip-address-no-zone | union | RFC 6991 | (see union)
-ipv4-address-no-zone | ipv4-address | RFC 6991 | tag 52
 ipv6-address-no-zone | ipv6-address | RFC 6991 | tag 54
+ipv4-address-no-zone | ipv4-address | RFC 6991 | tag 52
 ip-address-link-local | union | {{-legacy-bis}} | (see union)
-ipv4-address-link-local | ipv4-address | {{-legacy-bis}} | tag 52
 ipv6-address-link-local | ipv6-address | {{-legacy-bis}} | tag 54
+ipv4-address-link-local | ipv4-address | {{-legacy-bis}} | tag 52
 ip-prefix | union | {{-yang-types}} | (see union)
-ipv4-prefix | string | {{-yang-types}} | tag 52
 ipv6-prefix | string | {{-yang-types}} | tag 54
+ipv4-prefix | string | {{-yang-types}} | tag 52
 ip-address-and-prefix | union | {{-legacy-bis}} | (see union)
-ipv4-address-and-prefix | string | {{-legacy-bis}} | tag 52
 ipv6-address-and-prefix | string | {{-legacy-bis}} | tag 54
+ipv4-address-and-prefix | string | {{-legacy-bis}} | tag 52
 {: title="Legacy representations in ietf-yang-types"}
 
 TO DO: Define usage of tags 54 and 52 for the cases we actually
