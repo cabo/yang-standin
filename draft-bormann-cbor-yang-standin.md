@@ -14,7 +14,7 @@ workgroup: "Concise Binary Object Representation Maintenance and Extensions"
 keyword:
  - efficient YANG
 venue:
-  group: "Concise Binary Object Representation Maintenance and Extensions"
+  group: "CBOR (Concise Binary Object Representation Maintenance and Extensions)"
   type: "Working Group"
   mail: "cbor@ietf.org"
   github: "cabo/yang-standin"
