@@ -9,15 +9,15 @@ submissiontype: IETF
 category: std
 consensus: true
 
-area: ART
-workgroup: CBOR Working Group
+area: "Applications and Real-Time"
+workgroup: "Concise Binary Object Representation Maintenance and Extensions"
 keyword:
  - efficient YANG
 venue:
-  group: CBOR
-  type: Working Group
-  mail: cbor@ietf.org
-  github: cabo/yang-standin
+  group: "Concise Binary Object Representation Maintenance and Extensions"
+  type: "Working Group"
+  mail: "cbor@ietf.org"
+  github: "cabo/yang-standin"
 
 author:
   - name: Carsten Bormann
