@@ -4,8 +4,9 @@
 
 Concise Binary Object Representation Maintenance and ExtensionsC. Bormann
 Internet-Draft                                    Universität Bremen TZI
-Intended status: Standards Track                         17 January 2024
-Expires: 20 July 2024
+Intended status: Standards Track                              M. Matejka
+Expires: 20 July 2024                                             CZ.NIC
+                                                         17 January 2024
 
 
                       Stand-in Tags for YANG-CBOR
@@ -91,7 +92,7 @@ Table of Contents
      7.2.  media-type parameters
    8.  Normative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -360,7 +361,7 @@ Acknowledgments
 
    TODO acknowledge.
 
-Author's Address
+Authors' Addresses
 
    Carsten Bormann
    Universität Bremen TZI
@@ -369,3 +370,11 @@ Author's Address
    Germany
    Phone: +49-421-218-63921
    Email: cabo@tzi.org
+
+
+   Maria Matejka
+   CZ.NIC
+   Milesovska 1136/5
+   13000 Praha
+   Czechia
+   Email: maria.matejka@nic.cz, mq@jmq.cz
