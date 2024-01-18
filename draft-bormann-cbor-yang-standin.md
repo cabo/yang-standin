@@ -88,14 +88,36 @@ Stand-in tag:
   legacy representation in a more efficient format (e.g., using binary
   data).
 
+Encoder:
+: The party which generates (sends) CBOR data described by YANG.
+
+Intermediate Encoder:
+: An encoder which isn't the original author of the data, converting it
+  from legacy representation.
+
+Decoder:
+: The party which receives and parses CBOR data described by YANG.
+
+Intermediate Decoder:
+: A decoder which isn't the final recipient of the data, converting it
+  to legacy representation.
+
+Data Transfer:
+: A series of actions, generally beginning by data origination, encoding,
+  continuing by optional intermediate transcoding, sending and receiving,
+  and finally decoding and consuming.
+
 Round Trip:
-: A pair of conversions from a legacy representation to a stand-in tag
-  and back to a legacy representation.
-  By definition of these conversions, a round trip needs to retain the
-  semantic information of the original legacy representation.
+: Part of a data transfer between an encoder generating CBOR data with
+  stand-in tags and a decoder parsing the data.
+
+Legacy Round Trip:
+: A Round Trip where the encoder is an intermediate encoder or the decoder is
+  an intermediate decoder and any of these converts from or to the
+  legacy representation.
 
 Unambiguous Round Trip:
-: A Round Trip that provides exactly the same legacy representation
+: A Legacy Round Trip that provides exactly the same legacy representation
   (not just semantically equivalent).
   The stand-in tag is also said to "unambiguously stand in" for the
   legacy representation.
@@ -157,18 +179,23 @@ ipv6-address-and-prefix | string | {{-legacy-bis}} | tag 54
 ipv4-address-and-prefix | string | {{-legacy-bis}} | tag 52
 {: title="Legacy representations in ietf-yang-types"}
 
-The encoder MAY normalize IPv6 addresses and prefixes that do not comply with {{RFC5952}}
-but can be converted into the stand-in representation. The encoder implementation SHOULD be clear
-about whether this normalization is employed or not.
-
-If the schema specifies `ip-prefix`, the encoder MAY normalize prefixes with
-non-zero bits after the prefix end. The encoder implementation SHOULD be clear
-about whether this normalization is employed or not.
-
 If the schema specifies a union between `ip-prefix` and `ip-address-and-prefix` (or a union of their subtypes),
 the encoder MUST prefer the `ip-address-and-prefix` stand-in over `ip-prefix`
-format. Specifically, it the schema allows to encode 2001:db8:1234::/48 both as
+format. Specifically, if the schema allows to encode 2001:db8:1234::/48 both as
 `54([48, h'20010db81234'])` and `54([h'20010db81234', 48])`, the latter MUST be used.
+For example, IPv6 address written as 2001:db8:: is the same as 2001:0db8::0:0 and both would
+be converted to `54(h'20010db8000000000000000000000000')`, anyway only the
+first one complies with {{RFC5952}}. The encoder may refuse to convert the
+latter one.
+
+The encoder MAY normalize IPv6 addresses and prefixes that do not comply with {{RFC5952}}
+but can be converted into the stand-in representation. If the schema specifies
+`ip-prefix`, the encoder MAY normalize prefixes with non-zero bits after the prefix end.
+For example, if the legacy representation of `ipv6-prefix` is 2001:db8:1::/40, the encoder
+may either refuse it as malformed or convert it to 2001:db8::/40 and represent
+as `54([40, h'20010db8'])`.
+
+The encoder implementation should be clear about which normalizations are employed and how.
 
 Adapted examples from {{-cbor-ip}}:
 
@@ -177,7 +204,7 @@ is `54(h'20010db81234deedbeefcafefacefeed')`.
 
 CBOR encoding of stand-in (19 bytes):
 
-```
+``` cbor-pretty
 D8 36                                  # tag(54)
    50                                  # bytes(16)
       20010DB81234DEEDBEEFCAFEFACEFEED
@@ -185,7 +212,7 @@ D8 36                                  # tag(54)
 
 CBOR encoding of legacy representation (40 bytes):
 
-```
+``` cbor-pretty
 78 26                                   # text(38)
    323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
 ```
@@ -195,7 +222,7 @@ Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is
 
 CBOR encoding of stand-in (12 bytes):
 
-```
+``` cbor-pretty
 D8 36                 # tag(54)
    82                 # array(2)
       18 30           # unsigned(48)
@@ -205,7 +232,7 @@ D8 36                 # tag(54)
 
 CBOR encoding of legacy representation (19 bytes):
 
-```
+``` cbor-pretty
 72                                      # text(18)
    323030313A6462383A313233343A3A2F3438 # "2001:db8:1234::/48"
 ```
@@ -215,7 +242,7 @@ Stand-in representation of IPv6 link-local address fe80::0202:02ff:ffff:fe03:030
 
 CBOR encoding of stand-in (27 bytes):
 
-```
+``` cbor-pretty
 D8 36                                   # tag(54)
    83                                   # array(3)
       50                                # bytes(16)
@@ -227,7 +254,7 @@ D8 36                                   # tag(54)
 
 CBOR encoding of legacy representation (40 bytes):
 
-```
+``` cbor-pretty
 78 26                                   # text(38)
    666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
 ```
@@ -238,26 +265,42 @@ TO DO: Check how the unions in {{-yang-types}} and {{-legacy-bis}} interact
 with this.  E.g., the union ip-address needs to be parsed to decide
 between tag 54 and tag 52.
 
+## Union handling
+
+When the schema specifies a union data type for a node, there are
+additional requirements on the encoder and decoder.
+
+An encoder which is fully aware of data semantics MUST use the appropriate
+data type, even though it isn't formally specified by the schema.
+
+If an intermediate encoder doesn't fully understand the data semantics,
+it needs to find out which type the data actually is to choose the right stand-in.
+If more types are possible, it MAY choose any of these which allow for an Unambiguous Round Trip,
+otherwise it SHOULD keep the legacy representation.
+
+If a decoder receives data for a union-typed node, it MUST accept any data type
+of the union, even though it may violate additional constraints outside the schema.
+
 # Using Stand-In Tags
 
-## The Role of the Schema
+## Defining Stand-In Usage in Schema
 
-One approach of introducing stand-in tags in a produced would be to
-match any text string it produces against the format of the legacy
-representations and put in a stand-in tag instead.
-We call this the schema-agnostic approach.
+TO DO: formally define the YANG extension
 
-It is probably more efficient to trigger producing a stand-in tag from
-schema information available while producing the YANG-CBOR.
-However, that entangles the use of stand-in tags with the need schema
-information; the algorithm for deciding about the use of the stand-in
-tag needs to have enough schema information available to make this
-decision.
+## Original stand-ins
 
-Not all values of a schema type can be represented by a tag such that
-an unambiguous round trip is achieved.  This document aims at an
-unambiguous round trip.
-ISSUE: Can we maybe live with round trips that aren't unambiguous?
+The simplest situation is when no intermediate encoders and decoders are
+involved in the data transfer, therefore the round trip is not legacy.
+In this case, no conversions are involved and data is validated using the
+schema extension from the previous section.
+
+## Legacy Round Trip
+
+Producing a stand-in MUST be triggered by schema usage. Intermediate encoders
+MUST NOT encode stand-ins when no schema is available.
+
+It's generally not recommended to do a legacy round trip where both the encoder
+and decoder are converting from and to the legacy representation.
 
 # Negotiation
 
