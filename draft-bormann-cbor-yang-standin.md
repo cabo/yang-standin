@@ -179,18 +179,15 @@ ipv6-address-and-prefix | string | {{-legacy-bis}} | tag 54
 ipv4-address-and-prefix | string | {{-legacy-bis}} | tag 52
 {: title="Legacy representations in ietf-yang-types"}
 
-If the schema specifies a union between `ip-prefix` and `ip-address-and-prefix` (or a union of their subtypes),
-the encoder MUST prefer the `ip-address-and-prefix` stand-in over `ip-prefix`
-format. Specifically, if the schema allows to encode 2001:db8:1234::/48 both as
-`54([48, h'20010db81234'])` and `54([h'20010db81234', 48])`, the latter MUST be used.
+An intermediate encoder MAY normalize IPv6 addresses and prefixes that do not comply with {{RFC5952}}
+but can be converted into the stand-in representation.
 For example, IPv6 address written as 2001:db8:: is the same as 2001:0db8::0:0 and both would
 be converted to `54(h'20010db8000000000000000000000000')`, anyway only the
-first one complies with {{RFC5952}}. The encoder may refuse to convert the
+first one complies with {{RFC5952}}. The encoder MAY refuse to convert the
 latter one.
 
-The encoder MAY normalize IPv6 addresses and prefixes that do not comply with {{RFC5952}}
-but can be converted into the stand-in representation. If the schema specifies
-`ip-prefix`, the encoder MAY normalize prefixes with non-zero bits after the prefix end.
+If the schema specifies
+`ip-prefix`, an intermediate encoder MAY normalize prefixes with non-zero bits after the prefix end.
 For example, if the legacy representation of `ipv6-prefix` is 2001:db8:1::/40, the encoder
 may either refuse it as malformed or convert it to 2001:db8::/40 and represent
 as `54([40, h'20010db8'])`.
