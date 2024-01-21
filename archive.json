@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-01-18T00:47:34.987394+00:00",
+  "timestamp": "2024-01-21T00:52:31.468022+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -49,7 +49,24 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOLF7SWM58ba1B",
+      "title": "Address unions in schema",
+      "url": "https://github.com/cabo/yang-standin/issues/2",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Unions in a schema can pose a problem, as types are going into the union that have different stand-ins or partially don't have stand-ins at all.  So we might run into the \"need to look at value\" situation that we want to avoid by using the schema to trigger stand-in use.",
+      "createdAt": "2024-01-18T05:55:00Z",
+      "updatedAt": "2024-01-18T05:55:00Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": [
     {
       "number": 1,
@@ -63,13 +80,13 @@
       "labels": [],
       "body": "",
       "createdAt": "2024-01-17T21:57:39Z",
-      "updatedAt": "2024-01-18T00:28:32Z",
+      "updatedAt": "2024-01-18T11:17:26Z",
       "baseRepository": "cabo/yang-standin",
       "baseRefName": "main",
       "baseRefOid": "5292c56a4563166faa8aebeb559a1880f07ee8fd",
       "headRepository": "marenamat/yang-standin",
       "headRefName": "mm-ip",
-      "headRefOid": "ec59a0d6075ddccde96d69d7237cd54d92e832c1",
+      "headRefOid": "ca5d6f0c2e41d727862805b6e9e4df1c6079463d",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -96,9 +113,9 @@
             },
             {
               "originalPosition": 39,
-              "body": "We tend not to use RFC 2219 keywords for documentation requirements.",
+              "body": "We tend not to use RFC 2119 keywords for documentation requirements.",
               "createdAt": "2024-01-18T00:20:32Z",
-              "updatedAt": "2024-01-18T00:28:32Z"
+              "updatedAt": "2024-01-18T05:50:54Z"
             },
             {
               "originalPosition": 42,
@@ -123,6 +140,146 @@
               "body": "One editorial question would be how many of the examples should be cbor-pretty and when we can use the more compact and easy to read cbor-diag -- cbor-pretty obviously visualizes the savings much better.",
               "createdAt": "2024-01-18T00:27:59Z",
               "updatedAt": "2024-01-18T00:28:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tAp0R",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T05:52:26Z",
+          "updatedAt": "2024-01-18T05:52:27Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "```suggestion\r\nformat. Specifically, if the schema allows to encode 2001:db8:1234::/48 both as\r\n```",
+              "createdAt": "2024-01-18T05:52:26Z",
+              "updatedAt": "2024-01-18T05:52:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tAqCn",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T05:53:25Z",
+          "updatedAt": "2024-01-18T05:53:25Z",
+          "comments": [
+            {
+              "originalPosition": 46,
+              "body": "We probably need to address unions in general.\r\nPut in https://github.com/cabo/yang-standin/issues/2",
+              "createdAt": "2024-01-18T05:53:25Z",
+              "updatedAt": "2024-01-18T05:55:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCwkf",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:12:17Z",
+          "updatedAt": "2024-01-18T11:12:17Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "Added a definition to the top.",
+              "createdAt": "2024-01-18T11:12:17Z",
+              "updatedAt": "2024-01-18T11:12:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCwth",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:12:38Z",
+          "updatedAt": "2024-01-18T11:12:38Z",
+          "comments": [
+            {
+              "originalPosition": 39,
+              "body": "Fixed, thanks. (This is my first RFC, please be patient.)",
+              "createdAt": "2024-01-18T11:12:38Z",
+              "updatedAt": "2024-01-18T11:12:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCw0j",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:12:53Z",
+          "updatedAt": "2024-01-18T11:12:53Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "clarified, hopefully",
+              "createdAt": "2024-01-18T11:12:53Z",
+              "updatedAt": "2024-01-18T11:12:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCyk8",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:17:09Z",
+          "updatedAt": "2024-01-18T11:17:09Z",
+          "comments": [
+            {
+              "originalPosition": 49,
+              "body": "covered by #2, removing here",
+              "createdAt": "2024-01-18T11:17:09Z",
+              "updatedAt": "2024-01-18T11:17:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCyr5",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:17:25Z",
+          "updatedAt": "2024-01-18T11:17:26Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "fixed",
+              "createdAt": "2024-01-18T11:17:25Z",
+              "updatedAt": "2024-01-18T11:17:26Z"
             }
           ]
         }
