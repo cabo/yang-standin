@@ -21,24 +21,24 @@ addresses/prefixes in a verbose text form.
 information in YANG-CBOR as a "stand-in" for the text-based
 information that would be found in the original form of YANG-CBOR. 
     ' name="description">
-<meta content="xml2rfc 3.19.0" name="generator">
+<meta content="xml2rfc 3.19.4" name="generator">
 <meta content="efficient YANG" name="keyword">
 <meta content="draft-bormann-cbor-yang-standin-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.19.0
+  xml2rfc 3.19.4
     Python 3.11.6
     ConfigArgParse 1.7
     google-i18n-address 3.1.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.3
-    platformdirs 4.1.0
+    platformdirs 4.2.0
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.31.0
     setuptools 68.2.2
     six 1.16.0
-    wcwidth 0.2.12
+    wcwidth 0.2.13
 -->
 <link href="draft-bormann-cbor-yang-standin.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1037,11 +1037,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Stand-in Tags for YANG-CBOR</td>
-<td class="right">January 2024</td>
+<td class="right">February 2024</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Bormann &amp; Matejka</td>
-<td class="center">Expires 20 July 2024</td>
+<td class="center">Expires 24 August 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1054,12 +1054,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bormann-cbor-yang-standin-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-01-17" class="published">17 January 2024</time>
+<time datetime="2024-02-21" class="published">21 February 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2024-07-20">20 July 2024</time></dd>
+<dd class="expires"><time datetime="2024-08-24">24 August 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1123,7 +1123,7 @@ information that would be found in the original form of YANG-CBOR.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 20 July 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 24 August 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1167,13 +1167,22 @@ information that would be found in the original form of YANG-CBOR.<a href="#sect
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-ietf-inet-types-tags-54-and" class="internal xref"><code>ietf-inet-types</code>: Tags 54 and 52 (IP addresses and prefixes)</a></p>
 </li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-union-handling" class="internal xref">Union handling</a></p>
+</li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-using-stand-in-tags" class="internal xref">Using Stand-In Tags</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-the-role-of-the-schema" class="internal xref">The Role of the Schema</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-defining-stand-in-usage-in-" class="internal xref">Defining Stand-In Usage in Schema</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-original-stand-ins" class="internal xref">Original stand-ins</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-legacy-round-trip" class="internal xref">Legacy Round Trip</a></p>
 </li>
             </ul>
 </li>
@@ -1235,20 +1244,54 @@ legacy representation in a more efficient format (e.g., using binary
 data).<a href="#section-2-2.4.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.5">Round Trip:</dt>
+<dt id="section-2-2.5">Encoder:</dt>
         <dd style="margin-left: 1.5em" id="section-2-2.6">
-          <p id="section-2-2.6.1">A pair of conversions from a legacy representation to a stand-in tag
-and back to a legacy representation.
-By definition of these conversions, a round trip needs to retain the
-semantic information of the original legacy representation.<a href="#section-2-2.6.1" class="pilcrow">¶</a></p>
+          <p id="section-2-2.6.1">The party which generates (sends) CBOR data described by YANG.<a href="#section-2-2.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.7">Unambiguous Round Trip:</dt>
+<dt id="section-2-2.7">Intermediate Encoder:</dt>
         <dd style="margin-left: 1.5em" id="section-2-2.8">
-          <p id="section-2-2.8.1">A Round Trip that provides exactly the same legacy representation
+          <p id="section-2-2.8.1">An encoder which isn't the original author of the data, converting it
+from legacy representation.<a href="#section-2-2.8.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.9">Decoder:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.10">
+          <p id="section-2-2.10.1">The party which receives and parses CBOR data described by YANG.<a href="#section-2-2.10.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.11">Intermediate Decoder:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.12">
+          <p id="section-2-2.12.1">A decoder which isn't the final recipient of the data, converting it
+to legacy representation.<a href="#section-2-2.12.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.13">Data Transfer:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.14">
+          <p id="section-2-2.14.1">A series of actions, generally beginning by data origination, encoding,
+continuing by optional intermediate transcoding, sending and receiving,
+and finally decoding and consuming.<a href="#section-2-2.14.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.15">Round Trip:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.16">
+          <p id="section-2-2.16.1">Part of a data transfer between an encoder generating CBOR data with
+stand-in tags and a decoder parsing the data.<a href="#section-2-2.16.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.17">Legacy Round Trip:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.18">
+          <p id="section-2-2.18.1">A Round Trip where the encoder is an intermediate encoder or the decoder is
+an intermediate decoder and any of these converts from or to the
+legacy representation.<a href="#section-2-2.18.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-2-2.19">Unambiguous Round Trip:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-2.20">
+          <p id="section-2-2.20.1">A Legacy Round Trip that provides exactly the same legacy representation
 (not just semantically equivalent).
 The stand-in tag is also said to "unambiguously stand in" for the
-legacy representation.<a href="#section-2-2.8.1" class="pilcrow">¶</a></p>
+legacy representation.<a href="#section-2-2.20.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
@@ -1365,20 +1408,20 @@ that have fractional seconds given.<a href="#section-3.1-6" class="pilcrow">¶</
               <td class="text-left" rowspan="1" colspan="1">(see union)</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">ipv4-address</td>
-              <td class="text-left" rowspan="1" colspan="1">string</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
-            </tr>
-            <tr>
               <td class="text-left" rowspan="1" colspan="1">ipv6-address</td>
               <td class="text-left" rowspan="1" colspan="1">string</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span>
 </td>
               <td class="text-left" rowspan="1" colspan="1">tag 54</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ipv4-address</td>
+              <td class="text-left" rowspan="1" colspan="1">string</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ip-address-no-zone</td>
@@ -1387,16 +1430,16 @@ that have fractional seconds given.<a href="#section-3.1-6" class="pilcrow">¶</
               <td class="text-left" rowspan="1" colspan="1">(see union)</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">ipv4-address-no-zone</td>
-              <td class="text-left" rowspan="1" colspan="1">ipv4-address</td>
-              <td class="text-left" rowspan="1" colspan="1">RFC 6991</td>
-              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
-            </tr>
-            <tr>
               <td class="text-left" rowspan="1" colspan="1">ipv6-address-no-zone</td>
               <td class="text-left" rowspan="1" colspan="1">ipv6-address</td>
               <td class="text-left" rowspan="1" colspan="1">RFC 6991</td>
               <td class="text-left" rowspan="1" colspan="1">tag 54</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ipv4-address-no-zone</td>
+              <td class="text-left" rowspan="1" colspan="1">ipv4-address</td>
+              <td class="text-left" rowspan="1" colspan="1">RFC 6991</td>
+              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ip-address-link-local</td>
@@ -1407,20 +1450,20 @@ that have fractional seconds given.<a href="#section-3.1-6" class="pilcrow">¶</
               <td class="text-left" rowspan="1" colspan="1">(see union)</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">ipv4-address-link-local</td>
-              <td class="text-left" rowspan="1" colspan="1">ipv4-address</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#I-D.schoenw-netmod-rfc6991-bis" class="cite xref">I-D.schoenw-netmod-rfc6991-bis</a>]</span>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
-            </tr>
-            <tr>
               <td class="text-left" rowspan="1" colspan="1">ipv6-address-link-local</td>
               <td class="text-left" rowspan="1" colspan="1">ipv6-address</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#I-D.schoenw-netmod-rfc6991-bis" class="cite xref">I-D.schoenw-netmod-rfc6991-bis</a>]</span>
 </td>
               <td class="text-left" rowspan="1" colspan="1">tag 54</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ipv4-address-link-local</td>
+              <td class="text-left" rowspan="1" colspan="1">ipv4-address</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#I-D.schoenw-netmod-rfc6991-bis" class="cite xref">I-D.schoenw-netmod-rfc6991-bis</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ip-prefix</td>
@@ -1431,20 +1474,20 @@ that have fractional seconds given.<a href="#section-3.1-6" class="pilcrow">¶</
               <td class="text-left" rowspan="1" colspan="1">(see union)</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">ipv4-prefix</td>
-              <td class="text-left" rowspan="1" colspan="1">string</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
-            </tr>
-            <tr>
               <td class="text-left" rowspan="1" colspan="1">ipv6-prefix</td>
               <td class="text-left" rowspan="1" colspan="1">string</td>
               <td class="text-left" rowspan="1" colspan="1">
                 <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span>
 </td>
               <td class="text-left" rowspan="1" colspan="1">tag 54</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ipv4-prefix</td>
+              <td class="text-left" rowspan="1" colspan="1">string</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
             </tr>
             <tr>
               <td class="text-left" rowspan="1" colspan="1">ip-address-and-prefix</td>
@@ -1455,14 +1498,6 @@ that have fractional seconds given.<a href="#section-3.1-6" class="pilcrow">¶</
               <td class="text-left" rowspan="1" colspan="1">(see union)</td>
             </tr>
             <tr>
-              <td class="text-left" rowspan="1" colspan="1">ipv4-address-and-prefix</td>
-              <td class="text-left" rowspan="1" colspan="1">string</td>
-              <td class="text-left" rowspan="1" colspan="1">
-                <span>[<a href="#I-D.schoenw-netmod-rfc6991-bis" class="cite xref">I-D.schoenw-netmod-rfc6991-bis</a>]</span>
-</td>
-              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
-            </tr>
-            <tr>
               <td class="text-left" rowspan="1" colspan="1">ipv6-address-and-prefix</td>
               <td class="text-left" rowspan="1" colspan="1">string</td>
               <td class="text-left" rowspan="1" colspan="1">
@@ -1470,16 +1505,95 @@ that have fractional seconds given.<a href="#section-3.1-6" class="pilcrow">¶</
 </td>
               <td class="text-left" rowspan="1" colspan="1">tag 54</td>
             </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ipv4-address-and-prefix</td>
+              <td class="text-left" rowspan="1" colspan="1">string</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#I-D.schoenw-netmod-rfc6991-bis" class="cite xref">I-D.schoenw-netmod-rfc6991-bis</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">tag 52</td>
+            </tr>
           </tbody>
         </table>
-<p id="section-3.2-3">TO DO: Define usage of tags 54 and 52 for the cases we actually
-support.
-Addresses that have zones given cannot use tag 54/52.
-Addresses with leading zeros cannot use tag 54/52.
-Addresses that do not comply with <span>[<a href="#RFC5952" class="cite xref">RFC5952</a>]</span> cannot use tag 54.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">TO DO: Check how the unions in <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span> and <span>[<a href="#I-D.schoenw-netmod-rfc6991-bis" class="cite xref">I-D.schoenw-netmod-rfc6991-bis</a>]</span> interact
+<p id="section-3.2-3">An intermediate encoder <span class="bcp14">MAY</span> normalize IPv6 addresses and prefixes that do not comply with <span>[<a href="#RFC5952" class="cite xref">RFC5952</a>]</span>
+but can be converted into the stand-in representation.
+For example, IPv6 address written as 2001:db8:: is the same as 2001:0db8::0:0 and both would
+be converted to <code>54(h'20010db8000000000000000000000000')</code>, anyway only the
+first one complies with <span>[<a href="#RFC5952" class="cite xref">RFC5952</a>]</span>. The encoder <span class="bcp14">MAY</span> refuse to convert the
+latter one.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4">If the schema specifies
+<code>ip-prefix</code>, an intermediate encoder <span class="bcp14">MAY</span> normalize prefixes with non-zero bits after the prefix end.
+For example, if the legacy representation of <code>ipv6-prefix</code> is 2001:db8:1::/40, the encoder
+may either refuse it as malformed or convert it to 2001:db8::/40 and represent
+as <code>54([40, h'20010db8'])</code>.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-5">The encoder implementation should be clear about which normalizations are employed and how.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-6">Adapted examples from <span>[<a href="#RFC9164" class="cite xref">RFC9164</a>]</span>:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+<p id="section-3.2-7">Stand-in representation of IPv6 address 2001:db8:1234:deed:beef:cafe:face:feed
+is <code>54(h'20010db81234deedbeefcafefacefeed')</code>.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
+<p id="section-3.2-8">CBOR encoding of stand-in (19 bytes):<a href="#section-3.2-8" class="pilcrow">¶</a></p>
+<p id="section-3.2-9"><code>cbor-pretty
+D8 36                                  # tag(54)
+   50                                  # bytes(16)
+      20010DB81234DEEDBEEFCAFEFACEFEED
+</code><a href="#section-3.2-9" class="pilcrow">¶</a></p>
+<p id="section-3.2-10">CBOR encoding of legacy representation (40 bytes):<a href="#section-3.2-10" class="pilcrow">¶</a></p>
+<p id="section-3.2-11"><code>cbor-pretty
+78 26                                   # text(38)
+   323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
+</code><a href="#section-3.2-11" class="pilcrow">¶</a></p>
+<p id="section-3.2-12">Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is
+<code>54([48, h'20010db81234'])</code>.<a href="#section-3.2-12" class="pilcrow">¶</a></p>
+<p id="section-3.2-13">CBOR encoding of stand-in (12 bytes):<a href="#section-3.2-13" class="pilcrow">¶</a></p>
+<p id="section-3.2-14"><code>cbor-pretty
+D8 36                 # tag(54)
+   82                 # array(2)
+      18 30           # unsigned(48)
+      46              # bytes(6)
+         20010DB81234 # " \u0001\r\xB8\u00124"
+</code><a href="#section-3.2-14" class="pilcrow">¶</a></p>
+<p id="section-3.2-15">CBOR encoding of legacy representation (19 bytes):<a href="#section-3.2-15" class="pilcrow">¶</a></p>
+<p id="section-3.2-16"><code>cbor-pretty
+72                                      # text(18)
+   323030313A6462383A313233343A3A2F3438 # "2001:db8:1234::/48"
+</code><a href="#section-3.2-16" class="pilcrow">¶</a></p>
+<p id="section-3.2-17">Stand-in representation of IPv6 link-local address fe80::0202:02ff:ffff:fe03:0303/64%eth0 is
+<code>54([h'fe8000000000020202fffffffe030303', 64, 'eth0'])</code>.<a href="#section-3.2-17" class="pilcrow">¶</a></p>
+<p id="section-3.2-18">CBOR encoding of stand-in (27 bytes):<a href="#section-3.2-18" class="pilcrow">¶</a></p>
+<p id="section-3.2-19"><code>cbor-pretty
+D8 36                                   # tag(54)
+   83                                   # array(3)
+      50                                # bytes(16)
+         FE8000000000020202FFFFFFFE030303
+      18 40                             # unsigned(64)
+      44                                # bytes(4)
+         65746830                       # "eth0"
+</code><a href="#section-3.2-19" class="pilcrow">¶</a></p>
+<p id="section-3.2-20">CBOR encoding of legacy representation (40 bytes):<a href="#section-3.2-20" class="pilcrow">¶</a></p>
+<p id="section-3.2-21"><code>cbor-pretty
+78 26                                   # text(38)
+   666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
+</code><a href="#section-3.2-21" class="pilcrow">¶</a></p>
+<p id="section-3.2-22">TO DO: adapt more examples from <span>[<a href="#RFC9164" class="cite xref">RFC9164</a>]</span><a href="#section-3.2-22" class="pilcrow">¶</a></p>
+<p id="section-3.2-23">TO DO: Check how the unions in <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span> and <span>[<a href="#I-D.schoenw-netmod-rfc6991-bis" class="cite xref">I-D.schoenw-netmod-rfc6991-bis</a>]</span> interact
 with this.  E.g., the union ip-address needs to be parsed to decide
-between tag 54 and tag 52.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+between tag 54 and tag 52.<a href="#section-3.2-23" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="union-handling">
+<section id="section-3.3">
+        <h3 id="name-union-handling">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-union-handling" class="section-name selfRef">Union handling</a>
+        </h3>
+<p id="section-3.3-1">When the schema specifies a union data type for a node, there are
+additional requirements on the encoder and decoder.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">An encoder which is fully aware of data semantics <span class="bcp14">MUST</span> use the appropriate
+data type, even though it isn't formally specified by the schema.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
+<p id="section-3.3-3">If an intermediate encoder doesn't fully understand the data semantics,
+it needs to find out which type the data actually is to choose the right stand-in.
+If more types are possible, it <span class="bcp14">MAY</span> choose any of these which allow for an Unambiguous Round Trip,
+otherwise it <span class="bcp14">SHOULD</span> keep the legacy representation.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-4">If a decoder receives data for a union-typed node, it <span class="bcp14">MUST</span> accept any data type
+of the union, even though it may violate additional constraints outside the schema.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1489,25 +1603,34 @@ between tag 54 and tag 52.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
       <h2 id="name-using-stand-in-tags">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-using-stand-in-tags" class="section-name selfRef">Using Stand-In Tags</a>
       </h2>
-<div id="the-role-of-the-schema">
+<div id="defining-stand-in-usage-in-schema">
 <section id="section-4.1">
-        <h3 id="name-the-role-of-the-schema">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-the-role-of-the-schema" class="section-name selfRef">The Role of the Schema</a>
+        <h3 id="name-defining-stand-in-usage-in-">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-defining-stand-in-usage-in-" class="section-name selfRef">Defining Stand-In Usage in Schema</a>
         </h3>
-<p id="section-4.1-1">One approach of introducing stand-in tags in a produced would be to
-match any text string it produces against the format of the legacy
-representations and put in a stand-in tag instead.
-We call this the schema-agnostic approach.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1-2">It is probably more efficient to trigger producing a stand-in tag from
-schema information available while producing the YANG-CBOR.
-However, that entangles the use of stand-in tags with the need schema
-information; the algorithm for deciding about the use of the stand-in
-tag needs to have enough schema information available to make this
-decision.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.1-3">Not all values of a schema type can be represented by a tag such that
-an unambiguous round trip is achieved.  This document aims at an
-unambiguous round trip.
-ISSUE: Can we maybe live with round trips that aren't unambiguous?<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-1">TO DO: formally define the YANG extension<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="original-stand-ins">
+<section id="section-4.2">
+        <h3 id="name-original-stand-ins">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-original-stand-ins" class="section-name selfRef">Original stand-ins</a>
+        </h3>
+<p id="section-4.2-1">The simplest situation is when no intermediate encoders and decoders are
+involved in the data transfer, therefore the round trip is not legacy.
+In this case, no conversions are involved and data is validated using the
+schema extension from the previous section.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="legacy-round-trip">
+<section id="section-4.3">
+        <h3 id="name-legacy-round-trip">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-legacy-round-trip" class="section-name selfRef">Legacy Round Trip</a>
+        </h3>
+<p id="section-4.3-1">Producing a stand-in <span class="bcp14">MUST</span> be triggered by schema usage. Intermediate encoders
+<span class="bcp14">MUST NOT</span> encode stand-ins when no schema is available.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">It's generally not recommended to do a legacy round trip where both the encoder
+and decoder are converting from and to the legacy representation.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1625,6 +1748,10 @@ indicate another encoding decision.<a href="#section-7.2-1" class="pilcrow">¶</
 <dt id="RFC8943">[RFC8943]</dt>
       <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Nadalin, A.</span>, and <span class="refAuthor">J. Richter</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR) Tags for Date"</span>, <span class="seriesInfo">RFC 8943</span>, <span class="seriesInfo">DOI 10.17487/RFC8943</span>, <time datetime="2020-11" class="refDate">November 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8943">https://www.rfc-editor.org/rfc/rfc8943</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9164">[RFC9164]</dt>
+      <dd>
+<span class="refAuthor">Richardson, M.</span> and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR) Tags for IPv4 and IPv6 Addresses and Prefixes"</span>, <span class="seriesInfo">RFC 9164</span>, <span class="seriesInfo">DOI 10.17487/RFC9164</span>, <time datetime="2021-12" class="refDate">December 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9164">https://www.rfc-editor.org/rfc/rfc9164</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9254">[RFC9254]</dt>
       <dd>
