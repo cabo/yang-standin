@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-02-20T00:42:49.447226+00:00",
+  "timestamp": "2024-02-22T00:43:10.271823+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -65,6 +65,38 @@
       "updatedAt": "2024-01-18T05:55:00Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOLF7SWM5_8-wA",
+      "title": "(editorial:) examples: cbor-pretty va. cbor-diag",
+      "url": "https://github.com/cabo/yang-standin/issues/3",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "              One editorial question would be how many of the examples should be cbor-pretty and when we can use the more compact and easy to read cbor-diag -- cbor-pretty obviously visualizes the savings much better.\r\n\r\n_Originally posted by @cabo in https://github.com/cabo/yang-standin/pull/1#discussion_r1456667920_\r\n            ",
+      "createdAt": "2024-02-21T12:54:44Z",
+      "updatedAt": "2024-02-21T12:54:44Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOLF7SWM5_9Ftf",
+      "title": "Stand-ins should be orthogonal to the YANG model",
+      "url": "https://github.com/cabo/yang-standin/issues/4",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Given the somewhat ossified nature of YANG models, it would severely hinder deployment if a model had to adopt stand-ins before they can be used.\r\nI'd propose to leave the whole concept out of the modeling level -- the model also doesn't say whether the encoding is to be JSON or CBOR, so why would it say something about stand-ins in CBOR.\r\n\r\nOf course, once models get stand-in aware, they might want to make optimizations for *if* stand-ins are in use.\r\nBut this could be done in a second step.",
+      "createdAt": "2024-02-21T13:09:36Z",
+      "updatedAt": "2024-02-21T13:09:36Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -73,24 +105,26 @@
       "id": "PR_kwDOLF7SWM5kXAWR",
       "title": "Updates on IP address and prefix representation",
       "url": "https://github.com/cabo/yang-standin/pull/1",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "marenamat",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-01-17T21:57:39Z",
-      "updatedAt": "2024-01-18T11:17:26Z",
+      "updatedAt": "2024-02-21T13:04:51Z",
       "baseRepository": "cabo/yang-standin",
       "baseRefName": "main",
       "baseRefOid": "5292c56a4563166faa8aebeb559a1880f07ee8fd",
       "headRepository": "marenamat/yang-standin",
       "headRefName": "mm-ip",
       "headRefOid": "ca5d6f0c2e41d727862805b6e9e4df1c6079463d",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-02-21T13:04:51Z",
+      "mergedAt": "2024-02-21T13:04:51Z",
+      "mergedBy": "cabo",
+      "mergeCommit": {
+        "oid": "4a31bd5cad8ea82488227831d044a84db229a20a"
+      },
       "comments": [],
       "reviews": [
         {
@@ -280,6 +314,26 @@
               "body": "fixed",
               "createdAt": "2024-01-18T11:17:25Z",
               "updatedAt": "2024-01-18T11:17:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5w1trK",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-21T12:55:51Z",
+          "updatedAt": "2024-02-21T12:55:52Z",
+          "comments": [
+            {
+              "originalPosition": 113,
+              "body": "(Now #3)",
+              "createdAt": "2024-02-21T12:55:52Z",
+              "updatedAt": "2024-02-21T12:55:52Z"
             }
           ]
         }
