@@ -1,0 +1,343 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-05-14T00:47:43.526334+00:00",
+  "repo": "cabo/yang-standin",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOLF7SWM58ba1B",
+      "title": "Address unions in schema",
+      "url": "https://github.com/cabo/yang-standin/issues/2",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Unions in a schema can pose a problem, as types are going into the union that have different stand-ins or partially don't have stand-ins at all.  So we might run into the \"need to look at value\" situation that we want to avoid by using the schema to trigger stand-in use.",
+      "createdAt": "2024-01-18T05:55:00Z",
+      "updatedAt": "2024-01-18T05:55:00Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDOLF7SWM5_8-wA",
+      "title": "(editorial:) examples: cbor-pretty va. cbor-diag",
+      "url": "https://github.com/cabo/yang-standin/issues/3",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "              One editorial question would be how many of the examples should be cbor-pretty and when we can use the more compact and easy to read cbor-diag -- cbor-pretty obviously visualizes the savings much better.\r\n\r\n_Originally posted by @cabo in https://github.com/cabo/yang-standin/pull/1#discussion_r1456667920_\r\n            ",
+      "createdAt": "2024-02-21T12:54:44Z",
+      "updatedAt": "2024-02-21T12:54:44Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 4,
+      "id": "I_kwDOLF7SWM5_9Ftf",
+      "title": "Stand-ins should be orthogonal to the YANG model",
+      "url": "https://github.com/cabo/yang-standin/issues/4",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Given the somewhat ossified nature of YANG models, it would severely hinder deployment if a model had to adopt stand-ins before they can be used.\r\nI'd propose to leave the whole concept out of the modeling level -- the model also doesn't say whether the encoding is to be JSON or CBOR, so why would it say something about stand-ins in CBOR.\r\n\r\nOf course, once models get stand-in aware, they might want to make optimizations for *if* stand-ins are in use.\r\nBut this could be done in a second step.",
+      "createdAt": "2024-02-21T13:09:36Z",
+      "updatedAt": "2024-02-21T13:09:36Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOLF7SWM5kXAWR",
+      "title": "Updates on IP address and prefix representation",
+      "url": "https://github.com/cabo/yang-standin/pull/1",
+      "state": "MERGED",
+      "author": "marenamat",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-01-17T21:57:39Z",
+      "updatedAt": "2024-02-21T13:04:51Z",
+      "baseRepository": "cabo/yang-standin",
+      "baseRefName": "main",
+      "baseRefOid": "5292c56a4563166faa8aebeb559a1880f07ee8fd",
+      "headRepository": "marenamat/yang-standin",
+      "headRefName": "mm-ip",
+      "headRefOid": "ca5d6f0c2e41d727862805b6e9e4df1c6079463d",
+      "closedAt": "2024-02-21T13:04:51Z",
+      "mergedAt": "2024-02-21T13:04:51Z",
+      "mergedBy": "cabo",
+      "mergeCommit": {
+        "oid": "4a31bd5cad8ea82488227831d044a84db229a20a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOLF7SWM5s_D1g",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "Thanks!\r\n\r\nApproved this with a few suggestions.",
+          "createdAt": "2024-01-18T00:20:07Z",
+          "updatedAt": "2024-01-18T00:28:32Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "I don't think I know what an encoder is here.\r\nThe conversion from stand-in tag to a legacy representation?",
+              "createdAt": "2024-01-18T00:20:07Z",
+              "updatedAt": "2024-01-18T00:28:32Z"
+            },
+            {
+              "originalPosition": 39,
+              "body": "We tend not to use RFC 2119 keywords for documentation requirements.",
+              "createdAt": "2024-01-18T00:20:32Z",
+              "updatedAt": "2024-01-18T05:50:54Z"
+            },
+            {
+              "originalPosition": 42,
+              "body": "normalize with or prefixes with?  (Maybe an in-line example would clarify this.)",
+              "createdAt": "2024-01-18T00:21:25Z",
+              "updatedAt": "2024-01-18T00:28:32Z"
+            },
+            {
+              "originalPosition": 49,
+              "body": "In 9164, address-and-prefix doesn't get trailing zeros cut off, while prefixes do.",
+              "createdAt": "2024-01-18T00:23:45Z",
+              "updatedAt": "2024-01-18T00:28:32Z"
+            },
+            {
+              "originalPosition": 58,
+              "body": "The sourcecode-type for pretty-printed hex CBOR is \"cbor-pretty\"\r\n\r\nSo this should become ` ``` cbor-pretty ` \r\n(Don't know how to encode a suggestion with ` ``` ` in it...)",
+              "createdAt": "2024-01-18T00:25:32Z",
+              "updatedAt": "2024-01-18T00:28:32Z"
+            },
+            {
+              "originalPosition": 113,
+              "body": "One editorial question would be how many of the examples should be cbor-pretty and when we can use the more compact and easy to read cbor-diag -- cbor-pretty obviously visualizes the savings much better.",
+              "createdAt": "2024-01-18T00:27:59Z",
+              "updatedAt": "2024-01-18T00:28:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tAp0R",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T05:52:26Z",
+          "updatedAt": "2024-01-18T05:52:27Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "```suggestion\r\nformat. Specifically, if the schema allows to encode 2001:db8:1234::/48 both as\r\n```",
+              "createdAt": "2024-01-18T05:52:26Z",
+              "updatedAt": "2024-01-18T05:52:27Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tAqCn",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T05:53:25Z",
+          "updatedAt": "2024-01-18T05:53:25Z",
+          "comments": [
+            {
+              "originalPosition": 46,
+              "body": "We probably need to address unions in general.\r\nPut in https://github.com/cabo/yang-standin/issues/2",
+              "createdAt": "2024-01-18T05:53:25Z",
+              "updatedAt": "2024-01-18T05:55:34Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCwkf",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:12:17Z",
+          "updatedAt": "2024-01-18T11:12:17Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "Added a definition to the top.",
+              "createdAt": "2024-01-18T11:12:17Z",
+              "updatedAt": "2024-01-18T11:12:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCwth",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:12:38Z",
+          "updatedAt": "2024-01-18T11:12:38Z",
+          "comments": [
+            {
+              "originalPosition": 39,
+              "body": "Fixed, thanks. (This is my first RFC, please be patient.)",
+              "createdAt": "2024-01-18T11:12:38Z",
+              "updatedAt": "2024-01-18T11:12:38Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCw0j",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:12:53Z",
+          "updatedAt": "2024-01-18T11:12:53Z",
+          "comments": [
+            {
+              "originalPosition": 42,
+              "body": "clarified, hopefully",
+              "createdAt": "2024-01-18T11:12:53Z",
+              "updatedAt": "2024-01-18T11:12:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCyk8",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:17:09Z",
+          "updatedAt": "2024-01-18T11:17:09Z",
+          "comments": [
+            {
+              "originalPosition": 49,
+              "body": "covered by #2, removing here",
+              "createdAt": "2024-01-18T11:17:09Z",
+              "updatedAt": "2024-01-18T11:17:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5tCyr5",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-01-18T11:17:25Z",
+          "updatedAt": "2024-01-18T11:17:26Z",
+          "comments": [
+            {
+              "originalPosition": 58,
+              "body": "fixed",
+              "createdAt": "2024-01-18T11:17:25Z",
+              "updatedAt": "2024-01-18T11:17:26Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM5w1trK",
+          "commit": {
+            "abbreviatedOid": "ec59a0d"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-02-21T12:55:51Z",
+          "updatedAt": "2024-02-21T12:55:52Z",
+          "comments": [
+            {
+              "originalPosition": 113,
+              "body": "(Now #3)",
+              "createdAt": "2024-02-21T12:55:52Z",
+              "updatedAt": "2024-02-21T12:55:52Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
