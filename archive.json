@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-07-30T00:52:53.006802+00:00",
+  "timestamp": "2024-08-01T00:57:23.637797+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -95,6 +95,22 @@
       "body": "Given the somewhat ossified nature of YANG models, it would severely hinder deployment if a model had to adopt stand-ins before they can be used.\r\nI'd propose to leave the whole concept out of the modeling level -- the model also doesn't say whether the encoding is to be JSON or CBOR, so why would it say something about stand-ins in CBOR.\r\n\r\nOf course, once models get stand-in aware, they might want to make optimizations for *if* stand-ins are in use.\r\nBut this could be done in a second step.",
       "createdAt": "2024-02-21T13:09:36Z",
       "updatedAt": "2024-02-21T13:09:36Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOLF7SWM6RYdnm",
+      "title": "support RFC 6991 hex-string and related",
+      "url": "https://github.com/cabo/yang-standin/issues/5",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "RFC 6991 defines hex-string as well as the related phys-address and mac-address.\r\nThey all are hex-strings built out of 2 hex digits per byte, with colons (':') interspersed.\r\n\r\nmac-address is exactly 6 bytes:\r\n\r\n         pattern '[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}';\r\n\r\nhex-string and phys-address are zero or more bytes:\r\n\r\n         pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';\r\n\r\nWo do have tag 48 for a MAC address in this hex-string form, but this probably could cause validation issues if we use that for lengths not allowed for MAC addresses.\r\n\r\nhex-strings are canonically lower-case, but upper-case is allowed as well.  Not sure what the incidence for upper case is.  Might need two new tags: hex-string (lower case), hex-string (upper case).",
+      "createdAt": "2024-07-31T04:46:19Z",
+      "updatedAt": "2024-07-31T04:46:19Z",
       "closedAt": null,
       "comments": []
     }
