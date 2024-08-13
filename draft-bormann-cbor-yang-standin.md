@@ -136,7 +136,7 @@ are only used when an Unambiguous Round Trip can be achieved.
 
 YANG type | base type | specification | stand-in
 date-and-time | string | {{-yang-types}} | tag 1
-date-with-zone-offset | string | {{-legacy-bis}} | (none)
+date | string | {{-legacy-bis}} | (none)
 date-no-zone | string | {{-legacy-bis}} | tag 100
 {: title="Legacy representations in ietf-yang-types"}
 
