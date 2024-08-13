@@ -341,7 +341,7 @@ TODO Security
 
 ISSUE: Do we want to have a separate registry for stand-in tags?
 
-They already are CBOR tags and thus in the in the registry, but might
+They already are CBOR tags and thus in the registry, but might
 get lost in the bulk of that (and are only identified as YANG-CBOR
 stand-in Tags in the specification).
 
@@ -349,6 +349,7 @@ stand-in Tags in the specification).
 
 ISSUE: Should the use of stand-in tags be mentioned in the various
 YANG-CBOR-based media types (as a media type parameter)?
+
 Compare how application/yang-data+cbor can use id=name/id=sid to
 indicate another encoding decision.
 
