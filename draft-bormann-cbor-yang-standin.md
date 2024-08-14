@@ -222,45 +222,45 @@ is `54(h'20010db81234deedbeefcafefacefeed')`.
 
 CBOR encoding of stand-in (19 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 D8 36                                  # tag(54)
    50                                  # bytes(16)
       20010DB81234DEEDBEEFCAFEFACEFEED
-```
+~~~
 
 CBOR encoding of legacy representation (40 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 78 26                                   # text(38)
    323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
-```
+~~~
 
 Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is
 `54([48, h'20010db81234'])`.
 
 CBOR encoding of stand-in (12 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 D8 36                 # tag(54)
    82                 # array(2)
       18 30           # unsigned(48)
       46              # bytes(6)
          20010DB81234 # " \u0001\r\xB8\u00124"
-```
+~~~
 
 CBOR encoding of legacy representation (19 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 72                                      # text(18)
    323030313A6462383A313233343A3A2F3438 # "2001:db8:1234::/48"
-```
+~~~
 
 Stand-in representation of IPv6 link-local address fe80::0202:02ff:ffff:fe03:0303/64%eth0 is
 `54([h'fe8000000000020202fffffffe030303', 64, 'eth0'])`.
 
 CBOR encoding of stand-in (27 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 D8 36                                   # tag(54)
    83                                   # array(3)
       50                                # bytes(16)
@@ -268,14 +268,14 @@ D8 36                                   # tag(54)
       18 40                             # unsigned(64)
       44                                # bytes(4)
          65746830                       # "eth0"
-```
+~~~
 
 CBOR encoding of legacy representation (40 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 78 26                                   # text(38)
    666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
-```
+~~~
 
 TO DO: adapt more examples from {{-cbor-ip}}
 
