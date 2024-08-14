@@ -95,8 +95,29 @@ Intermediate Encoder:
 : An encoder which isn't the original author of the data, converting it
   from legacy representation.
 
+Aggressive Intermediate Encoder:
+: An intermediate encoder that might choose to discard some
+  information of a legacy representation in order to be able to use a
+  stand-in tag.
+  Such a choice may be based on knowledge of the Decoder's handling of
+  such information (e.g, to accommodate intolerant decoders), or it
+  may be a general characteristic of the service provided by the
+  intermediate encoder (e.g., in order to serve as a legacy-eschewing
+  encoder).
+
+Legacy-Eschewing Encoder:
+: An encoder that does not generate legacy representations in places
+  where a stand-in tag might instead be used.
+  An intermediate encoder may need to be aggressive to achieve this.
+
 Decoder:
 : The party which receives and parses CBOR data described by YANG.
+
+Intolerant Decoder:
+: A decoder that does not accept legacy representations in places
+  where a stand-in tag might instead be used.
+  Such a decoder is designed to interoperate only with an
+  legacy-eschewing encoder.
 
 Intermediate Decoder:
 : A decoder which isn't the final recipient of the data, converting it
@@ -314,12 +335,16 @@ between the producer and the consumer of YANG-CBOR information:
 
 * A consumer may not want to implement certain legacy text-based
   representations where more efficient (and easy to implement)
-  stand-in tags are available.  This places a _requirement_ on the
-  producer (which needs to have the _capability_ to produce YANG-CBOR
+  stand-in tags are available, i.e., it may use an intolerant decoder.
+  This places a _requirement_ on the
+  producer to use a legacy-eschewing encoder (which therefore needs to
+  have the _capability_ to produce YANG-CBOR
   where those stand-in tags are used, in place of legacy
   representations).
-  A producer MUST NOT employ legacy representations where stand-in
-  tags are _required_ by the consumer.
+  Where the consumer employs an intolerant decoder, stand-in tags are
+  _required_ by the consumer: for interoperating with a producer's
+  encoder, this MUST be legacy-eschewing, i.e. it MUST NOT employ
+  legacy representations.
   A consumer that has requirements for only receiving stand-in tags in
   place of legacy representations, MUST indicate this to the producer.
 
