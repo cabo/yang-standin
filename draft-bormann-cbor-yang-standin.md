@@ -48,7 +48,7 @@ normative:
   RFC6021: yang-types
 
 informative:
-
+  RFC9557: ixdtf
 
 --- abstract
 
@@ -303,7 +303,41 @@ of the union, even though it may violate additional constraints outside the sche
 
 ## Defining Stand-In Usage in Schema
 
-TO DO: formally define the YANG extension
+Requiring modifications to a YANG model in order to use it with
+stand-in tags would pose significant deployment hurdles to using
+stand-in tags.
+
+A YANG model may want to restrict the information content in such a
+way that stand-in tags can always be used, e.g., by using date-no-zone
+in place of date where that is applicable, or by excluding features of
+a YANG data type that cannot be represented in a stand-in-tag.
+
+ISSUE: Should this document define such restricted types, e.g.:
+
+~~~ yang
+  typedef efficient-date-and-time {
+    type date-and-time {
+      pattern '.*-00:00'
+    }
+    description
+      "The efficient-date-and-time type is a profile of the
+       date-and-time that is intended to always enable using a
+       stand-in tag as per ((this document)), e.g., by not expressing
+       a time-zone-offset.
+       Not all restrictions that make this possible are expressed in
+       the above YANG string pattern.";
+  }
+~~~
+
+(This particular example is additionally problematic since the usual
+way to indicate the absence of time zone information in ISO 8601
+date-times is using `Z` as the time zone indicated, not `-00:00` as is
+required by {{Section 3 of -legacy-bis}} but not allowed by ISO 8601;
+see {{-ixdtf}} for additional discussion of this.)
+[^no8601reference]
+
+[^no8601reference]: Note that this paragraph does not reference ISO
+    8601 because that is complicated and best done by consulting {{-ixdtf}}.
 
 ## Original stand-ins
 
