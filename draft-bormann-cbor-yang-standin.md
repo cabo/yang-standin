@@ -41,7 +41,7 @@ author:
 normative:
   RFC9254: yang-cbor
   RFC9164: cbor-ip
-  I-D.schoenw-netmod-rfc6991-bis: legacy-bis
+  I-D.ietf-netmod-rfc6991-bis: legacy-bis
   RFC5952:
   RFC8943: date
   STD94: cbor
