@@ -5,16 +5,16 @@ docname: draft-bormann-cbor-yang-standin-latest
 title: "Stand-in Tags for YANG-CBOR"
 date:
 
-submissiontype: IETF
+stream: IETF
 category: std
 consensus: true
 
 area: "Applications and Real-Time"
-workgroup: "Concise Binary Object Representation Maintenance and Extensions"
+workgroup: "CBOR (Concise Binary Object Representation) Maint. and Ext."
 keyword:
  - efficient YANG
 venue:
-  group: "CBOR (Concise Binary Object Representation Maintenance and Extensions)"
+  group: "CBOR (Concise Binary Object Representation) Maintenance and Extensions"
   type: "Working Group"
   mail: "cbor@ietf.org"
   github: "cabo/yang-standin"
@@ -122,7 +122,7 @@ Unambiguous Round Trip:
   The stand-in tag is also said to "unambiguously stand in" for the
   legacy representation.
 
-{::boilerplate bcp14-tagged}
+{::boilerplate bcp14-tagged-bcp14}
 
 # Stand-In Tags
 
