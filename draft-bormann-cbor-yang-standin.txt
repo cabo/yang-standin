@@ -2,11 +2,11 @@
 
 
 
-Concise Binary Object Representation Maintenance and ExtensionsC. Bormann
+CBOR (Concise Binary Object Representation) Maint. and Ext.   C. Bormann
 Internet-Draft                                    Universität Bremen TZI
 Intended status: Standards Track                              M. Matejka
-Expires: 24 August 2024                                           CZ.NIC
-                                                        21 February 2024
+Expires: 16 February 2025                                         CZ.NIC
+                                                          15 August 2024
 
 
                       Stand-in Tags for YANG-CBOR
@@ -37,7 +37,7 @@ About This Document
    https://datatracker.ietf.org/doc/draft-bormann-cbor-yang-standin/.
 
    Discussion of this document takes place on the CBOR (Concise Binary
-   Object Representation Maintenance and Extensions) Working Group
+   Object Representation) Maintenance and Extensions Working Group
    mailing list (mailto:cbor@ietf.org), which is archived at
    https://mailarchive.ietf.org/arch/browse/cbor/.  Subscribe at
    https://www.ietf.org/mailman/listinfo/cbor/.
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 24 August 2024.
+   This Internet-Draft will expire on 16 February 2025.
 
 Copyright Notice
 
@@ -93,7 +93,9 @@ Table of Contents
    7.  IANA Considerations
      7.1.  stand-in tags?
      7.2.  media-type parameters
-   8.  Normative References
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -119,8 +121,26 @@ Table of Contents
    Intermediate Encoder:  An encoder which isn't the original author of
       the data, converting it from legacy representation.
 
+   Aggressive Intermediate Encoder:  An intermediate encoder that might
+      choose to discard some information of a legacy representation in
+      order to be able to use a stand-in tag.  Such a choice may be
+      based on knowledge of the Decoder's handling of such information
+      (e.g, to accommodate intolerant decoders), or it may be a general
+      characteristic of the service provided by the intermediate encoder
+      (e.g., in order to serve as a legacy-eschewing encoder).
+
+   Legacy-Eschewing Encoder:  An encoder that does not generate legacy
+      representations in places where a stand-in tag might instead be
+      used.  An intermediate encoder may need to be aggressive to
+      achieve this.
+
    Decoder:  The party which receives and parses CBOR data described by
       YANG.
+
+   Intolerant Decoder:  A decoder that does not accept legacy
+      representations in places where a stand-in tag might instead be
+      used.  Such a decoder is designed to interoperate only with an
+      legacy-eschewing encoder.
 
    Intermediate Decoder:  A decoder which isn't the final recipient of
       the data, converting it to legacy representation.
@@ -145,7 +165,7 @@ Table of Contents
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   [BCP14] (RFC2119) (RFC8174) when, and only when, they appear in all
    capitals, as shown here.
 
 3.  Stand-In Tags
@@ -156,31 +176,28 @@ Table of Contents
 
 3.1.  ietf-yang-types: Tag 1 (Date/Time) and Tag 100 (Date)
 
-   Section 3 of [I-D.schoenw-netmod-rfc6991-bis] defines the following
+   Section 3 of [I-D.ietf-netmod-rfc6991-bis] defines the following
    types in ietf-yang-types:
 
-   +=============+========+==================================+========+
-   | YANG type   | base   | specification                    | stand- |
-   |             | type   |                                  | in     |
-   +=============+========+==================================+========+
-   | date-and-   | string | [RFC6021]                        | tag 1  |
-   | time        |        |                                  |        |
-   +-------------+--------+----------------------------------+--------+
-   | date-with-  | string | [I-D.schoenw-netmod-rfc6991-bis] | (none) |
-   | zone-offset |        |                                  |        |
-   +-------------+--------+----------------------------------+--------+
-   | date-no-    | string | [I-D.schoenw-netmod-rfc6991-bis] | tag    |
-   | zone        |        |                                  | 100    |
-   +-------------+--------+----------------------------------+--------+
+    +===============+======+===============================+==========+
+    | YANG type     |base  | specification                 | stand-in |
+    |               |type  |                               |          |
+    +===============+======+===============================+==========+
+    | date-and-time |string| [RFC6021]                     | tag 1    |
+    +---------------+------+-------------------------------+----------+
+    | date          |string| [I-D.ietf-netmod-rfc6991-bis] | (none)   |
+    +---------------+------+-------------------------------+----------+
+    | date-no-zone  |string| [I-D.ietf-netmod-rfc6991-bis] | tag 100  |
+    +---------------+------+-------------------------------+----------+
 
-            Table 1: Legacy representations in ietf-yang-types
+             Table 1: Legacy representations in ietf-yang-types
 
    Tag 1 (Section 3.4.2 of RFC 8949 [STD94]) can unambiguously stand in
    for all date-and-time values that:
 
    *  do not specify a time zone (note that
-      [I-D.schoenw-netmod-rfc6991-bis] uses the legacy "-00:00" format
-      for time-zone-free date-times)
+      [I-D.ietf-netmod-rfc6991-bis] uses the legacy "-00:00" format for
+      time-zone-free date-times)
 
    *  are not an inserted leap second (23:59:60 or 23:59:61)
 
@@ -200,56 +217,62 @@ Table of Contents
 
 3.2.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
 
-   Section 4 of [I-D.schoenw-netmod-rfc6991-bis] defines in ietf-inet-
+   Section 4 of [I-D.ietf-netmod-rfc6991-bis] defines in ietf-inet-
    types:
 
-   +=============+============+================================+======+
-   |YANG type    |base type   |specification                   |stand-|
-   |             |            |                                |in    |
-   +=============+============+================================+======+
-   |ip-address   |union       |[RFC6021]                       |(see  |
-   |             |            |                                |union)|
-   +-------------+------------+--------------------------------+------+
-   |ipv6-address |string      |[RFC6021]                       |tag 54|
-   +-------------+------------+--------------------------------+------+
-   |ipv4-address |string      |[RFC6021]                       |tag 52|
-   +-------------+------------+--------------------------------+------+
-   |ip-address-  |union       |RFC 6991                        |(see  |
-   |no-zone      |            |                                |union)|
-   +-------------+------------+--------------------------------+------+
-   |ipv6-address-|ipv6-address|RFC 6991                        |tag 54|
-   |no-zone      |            |                                |      |
-   +-------------+------------+--------------------------------+------+
-   |ipv4-address-|ipv4-address|RFC 6991                        |tag 52|
-   |no-zone      |            |                                |      |
-   +-------------+------------+--------------------------------+------+
-   |ip-address-  |union       |[I-D.schoenw-netmod-rfc6991-bis]|(see  |
-   |link-local   |            |                                |union)|
-   +-------------+------------+--------------------------------+------+
-   |ipv6-address-|ipv6-address|[I-D.schoenw-netmod-rfc6991-bis]|tag 54|
-   |link-local   |            |                                |      |
-   +-------------+------------+--------------------------------+------+
-   |ipv4-address-|ipv4-address|[I-D.schoenw-netmod-rfc6991-bis]|tag 52|
-   |link-local   |            |                                |      |
-   +-------------+------------+--------------------------------+------+
-   |ip-prefix    |union       |[RFC6021]                       |(see  |
-   |             |            |                                |union)|
-   +-------------+------------+--------------------------------+------+
-   |ipv6-prefix  |string      |[RFC6021]                       |tag 54|
-   +-------------+------------+--------------------------------+------+
-   |ipv4-prefix  |string      |[RFC6021]                       |tag 52|
-   +-------------+------------+--------------------------------+------+
-   |ip-address-  |union       |[I-D.schoenw-netmod-rfc6991-bis]|(see  |
-   |and-prefix   |            |                                |union)|
-   +-------------+------------+--------------------------------+------+
-   |ipv6-address-|string      |[I-D.schoenw-netmod-rfc6991-bis]|tag 54|
-   |and-prefix   |            |                                |      |
-   +-------------+------------+--------------------------------+------+
-   |ipv4-address-|string      |[I-D.schoenw-netmod-rfc6991-bis]|tag 52|
-   |and-prefix   |            |                                |      |
-   +-------------+------------+--------------------------------+------+
+   +=============+==============+===============================+======+
+   |YANG type    | base type    | specification                 |stand-|
+   |             |              |                               |in    |
+   +=============+==============+===============================+======+
+   |ip-address   | union        | [RFC6021]                     |(see  |
+   |             |              |                               |union)|
+   +-------------+--------------+-------------------------------+------+
+   |ipv6-address | string       | [RFC6021]                     |tag 54|
+   +-------------+--------------+-------------------------------+------+
+   |ipv4-address | string       | [RFC6021]                     |tag 52|
+   +-------------+--------------+-------------------------------+------+
+   |ip-address-  | union        | RFC 6991                      |(see  |
+   |no-zone      |              |                               |union)|
+   +-------------+--------------+-------------------------------+------+
+   |ipv6-        | ipv6-address | RFC 6991                      |tag 54|
+   |address-no-  |              |                               |      |
+   |zone         |              |                               |      |
+   +-------------+--------------+-------------------------------+------+
+   |ipv4-        | ipv4-address | RFC 6991                      |tag 52|
+   |address-no-  |              |                               |      |
+   |zone         |              |                               |      |
+   +-------------+--------------+-------------------------------+------+
+   |ip-address-  | union        | [I-D.ietf-netmod-rfc6991-bis] |(see  |
+   |link-local   |              |                               |union)|
+   +-------------+--------------+-------------------------------+------+
+   |ipv6-        | ipv6-address | [I-D.ietf-netmod-rfc6991-bis] |tag 54|
+   |address-     |              |                               |      |
+   |link-local   |              |                               |      |
+   +-------------+--------------+-------------------------------+------+
+   |ipv4-        | ipv4-address | [I-D.ietf-netmod-rfc6991-bis] |tag 52|
+   |address-     |              |                               |      |
+   |link-local   |              |                               |      |
+   +-------------+--------------+-------------------------------+------+
+   |ip-prefix    | union        | [RFC6021]                     |(see  |
+   |             |              |                               |union)|
+   +-------------+--------------+-------------------------------+------+
+   |ipv6-prefix  | string       | [RFC6021]                     |tag 54|
+   +-------------+--------------+-------------------------------+------+
+   |ipv4-prefix  | string       | [RFC6021]                     |tag 52|
+   +-------------+--------------+-------------------------------+------+
+   |ip-address-  | union        | [I-D.ietf-netmod-rfc6991-bis] |(see  |
+   |and-prefix   |              |                               |union)|
+   +-------------+--------------+-------------------------------+------+
+   |ipv6-        | string       | [I-D.ietf-netmod-rfc6991-bis] |tag 54|
+   |address-and- |              |                               |      |
+   |prefix       |              |                               |      |
+   +-------------+--------------+-------------------------------+------+
+   |ipv4-        | string       | [I-D.ietf-netmod-rfc6991-bis] |tag 52|
+   |address-and- |              |                               |      |
+   |prefix       |              |                               |      |
+   +-------------+--------------+-------------------------------+------+
 
-            Table 2: Legacy representations in ietf-yang-types
+             Table 2: Legacy representations in ietf-yang-types
 
    An intermediate encoder MAY normalize IPv6 addresses and prefixes
    that do not comply with [RFC5952] but can be converted into the
@@ -276,26 +299,30 @@ Table of Contents
 
    CBOR encoding of stand-in (19 bytes):
 
-   cbor-pretty D8 36 # tag(54) 50 # bytes(16)
-   20010DB81234DEEDBEEFCAFEFACEFEED
+   D8 36                                  # tag(54)
+      50                                  # bytes(16)
+         20010DB81234DEEDBEEFCAFEFACEFEED
 
    CBOR encoding of legacy representation (40 bytes):
 
-   cbor-pretty 78 26 # text(38) 323030313A6462383A313233343A646565643A62
-   6565663A636166653A666163653A66656564
+   78 26                                   # text(38)
+      323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
 
    Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is 54([48,
    h'20010db81234']).
 
    CBOR encoding of stand-in (12 bytes):
 
-   cbor-pretty D8 36 # tag(54) 82 # array(2) 18 30 # unsigned(48) 46 #
-   bytes(6) 20010DB81234 # " \u0001\r\xB8\u00124"
+   D8 36                 # tag(54)
+      82                 # array(2)
+         18 30           # unsigned(48)
+         46              # bytes(6)
+            20010DB81234 # " \u0001\r\xB8\u00124"
 
    CBOR encoding of legacy representation (19 bytes):
 
-   cbor-pretty 72 # text(18) 323030313A6462383A313233343A3A2F3438 #
-   "2001:db8:1234::/48"
+   72                                      # text(18)
+      323030313A6462383A313233343A3A2F3438 # "2001:db8:1234::/48"
 
    Stand-in representation of IPv6 link-local address
    fe80::0202:02ff:ffff:fe03:0303/64%eth0 is
@@ -303,19 +330,23 @@ Table of Contents
 
    CBOR encoding of stand-in (27 bytes):
 
-   cbor-pretty D8 36 # tag(54) 83 # array(3) 50 # bytes(16)
-   FE8000000000020202FFFFFFFE030303 18 40 # unsigned(64) 44 # bytes(4)
-   65746830 # "eth0"
+   D8 36                                   # tag(54)
+      83                                   # array(3)
+         50                                # bytes(16)
+            FE8000000000020202FFFFFFFE030303
+         18 40                             # unsigned(64)
+         44                                # bytes(4)
+            65746830                       # "eth0"
 
    CBOR encoding of legacy representation (40 bytes):
 
-   cbor-pretty 78 26 # text(38) 666538303A3A303230323A303266663A66666666
-   3A666530333A303330332F36342565746830
+   78 26                                   # text(38)
+      666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
 
    TO DO: adapt more examples from [RFC9164]
 
    TO DO: Check how the unions in [RFC6021] and
-   [I-D.schoenw-netmod-rfc6991-bis] interact with this.  E.g., the union
+   [I-D.ietf-netmod-rfc6991-bis] interact with this.  E.g., the union
    ip-address needs to be parsed to decide between tag 54 and tag 52.
 
 3.3.  Union handling
@@ -341,7 +372,39 @@ Table of Contents
 
 4.1.  Defining Stand-In Usage in Schema
 
-   TO DO: formally define the YANG extension
+   Requiring modifications to a YANG model in order to use it with
+   stand-in tags would pose significant deployment hurdles to using
+   stand-in tags.
+
+   A YANG model may want to restrict the information content in such a
+   way that stand-in tags can always be used, e.g., by using date-no-
+   zone in place of date where that is applicable, or by excluding
+   features of a YANG data type that cannot be represented in a stand-
+   in-tag.
+
+   ISSUE: Should this document define such restricted types, e.g.:
+
+     typedef efficient-date-and-time {
+       type date-and-time {
+         pattern '.*-00:00'
+       }
+       description
+         "The efficient-date-and-time type is a profile of the
+          date-and-time that is intended to always enable using a
+          stand-in tag as per ((this document)), e.g., by not expressing
+          a time-zone-offset.
+          Not all restrictions that make this possible are expressed in
+          the above YANG string pattern.";
+     }
+
+   (This particular example is additionally problematic since the usual
+   way to indicate the absence of time zone information in ISO 8601
+   date-times is using Z as the time zone indicated, not -00:00 as is
+   required by Section 3 of [I-D.ietf-netmod-rfc6991-bis] but not
+   allowed by ISO 8601; see [RFC9557] for additional discussion of
+   this.)
+   // Note that this paragraph does not reference ISO 8601 because that
+   // is complicated and best done by consulting [RFC9557].
 
 4.2.  Original stand-ins
 
@@ -374,14 +437,17 @@ Table of Contents
 
    *  A consumer may not want to implement certain legacy text-based
       representations where more efficient (and easy to implement)
-      stand-in tags are available.  This places a _requirement_ on the
-      producer (which needs to have the _capability_ to produce YANG-
-      CBOR where those stand-in tags are used, in place of legacy
-      representations).  A producer MUST NOT employ legacy
-      representations where stand-in tags are _required_ by the
-      consumer.  A consumer that has requirements for only receiving
-      stand-in tags in place of legacy representations, MUST indicate
-      this to the producer.
+      stand-in tags are available, i.e., it may use an intolerant
+      decoder.  This places a _requirement_ on the producer to use a
+      legacy-eschewing encoder (which therefore needs to have the
+      _capability_ to produce YANG-CBOR where those stand-in tags are
+      used, in place of legacy representations).  Where the consumer
+      employs an intolerant decoder, stand-in tags are _required_ by the
+      consumer: for interoperating with a producer's encoder, this MUST
+      be legacy-eschewing, i.e. it MUST NOT employ legacy
+      representations.  A consumer that has requirements for only
+      receiving stand-in tags in place of legacy representations, MUST
+      indicate this to the producer.
 
    ISSUE: Where do we put those two aspects of negotiation?
 
@@ -403,30 +469,40 @@ Table of Contents
 
    ISSUE: Do we want to have a separate registry for stand-in tags?
 
-   They already are CBOR tags and thus in the in the registry, but might
-   get lost in the bulk of that (and are only identified as YANG-CBOR
-   stand-in Tags in the specification).
+   They already are CBOR tags and thus in the registry, but might get
+   lost in the bulk of that (and are only identified as YANG-CBOR stand-
+   in Tags in the specification).
 
 7.2.  media-type parameters
 
    ISSUE: Should the use of stand-in tags be mentioned in the various
-   YANG-CBOR-based media types (as a media type parameter)?  Compare how
-   application/yang-data+cbor can use id=name/id=sid to indicate another
-   encoding decision.
+   YANG-CBOR-based media types (as a media type parameter)?
 
-8.  Normative References
+   Compare how application/yang-data+cbor can use id=name/id=sid to
+   indicate another encoding decision.
 
-   [I-D.schoenw-netmod-rfc6991-bis]
-              Schönwälder, J., "Common YANG Data Types", Work in
-              Progress, Internet-Draft, draft-schoenw-netmod-rfc6991-
-              bis-01, 11 March 2019,
-              <https://datatracker.ietf.org/doc/html/draft-schoenw-
-              netmod-rfc6991-bis-01>.
+8.  References
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+8.1.  Normative References
+
+   [BCP14]    Best Current Practice 14,
+              <https://www.rfc-editor.org/info/bcp14>.
+              At the time of writing, this BCP comprises the following:
+
+              Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/rfc/rfc2119>.
+              <https://www.rfc-editor.org/info/rfc2119>.
+
+              Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+   [I-D.ietf-netmod-rfc6991-bis]
+              Schönwälder, J., "Common YANG Data Types", Work in
+              Progress, Internet-Draft, draft-ietf-netmod-rfc6991-bis-
+              16, 7 August 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-netmod-rfc6991-bis-16>.
 
    [RFC5952]  Kawamura, S. and M. Kawashima, "A Recommendation for IPv6
               Address Text Representation", RFC 5952,
@@ -436,10 +512,6 @@ Table of Contents
    [RFC6021]  Schoenwaelder, J., Ed., "Common YANG Data Types",
               RFC 6021, DOI 10.17487/RFC6021, October 2010,
               <https://www.rfc-editor.org/rfc/rfc6021>.
-
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
    [RFC8943]  Jones, M., Nadalin, A., and J. Richter, "Concise Binary
               Object Representation (CBOR) Tags for Date", RFC 8943,
@@ -457,10 +529,21 @@ Table of Contents
               RFC 9254, DOI 10.17487/RFC9254, July 2022,
               <https://www.rfc-editor.org/rfc/rfc9254>.
 
-   [STD94]    Bormann, C. and P. Hoffman, "Concise Binary Object
-              Representation (CBOR)", STD 94, RFC 8949, December 2020.
+   [STD94]    Internet Standard 94,
+              <https://www.rfc-editor.org/info/std94>.
+              At the time of writing, this STD comprises the following:
 
-              <https://www.rfc-editor.org/info/std94>
+              Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/info/rfc8949>.
+
+8.2.  Informative References
+
+   [RFC9557]  Sharma, U. and C. Bormann, "Date and Time on the Internet:
+              Timestamps with Additional Information", RFC 9557,
+              DOI 10.17487/RFC9557, April 2024,
+              <https://www.rfc-editor.org/rfc/rfc9557>.
 
 Acknowledgments
 
