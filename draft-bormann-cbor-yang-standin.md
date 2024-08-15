@@ -5,16 +5,16 @@ docname: draft-bormann-cbor-yang-standin-latest
 title: "Stand-in Tags for YANG-CBOR"
 date:
 
-submissiontype: IETF
+stream: IETF
 category: std
 consensus: true
 
 area: "Applications and Real-Time"
-workgroup: "Concise Binary Object Representation Maintenance and Extensions"
+workgroup: "CBOR (Concise Binary Object Representation) Maint. and Ext."
 keyword:
  - efficient YANG
 venue:
-  group: "CBOR (Concise Binary Object Representation Maintenance and Extensions)"
+  group: "CBOR (Concise Binary Object Representation) Maintenance and Extensions"
   type: "Working Group"
   mail: "cbor@ietf.org"
   github: "cabo/yang-standin"
@@ -41,14 +41,14 @@ author:
 normative:
   RFC9254: yang-cbor
   RFC9164: cbor-ip
-  I-D.schoenw-netmod-rfc6991-bis: legacy-bis
+  I-D.ietf-netmod-rfc6991-bis: legacy-bis
   RFC5952:
   RFC8943: date
   STD94: cbor
   RFC6021: yang-types
 
 informative:
-
+  RFC9557: ixdtf
 
 --- abstract
 
@@ -95,8 +95,29 @@ Intermediate Encoder:
 : An encoder which isn't the original author of the data, converting it
   from legacy representation.
 
+Aggressive Intermediate Encoder:
+: An intermediate encoder that might choose to discard some
+  information of a legacy representation in order to be able to use a
+  stand-in tag.
+  Such a choice may be based on knowledge of the Decoder's handling of
+  such information (e.g, to accommodate intolerant decoders), or it
+  may be a general characteristic of the service provided by the
+  intermediate encoder (e.g., in order to serve as a legacy-eschewing
+  encoder).
+
+Legacy-Eschewing Encoder:
+: An encoder that does not generate legacy representations in places
+  where a stand-in tag might instead be used.
+  An intermediate encoder may need to be aggressive to achieve this.
+
 Decoder:
 : The party which receives and parses CBOR data described by YANG.
+
+Intolerant Decoder:
+: A decoder that does not accept legacy representations in places
+  where a stand-in tag might instead be used.
+  Such a decoder is designed to interoperate only with an
+  legacy-eschewing encoder.
 
 Intermediate Decoder:
 : A decoder which isn't the final recipient of the data, converting it
@@ -122,7 +143,7 @@ Unambiguous Round Trip:
   The stand-in tag is also said to "unambiguously stand in" for the
   legacy representation.
 
-{::boilerplate bcp14-tagged}
+{::boilerplate bcp14-tagged-bcp14}
 
 # Stand-In Tags
 
@@ -136,7 +157,7 @@ are only used when an Unambiguous Round Trip can be achieved.
 
 YANG type | base type | specification | stand-in
 date-and-time | string | {{-yang-types}} | tag 1
-date-with-zone-offset | string | {{-legacy-bis}} | (none)
+date | string | {{-legacy-bis}} | (none)
 date-no-zone | string | {{-legacy-bis}} | tag 100
 {: title="Legacy representations in ietf-yang-types"}
 
@@ -201,45 +222,45 @@ is `54(h'20010db81234deedbeefcafefacefeed')`.
 
 CBOR encoding of stand-in (19 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 D8 36                                  # tag(54)
    50                                  # bytes(16)
       20010DB81234DEEDBEEFCAFEFACEFEED
-```
+~~~
 
 CBOR encoding of legacy representation (40 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 78 26                                   # text(38)
    323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
-```
+~~~
 
 Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is
 `54([48, h'20010db81234'])`.
 
 CBOR encoding of stand-in (12 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 D8 36                 # tag(54)
    82                 # array(2)
       18 30           # unsigned(48)
       46              # bytes(6)
          20010DB81234 # " \u0001\r\xB8\u00124"
-```
+~~~
 
 CBOR encoding of legacy representation (19 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 72                                      # text(18)
    323030313A6462383A313233343A3A2F3438 # "2001:db8:1234::/48"
-```
+~~~
 
 Stand-in representation of IPv6 link-local address fe80::0202:02ff:ffff:fe03:0303/64%eth0 is
 `54([h'fe8000000000020202fffffffe030303', 64, 'eth0'])`.
 
 CBOR encoding of stand-in (27 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 D8 36                                   # tag(54)
    83                                   # array(3)
       50                                # bytes(16)
@@ -247,14 +268,14 @@ D8 36                                   # tag(54)
       18 40                             # unsigned(64)
       44                                # bytes(4)
          65746830                       # "eth0"
-```
+~~~
 
 CBOR encoding of legacy representation (40 bytes):
 
-``` cbor-pretty
+~~~ cbor-pretty
 78 26                                   # text(38)
    666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
-```
+~~~
 
 TO DO: adapt more examples from {{-cbor-ip}}
 
@@ -282,7 +303,41 @@ of the union, even though it may violate additional constraints outside the sche
 
 ## Defining Stand-In Usage in Schema
 
-TO DO: formally define the YANG extension
+Requiring modifications to a YANG model in order to use it with
+stand-in tags would pose significant deployment hurdles to using
+stand-in tags.
+
+A YANG model may want to restrict the information content in such a
+way that stand-in tags can always be used, e.g., by using date-no-zone
+in place of date where that is applicable, or by excluding features of
+a YANG data type that cannot be represented in a stand-in-tag.
+
+ISSUE: Should this document define such restricted types, e.g.:
+
+~~~ yang
+  typedef efficient-date-and-time {
+    type date-and-time {
+      pattern '.*-00:00'
+    }
+    description
+      "The efficient-date-and-time type is a profile of the
+       date-and-time that is intended to always enable using a
+       stand-in tag as per ((this document)), e.g., by not expressing
+       a time-zone-offset.
+       Not all restrictions that make this possible are expressed in
+       the above YANG string pattern.";
+  }
+~~~
+
+(This particular example is additionally problematic since the usual
+way to indicate the absence of time zone information in ISO 8601
+date-times is using `Z` as the time zone indicated, not `-00:00` as is
+required by {{Section 3 of -legacy-bis}} but not allowed by ISO 8601;
+see {{-ixdtf}} for additional discussion of this.)
+[^no8601reference]
+
+[^no8601reference]: Note that this paragraph does not reference ISO
+    8601 because that is complicated and best done by consulting {{-ixdtf}}.
 
 ## Original stand-ins
 
@@ -314,12 +369,16 @@ between the producer and the consumer of YANG-CBOR information:
 
 * A consumer may not want to implement certain legacy text-based
   representations where more efficient (and easy to implement)
-  stand-in tags are available.  This places a _requirement_ on the
-  producer (which needs to have the _capability_ to produce YANG-CBOR
+  stand-in tags are available, i.e., it may use an intolerant decoder.
+  This places a _requirement_ on the
+  producer to use a legacy-eschewing encoder (which therefore needs to
+  have the _capability_ to produce YANG-CBOR
   where those stand-in tags are used, in place of legacy
   representations).
-  A producer MUST NOT employ legacy representations where stand-in
-  tags are _required_ by the consumer.
+  Where the consumer employs an intolerant decoder, stand-in tags are
+  _required_ by the consumer: for interoperating with a producer's
+  encoder, this MUST be legacy-eschewing, i.e. it MUST NOT employ
+  legacy representations.
   A consumer that has requirements for only receiving stand-in tags in
   place of legacy representations, MUST indicate this to the producer.
 
@@ -341,7 +400,7 @@ TODO Security
 
 ISSUE: Do we want to have a separate registry for stand-in tags?
 
-They already are CBOR tags and thus in the in the registry, but might
+They already are CBOR tags and thus in the registry, but might
 get lost in the bulk of that (and are only identified as YANG-CBOR
 stand-in Tags in the specification).
 
@@ -349,6 +408,7 @@ stand-in Tags in the specification).
 
 ISSUE: Should the use of stand-in tags be mentioned in the various
 YANG-CBOR-based media types (as a media type parameter)?
+
 Compare how application/yang-data+cbor can use id=name/id=sid to
 indicate another encoding decision.
 
