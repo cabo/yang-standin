@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-13T00:54:42.376983+00:00",
+  "timestamp": "2024-08-15T00:51:26.901987+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -69,7 +69,7 @@
     {
       "number": 3,
       "id": "I_kwDOLF7SWM5_8-wA",
-      "title": "(editorial:) examples: cbor-pretty va. cbor-diag",
+      "title": "(editorial:) examples: cbor-pretty vs. cbor-diag",
       "url": "https://github.com/cabo/yang-standin/issues/3",
       "state": "OPEN",
       "author": "cabo",
@@ -78,7 +78,7 @@
       "labels": [],
       "body": "              One editorial question would be how many of the examples should be cbor-pretty and when we can use the more compact and easy to read cbor-diag -- cbor-pretty obviously visualizes the savings much better.\r\n\r\n_Originally posted by @cabo in https://github.com/cabo/yang-standin/pull/1#discussion_r1456667920_\r\n            ",
       "createdAt": "2024-02-21T12:54:44Z",
-      "updatedAt": "2024-02-21T12:54:44Z",
+      "updatedAt": "2024-08-13T16:31:55Z",
       "closedAt": null,
       "comments": []
     },
@@ -354,6 +354,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDOLF7SWM54QbSL",
+      "title": "August updates",
+      "url": "https://github.com/cabo/yang-standin/pull/6",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Start writing up updates for -01 revision (due 2024-08-23)",
+      "createdAt": "2024-08-13T16:42:55Z",
+      "updatedAt": "2024-08-14T16:14:09Z",
+      "baseRepository": "cabo/yang-standin",
+      "baseRefName": "main",
+      "baseRefOid": "4a31bd5cad8ea82488227831d044a84db229a20a",
+      "headRepository": "cabo/yang-standin",
+      "headRefName": "august-updates",
+      "headRefOid": "8db95f48744ed255eedd12f9a7646abecff125d0",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
