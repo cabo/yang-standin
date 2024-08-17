@@ -44,6 +44,7 @@ normative:
   I-D.ietf-netmod-rfc6991-bis: legacy-bis
   RFC5952:
   RFC8943: date
+  I-D.ietf-cbor-time-tag: extended-time
   STD94: cbor
   RFC6021: yang-types
   RFC9562: uuid
@@ -161,7 +162,6 @@ are only used when an Unambiguous Round Trip can be achieved.
 
 YANG type | base type | specification | stand-in
 date-and-time | string | {{-yang-types}} | tag 1
-date | string | {{-legacy-bis}} | (none)
 date-no-zone | string | {{-legacy-bis}} | tag 100
 {: title="Legacy date and date/time representations in ietf-yang-types"}
 
@@ -174,13 +174,40 @@ uses the legacy "`-00:00`" format for time-zone-free date-times)
 * do not have fractional parts of the seconds with a precision that
   cannot be represented in floating-point tag content in a tag 1.
 
-All other `date-and-time` values stay in legacy representation.
-
 Tag 1 uses an integer tag content for all `date-and-time` values
 without fractional seconds and a floating-point tag content for values
 that have fractional seconds given.
 
 Tag 100 {{-date}} can unambiguously stand in for all `date-no-zone` values.
+
+## `ietf-yang-types`: Tag 1001 (Extended Date and Time)
+
+{{Section 3 of -legacy-bis}} defines the following types in `ietf-yang-types`:
+
+YANG type | base type | specification | stand-in
+date-and-time | string | {{-yang-types}} | tag 1001
+date-no-zone | string | {{-legacy-bis}} | tag 1001
+date | string | {{-legacy-bis}} | tag 1001
+time | string | {{-legacy-bis}} | tag 1001
+time-no-zone | string | {{-legacy-bis}} | tag 1001
+timeticks | uint32 | {{-yang-types}} | tag 1002
+timestamp | uint32 | {{-yang-types}} | tag 1001
+hours32        | int32 | {{-legacy-bis}} | tag 1002
+minutes32      | int32 | {{-legacy-bis}} | tag 1002
+seconds32      | int32 | {{-legacy-bis}} | tag 1002
+centiseconds32 | int32 | {{-legacy-bis}} | tag 1002
+milliseconds32 | int32 | {{-legacy-bis}} | tag 1002
+microseconds32 | int32 | {{-legacy-bis}} | tag 1002
+microseconds64 | int64 | {{-legacy-bis}} | tag 1002
+nanoseconds32  | int32 | {{-legacy-bis}} | tag 1002
+nanoseconds64  | int64 | {{-legacy-bis}} | tag 1002
+{: title="Legacy representations in ietf-yang-types"}
+
+Tag 1001 {{-extended-time}} can unambigously stand for all the aforementioned
+types of values.
+
+If the encoder supports tags 1001 and 1002, it MUST NOT use tags 100 and 1 as stand-ins.
+Intolerant decoders should specify which kind of tags they expect.
 
 
 ## `ietf-yang-types`: Tags 37 (UUID) and CPA113 (hex-string) {#hex-tags}
