@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-15T00:51:26.901987+00:00",
+  "timestamp": "2024-08-18T00:56:45.535964+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -87,16 +87,31 @@
       "id": "I_kwDOLF7SWM5_9Ftf",
       "title": "Stand-ins should be orthogonal to the YANG model",
       "url": "https://github.com/cabo/yang-standin/issues/4",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "cabo",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Given the somewhat ossified nature of YANG models, it would severely hinder deployment if a model had to adopt stand-ins before they can be used.\r\nI'd propose to leave the whole concept out of the modeling level -- the model also doesn't say whether the encoding is to be JSON or CBOR, so why would it say something about stand-ins in CBOR.\r\n\r\nOf course, once models get stand-in aware, they might want to make optimizations for *if* stand-ins are in use.\r\nBut this could be done in a second step.",
       "createdAt": "2024-02-21T13:09:36Z",
-      "updatedAt": "2024-02-21T13:09:36Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2024-08-15T15:54:35Z",
+      "closedAt": "2024-08-15T15:54:35Z",
+      "comments": [
+        {
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "body": "thinking again about how to do this well, and also addressing the issue block in chapter 5:\r\n\r\n- it imho doesn't belong to YANG library at all as it is also unaware about encoding\r\n- it also doesn't belong to basic NETCONF negotiation as it is specific for CBOR \u2013 and NETCONF negotiation is primarily XML afaik \u2192 but as there is RESTCONF, we shall go for CBORCONF, specifying a completely binary protocol; this is a work for another RFC, there has been something like draft-mahesh-netconf-binary-encoding-01 and we have something drafted internally for BIRD \u2192 my suggestion would be to create another draft which would reference this draft and do all the negotiations\r\n- media-type parameters are OK as long as it's short \u2026 i'm not exactly sure how this can be future-proof",
+          "createdAt": "2024-08-15T14:56:57Z",
+          "updatedAt": "2024-08-15T14:56:57Z"
+        },
+        {
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "body": "There could be two things said in a media-type parameter:\r\n\r\n1. The representation could be using \"these\" stand-in tags (probably enumerated by tag number)\r\n2. The representation does not use legacy for \"these\" stand-in tags (i.e., is suitable for implementations that are legacy-intolerant)\r\n\r\n2 obviously implies 1.\r\n\r\nUsing tag numbers to enumerate stand-in-features is somewhat icky, but I cannot come up with a better idea at the moment -- clearly, we need some extensibility here, and tag numbers provide that.\r\n(We probably want to minimize the combinatorial explosion, so maybe bulking up some tags, e.g., 54 implies 52 and is the only one used here, might be useful.)",
+          "createdAt": "2024-08-15T15:03:40Z",
+          "updatedAt": "2024-08-15T15:03:40Z"
+        }
+      ]
     },
     {
       "number": 5,
@@ -110,7 +125,62 @@
       "labels": [],
       "body": "RFC 6991 defines hex-string as well as the related phys-address and mac-address.\r\nThey all are hex-strings built out of 2 hex digits per byte, with colons (':') interspersed.\r\n\r\nmac-address is exactly 6 bytes:\r\n\r\n         pattern '[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}';\r\n\r\nhex-string and phys-address are zero or more bytes:\r\n\r\n         pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';\r\n\r\nWo do have tag 48 for a MAC address in this hex-string form, but this probably could cause validation issues if we use that for lengths not allowed for MAC addresses.\r\n\r\nhex-strings are canonically lower-case, but upper-case is allowed as well.  Not sure what the incidence for upper case is.  Might need two new tags: hex-string (lower case), hex-string (upper case).",
       "createdAt": "2024-07-31T04:46:19Z",
-      "updatedAt": "2024-07-31T04:46:19Z",
+      "updatedAt": "2024-08-15T14:51:12Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "body": "i would favor converting hex strings to binary blobs, dropping the lower/upper case thing altogether\r\n\r\nthere is certain semantics in the data and abusing the specs to store _something_ in the upper/lower case is just adding unnecessary problems\r\n\r\nif somebody insists on keeping irrelevant information in the data, they shall stay with legacy",
+          "createdAt": "2024-08-15T14:38:31Z",
+          "updatedAt": "2024-08-15T14:38:31Z"
+        },
+        {
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "body": "Im pretty sure we do not want to create a situation where we encode uppercase/lowercase together with the actual binary (byte string) data.\r\nHowever, we need to make some recommendations how to cope with non-canonical representations in an intermediate encoder; I would lean towards encouraging aggressive encoding (i.e., lose the difference), but enabling keeping legacy encoding for encoders that are not legacy-eschewing.\r\nThat difference needs to be part of our negotiation model, so constrained implementations (that are likely to be legacy-eschewing encoders as well as intolerant decoders) get good support.",
+          "createdAt": "2024-08-15T14:51:11Z",
+          "updatedAt": "2024-08-15T14:51:11Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDOLF7SWM6THcZK",
+      "title": "Specify a way how to add a local / custom stand-in",
+      "url": "https://github.com/cabo/yang-standin/issues/7",
+      "state": "OPEN",
+      "author": "marenamat",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "If the model defines its own compound data, it may as well make use of some private tags or experimental values. We should at least outline how to do this.",
+      "createdAt": "2024-08-15T14:42:48Z",
+      "updatedAt": "2024-08-15T14:46:46Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "body": "Right.  Is that something we need to do in this document?\r\nIt seems to me stand-ins need to be made ready-to-use using the approaches defined in the current document, and we can always add a YANG extension later to cover the development of new stand-ins.\r\nThere should be no requirement to touch the models in order to be able to define a new stand-in tag.",
+          "createdAt": "2024-08-15T14:46:45Z",
+          "updatedAt": "2024-08-15T14:46:45Z"
+        }
+      ]
+    },
+    {
+      "number": 8,
+      "id": "I_kwDOLF7SWM6TICg8",
+      "title": "(editorial): negative formulation used for \"legacy-eschewing encoder\"",
+      "url": "https://github.com/cabo/yang-standin/issues/8",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "              I'm a bit concerned about the negative formulation used here; slightly preferring something like this:\r\n\r\n> An encoder that always generates stand-in tags instead of legacy representations in places where stand-in tags are allowed.\r\n\r\n_Originally posted by @marenamat in https://github.com/cabo/yang-standin/pull/6#discussion_r1718459341_\r\n            ",
+      "createdAt": "2024-08-15T15:53:03Z",
+      "updatedAt": "2024-08-15T15:53:03Z",
       "closedAt": null,
       "comments": []
     }
@@ -360,20 +430,129 @@
       "id": "PR_kwDOLF7SWM54QbSL",
       "title": "August updates",
       "url": "https://github.com/cabo/yang-standin/pull/6",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "cabo",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Start writing up updates for -01 revision (due 2024-08-23)",
       "createdAt": "2024-08-13T16:42:55Z",
-      "updatedAt": "2024-08-14T16:14:09Z",
+      "updatedAt": "2024-08-15T15:54:34Z",
       "baseRepository": "cabo/yang-standin",
       "baseRefName": "main",
       "baseRefOid": "4a31bd5cad8ea82488227831d044a84db229a20a",
       "headRepository": "cabo/yang-standin",
       "headRefName": "august-updates",
-      "headRefOid": "8db95f48744ed255eedd12f9a7646abecff125d0",
+      "headRefOid": "a26e6518d01a2206ea9bac828e546b395b2703e8",
+      "closedAt": "2024-08-15T15:54:34Z",
+      "mergedAt": "2024-08-15T15:54:34Z",
+      "mergedBy": "cabo",
+      "mergeCommit": {
+        "oid": "982aa82701bc2c62c5b297c5895965961cc6dafa"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOLF7SWM6Fiwks",
+          "commit": {
+            "abbreviatedOid": "8db95f4"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-15T14:12:01Z",
+          "updatedAt": "2024-08-15T14:12:01Z",
+          "comments": [
+            {
+              "originalPosition": 55,
+              "body": "I'm a bit concerned about the negative formulation used here; slightly preferring something like this:\r\n\r\n> An encoder that always generates stand-in tags instead of legacy representations in places where stand-in tags are allowed.",
+              "createdAt": "2024-08-15T14:12:01Z",
+              "updatedAt": "2024-08-15T14:12:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6Fi7xi",
+          "commit": {
+            "abbreviatedOid": "8db95f4"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "overall let's merge this and then move on with resolving the other issues",
+          "createdAt": "2024-08-15T14:32:16Z",
+          "updatedAt": "2024-08-15T14:34:02Z",
+          "comments": [
+            {
+              "originalPosition": 173,
+              "body": "I would say yes. If I'm not missing anything, this applies for the datetime items where the discrepancy between YANG and CBOR is substantial.",
+              "createdAt": "2024-08-15T14:32:16Z",
+              "updatedAt": "2024-08-15T14:34:02Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6FjGgl",
+          "commit": {
+            "abbreviatedOid": "8db95f4"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-15T14:52:04Z",
+          "updatedAt": "2024-08-15T14:52:04Z",
+          "comments": [
+            {
+              "originalPosition": 55,
+              "body": "Good point.  However, \"Legacy-Eschewing Encoder\" is itself a negative term; can we go fully positive?",
+              "createdAt": "2024-08-15T14:52:04Z",
+              "updatedAt": "2024-08-15T14:52:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6FjHBM",
+          "commit": {
+            "abbreviatedOid": "8db95f4"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-15T14:52:51Z",
+          "updatedAt": "2024-08-15T14:52:51Z",
+          "comments": [
+            {
+              "originalPosition": 173,
+              "body": "I think my question was really \"should THIS document\" do that or do we do that separately, maybe based on a YANG extension to be defined.",
+              "createdAt": "2024-08-15T14:52:51Z",
+              "updatedAt": "2024-08-15T14:52:51Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "PR_kwDOLF7SWM54fTZ2",
+      "title": "Close #5: define tag CPA113, also explain tag 37 for UUID",
+      "url": "https://github.com/cabo/yang-standin/pull/9",
+      "state": "OPEN",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-08-15T17:04:16Z",
+      "updatedAt": "2024-08-15T17:04:16Z",
+      "baseRepository": "cabo/yang-standin",
+      "baseRefName": "main",
+      "baseRefOid": "982aa82701bc2c62c5b297c5895965961cc6dafa",
+      "headRepository": "cabo/yang-standin",
+      "headRefName": "hex-string",
+      "headRefOid": "bbf3425c5943b63522513d0291e3be3c50a82a84",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
