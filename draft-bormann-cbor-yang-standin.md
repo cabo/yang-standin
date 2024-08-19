@@ -406,61 +406,6 @@ of the union, even though it may violate additional constraints outside the sche
 
 # Using Stand-In Tags
 
-## Defining Stand-In Usage in Schema
-
-Requiring modifications to a YANG model in order to use it with
-stand-in tags would pose significant deployment hurdles to using
-stand-in tags.
-
-A YANG model may want to restrict the information content in such a
-way that stand-in tags can always be used, e.g., by using date-no-zone
-in place of date where that is applicable, or by excluding features of
-a YANG data type that cannot be represented in a stand-in-tag.
-
-ISSUE: Should this document define such restricted types, e.g.:
-
-~~~ yang
-  typedef efficient-date-and-time {
-    type date-and-time {
-      pattern '.*-00:00'
-    }
-    description
-      "The efficient-date-and-time type is a profile of the
-       date-and-time that is intended to always enable using a
-       stand-in tag as per ((this document)), e.g., by not expressing
-       a time-zone-offset.
-       Not all restrictions that make this possible are expressed in
-       the above YANG string pattern.";
-  }
-~~~
-
-(This particular example is additionally problematic since the usual
-way to indicate the absence of time zone information in ISO 8601
-date-times is using `Z` as the time zone indicated, not `-00:00` as is
-required by {{Section 3 of -legacy-bis}} but not allowed by ISO 8601;
-see {{-ixdtf}} for additional discussion of this.)
-[^no8601reference]
-
-[^no8601reference]: Note that this paragraph does not reference ISO
-    8601 because that is complicated and best done by consulting {{-ixdtf}}.
-
-## Original stand-ins
-
-The simplest situation is when no intermediate encoders and decoders are
-involved in the data transfer, therefore the round trip is not legacy.
-In this case, no conversions are involved and data is validated using the
-schema extension from the previous section.
-
-## Legacy Round Trip
-
-Producing a stand-in MUST be triggered by schema usage. Intermediate encoders
-MUST NOT encode stand-ins when no schema is available.
-
-It's generally not recommended to do a legacy round trip where both the encoder
-and decoder are converting from and to the legacy representation.
-
-# Negotiation
-
 Introducing stand-in tags in YANG-CBOR requires some form of consent
 between the producer and the consumer of YANG-CBOR information:
 
@@ -487,17 +432,83 @@ between the producer and the consumer of YANG-CBOR information:
   A consumer that has requirements for only receiving stand-in tags in
   place of legacy representations, MUST indicate this to the producer.
 
-ISSUE: Where do we put those two aspects of negotiation?
+## Intermediate transcoding
 
-* NETCONF negotiation
-* yang-library
-* media-type parameters
-* ?
+The simplest situation is when no intermediate encoders and decoders are
+involved in the data transfer, therefore the round trip is not legacy.
+In this case, no conversions are involved.
+
+Producing a stand-in MUST be always triggered by schema usage. Intermediate encoders
+MUST NOT encode stand-ins when no schema is available. This avoids problems with
+detecting whether e.g. the input string "15:32:06" is actually a time or just
+accidentally looking like a time.
+
+## Defining Stand-In Usage outside the data path
+
+Requiring modifications to a YANG model in order to use it with
+stand-in tags would pose significant deployment hurdles to using
+stand-in tags.
+
+A YANG model may want to restrict the information content in such a
+way that stand-in tags can always be used, e.g., by using date-no-zone
+in place of date where that is applicable, or by excluding features of
+a YANG data type that cannot be represented in a stand-in-tag.
+
+The encoder and/or the decoder MAY also just declare their stand-in usage in
+their documentation. Using this negotiation method as the only one is generally
+not recommended.
+
+## In-message negotiation
+
+The encoder may append or prepend a stand-in declaration block to the
+message or to a stream of messages, effectively declaring which specific
+stand-ins are actually in use. This is a one-way stand-in declaration method
+where the decoder has no choice over the used stand-ins, thus only the
+`required` container is to be used.
+
+If applicable, the encoder SHOULD use the media-type subparameter `standin` to
+declare which variant of in-message negotiation it is using.
+
+## Stream handshake negotiation
+
+Both sides of the communication may do a handshake, exchanging their stand-in
+declaration blocks in order to align their encoders and decoders. The actual
+realization of the handshake is out of the scope of this document, we only
+specify the data structure used for it.
+
+## Stand-in declaration block YANG module
+
+~~~ yang
+module cbor-yang-standin-declaration-block {
+  yang-version 1.1;
+  namespace "TODO";
+
+  grouping standin {
+    leaf tag {
+      type uint64;
+      description "CBOR tag value";
+    }
+    leaf version {
+      type uint32;
+      description "Version of this tag support, currently always zero";
+    }
+  }
+
+  container required {
+    uses standin;
+    description "Stand-in tags always required to be used";
+  }
+
+  container supported {
+    uses standin;
+    description "Stand-in tags supported but not strictly required";
+  }
+}
+~~~
 
 # Security Considerations
 
 TODO Security
-
 
 # IANA Considerations
 
@@ -519,13 +530,21 @@ They already are CBOR tags and thus in the registry, but might
 get lost in the bulk of that (and are only identified as YANG-CBOR
 stand-in Tags in the specification).
 
+I think we should create some registry saying "this tag may encode that types"
+and vice versa, the problem may be how to define this registry well. --Maria
+
 ## media-type parameters
 
-ISSUE: Should the use of stand-in tags be mentioned in the various
-YANG-CBOR-based media types (as a media type parameter)?
+IANA is requested to register a media-type subparameter `standin`
+with allowed values of `appended` and `prepended`.
 
-Compare how application/yang-data+cbor can use id=name/id=sid to
-indicate another encoding decision.
+## Standin declaration block SID allocation
+
+IANA is requested to register a block of 50 SIDs for the
+`cbor-yang-standin-declaration-block` module in the IETF YANG-SID Ranges
+Registry as per RFC 9595.
+
+TODO: use proper wording, create an actual SID file.
 
 --- back
 
