@@ -36,7 +36,7 @@ information that would be found in the original form of YANG-CBOR.
     pycountry 22.3.5
     PyYAML 6.0.1
     requests 2.32.3
-    setuptools 69.5.1
+    setuptools 70.3.0
     wcwidth 0.2.13
 -->
 <link href="draft-bormann-cbor-yang-standin.xml" rel="alternate" type="application/rfc+xml">
@@ -1040,7 +1040,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Bormann &amp; Matejka</td>
-<td class="center">Expires 16 February 2025</td>
+<td class="center">Expires 20 February 2025</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1053,12 +1053,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-bormann-cbor-yang-standin-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2024-08-15" class="published">15 August 2024</time>
+<time datetime="2024-08-19" class="published">19 August 2024</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2025-02-16">16 February 2025</time></dd>
+<dd class="expires"><time datetime="2025-02-20">20 February 2025</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1122,7 +1122,7 @@ information that would be found in the original form of YANG-CBOR.<a href="#sect
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 16 February 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 20 February 2025.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1164,10 +1164,13 @@ information that would be found in the original form of YANG-CBOR.<a href="#sect
                 <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-ietf-yang-types-tag-1-date-" class="internal xref"><code>ietf-yang-types</code>: Tag 1 (Date/Time) and Tag 100 (Date)</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-ietf-inet-types-tags-54-and" class="internal xref"><code>ietf-inet-types</code>: Tags 54 and 52 (IP addresses and prefixes)</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-ietf-yang-types-tags-37-uui" class="internal xref"><code>ietf-yang-types</code>: Tags 37 (UUID) and CPA113 (hex-string)</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-union-handling" class="internal xref">Union handling</a></p>
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-ietf-inet-types-tags-54-and" class="internal xref"><code>ietf-inet-types</code>: Tags 54 and 52 (IP addresses and prefixes)</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="auto internal xref">3.4</a>.  <a href="#name-union-handling" class="internal xref">Union handling</a></p>
 </li>
             </ul>
 </li>
@@ -1195,10 +1198,13 @@ information that would be found in the original form of YANG-CBOR.<a href="#sect
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
-                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-stand-in-tags-2" class="internal xref">stand-in tags?</a></p>
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-new-cbor-tags" class="internal xref">New CBOR Tags</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
-                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-media-type-parameters" class="internal xref">media-type parameters</a></p>
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-stand-in-tags-2" class="internal xref">stand-in tags?</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-media-type-parameters" class="internal xref">media-type parameters</a></p>
 </li>
             </ul>
 </li>
@@ -1349,10 +1355,10 @@ are only used when an Unambiguous Round Trip can be achieved.<a href="#section-3
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-ietf-yang-types-tag-1-date-" class="section-name selfRef"><code>ietf-yang-types</code>: Tag 1 (Date/Time) and Tag 100 (Date)</a>
         </h3>
 <p id="section-3.1-1"><span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc6991-bis-16#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-netmod-rfc6991-bis" class="cite xref">I-D.ietf-netmod-rfc6991-bis</a>]</span> defines the following types in <code>ietf-yang-types</code>:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<span id="name-legacy-representations-in-i"></span><table class="center" id="table-1">
+<span id="name-legacy-date-and-date-time-r"></span><table class="center" id="table-1">
           <caption>
 <a href="#table-1" class="selfRef">Table 1</a>:
-<a href="#name-legacy-representations-in-i" class="selfRef">Legacy representations in ietf-yang-types</a>
+<a href="#name-legacy-date-and-date-time-r" class="selfRef">Legacy date and date/time representations in ietf-yang-types</a>
           </caption>
 <thead>
             <tr>
@@ -1413,16 +1419,127 @@ that have fractional seconds given.<a href="#section-3.1-6" class="pilcrow">¶</
 <p id="section-3.1-7">Tag 100 <span>[<a href="#RFC8943" class="cite xref">RFC8943</a>]</span> can unambiguously stand in for all <code>date-no-zone</code> values.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="ietf-inet-types-tags-54-and-52-ip-addresses-and-prefixes">
+<div id="hex-tags">
 <section id="section-3.2">
-        <h3 id="name-ietf-inet-types-tags-54-and">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-ietf-inet-types-tags-54-and" class="section-name selfRef"><code>ietf-inet-types</code>: Tags 54 and 52 (IP addresses and prefixes)</a>
+        <h3 id="name-ietf-yang-types-tags-37-uui">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-ietf-yang-types-tags-37-uui" class="section-name selfRef"><code>ietf-yang-types</code>: Tags 37 (UUID) and CPA113 (hex-string)</a>
         </h3>
-<p id="section-3.2-1"><span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc6991-bis-16#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-netmod-rfc6991-bis" class="cite xref">I-D.ietf-netmod-rfc6991-bis</a>]</span> defines in <code>ietf-inet-types</code>:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
-<span id="name-legacy-representations-in-ie"></span><table class="center" id="table-2">
+<p id="section-3.2-1"><span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc6991-bis-16#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-netmod-rfc6991-bis" class="cite xref">I-D.ietf-netmod-rfc6991-bis</a>]</span> defines the following types in <code>ietf-yang-types</code>:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<span id="name-legacy-uuid-and-colon-separ"></span><div id="tab-hex">
+<table class="center" id="table-2">
           <caption>
 <a href="#table-2" class="selfRef">Table 2</a>:
-<a href="#name-legacy-representations-in-ie" class="selfRef">Legacy representations in ietf-yang-types</a>
+<a href="#name-legacy-uuid-and-colon-separ" class="selfRef">Legacy UUID and colon-separated hexadecimal representations in ietf-yang-types</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">YANG type</th>
+              <th class="text-left" rowspan="1" colspan="1">base type</th>
+              <th class="text-left" rowspan="1" colspan="1">specification</th>
+              <th class="text-left" rowspan="1" colspan="1">stand-in</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">uuid</td>
+              <td class="text-left" rowspan="1" colspan="1">string</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#I-D.ietf-netmod-rfc6991-bis" class="cite xref">I-D.ietf-netmod-rfc6991-bis</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">tag 37</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">hex-string</td>
+              <td class="text-left" rowspan="1" colspan="1">string</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#I-D.ietf-netmod-rfc6991-bis" class="cite xref">I-D.ietf-netmod-rfc6991-bis</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">tag CPA113</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">mac-address</td>
+              <td class="text-left" rowspan="1" colspan="1">string</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">tag CPA113</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">phys-address</td>
+              <td class="text-left" rowspan="1" colspan="1">string</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span>
+</td>
+              <td class="text-left" rowspan="1" colspan="1">tag CPA113</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-3.2-3">These types are hexadecimal representations of byte strings, adorned
+in various ways.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.2-4"><code>uuid</code> stands for a 16-byte byte string (<span><a href="https://rfc-editor.org/rfc/rfc9562#section-4" class="relref">Section 4</a> of [<a href="#RFC9562" class="cite xref">RFC9562</a>]</span>),
+represented in hexadecimal with ASCII minus/hyphen characters added in
+specific positions.
+Tag 37 (see also Section 7 of <span>[<a href="#I-D.bormann-cbor-notable-tags" class="cite xref">I-D.bormann-cbor-notable-tags</a>]</span>) can be used as a binary
+stand-in for this adorned hexadecimal representation.
+According to the description of <code>uuid</code> in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc6991-bis-16#section-3" class="relref">Section 3</a> of [<a href="#I-D.ietf-netmod-rfc6991-bis" class="cite xref">I-D.ietf-netmod-rfc6991-bis</a>]</span>,
+"the canonical representation uses lowercase characters".
+For consistency with this specification, an intermediate decoder of a
+tag 37 stand-in <span class="bcp14">MUST</span> use lowercase characters in the uuid hex string
+generated.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-5"><code>hex-string</code>, and the similar, but more specific types <code>mac-address</code>
+and <code>phys-address</code>, stand for byte strings in various lengths (exactly
+6 bytes for <code>mac-address</code>, variable-length for the others),
+represented in hexadecimal with ASCII colon characters added between
+the representations of each of the bytes.
+This specification defines tag number CPA113 <a href="#iana-113" class="auto internal xref">Section 7.1</a> to be an additional
+"Expected Later Encoding" tag (similar to tag 23, see Section <a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.5.2" class="relref">3.4.5.2</a> of RFC 8949 <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>), except that the expected encoding of CPA113
+includes colons and uses lowercase hex digits.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.2-6">The following example implementation of the transformation in a
+decoder shows the use of lowercase hex characters (<code>%02x</code> as opposed
+to <code>%02X</code>) and the insertion of colon characters between the
+hex-represented bytes:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
+<div class="lang-ruby sourcecode" id="section-3.2-7">
+<pre>
+def tag_cpa113_to_legacy(s)
+  s.bytes.map{|x| "%02x" % x}.join(":")
+end
+</pre><a href="#section-3.2-7" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2-8">Note: <span><a href="https://rfc-editor.org/rfc/rfc9542#section-2.4" class="relref">Section 2.4</a> of [<a href="#RFC9542" class="cite xref">RFC9542</a>]</span> defines tag number 48 for MAC
+addresses.
+This could be used in place of tag CPA113, but only for MAC addresses,
+not for other byte strings of a similar form.
+This specification therefore requests IANA to assign a new CBOR tag that can be
+used as a stand-in for all instances of colon-separated text strings
+of hexadecimally represented bytes, as shown in <a href="#tab-hex" class="auto internal xref">Table 2</a>.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
+<p id="section-3.2-9">Note Related tags have not been defined so far for tag 21 or 22
+defined alongside tag 23, as YANG has a base type "binary" that is
+encoded in base64 classic in YANG-XML and YANG-JSON, but already
+encoded in a binary byte string in YANG-CBOR; use cases that might
+actually use base type "string" for base64-encoded data in YANG have
+not been considered.  However, tag 21 or 22 could be used as stand-in
+tags if that is useful for some specific YANG model not considered
+here.<a href="#section-3.2-9" class="pilcrow">¶</a></p>
+<p id="section-3.2-10"><span class="cref" id="cpa">RFC-Editor: This document uses the CPA (code point allocation)
+  convention described in [I-D.bormann-cbor-draft-numbers].  For
+  each usage of the term "CPA", please remove the prefix "CPA"
+  from the indicated value and replace the residue with the value
+  assigned by IANA; perform an analogous substitution for all other
+  occurrences of the prefix "CPA" in the document.  Finally,
+  please remove this note.</span><a href="#section-3.2-10" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ietf-inet-types-tags-54-and-52-ip-addresses-and-prefixes">
+<section id="section-3.3">
+        <h3 id="name-ietf-inet-types-tags-54-and">
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-ietf-inet-types-tags-54-and" class="section-name selfRef"><code>ietf-inet-types</code>: Tags 54 and 52 (IP addresses and prefixes)</a>
+        </h3>
+<p id="section-3.3-1"><span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc6991-bis-16#section-4" class="relref">Section 4</a> of [<a href="#I-D.ietf-netmod-rfc6991-bis" class="cite xref">I-D.ietf-netmod-rfc6991-bis</a>]</span> defines in <code>ietf-inet-types</code>:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<span id="name-legacy-representations-in-i"></span><table class="center" id="table-3">
+          <caption>
+<a href="#table-3" class="selfRef">Table 3</a>:
+<a href="#name-legacy-representations-in-i" class="selfRef">Legacy representations in ietf-yang-types</a>
           </caption>
 <thead>
             <tr>
@@ -1549,59 +1666,59 @@ that have fractional seconds given.<a href="#section-3.1-6" class="pilcrow">¶</
             </tr>
           </tbody>
         </table>
-<p id="section-3.2-3">An intermediate encoder <span class="bcp14">MAY</span> normalize IPv6 addresses and prefixes that do not comply with <span>[<a href="#RFC5952" class="cite xref">RFC5952</a>]</span>
+<p id="section-3.3-3">An intermediate encoder <span class="bcp14">MAY</span> normalize IPv6 addresses and prefixes that do not comply with <span>[<a href="#RFC5952" class="cite xref">RFC5952</a>]</span>
 but can be converted into the stand-in representation.
 For example, IPv6 address written as 2001:db8:: is the same as 2001:0db8::0:0 and both would
 be converted to <code>54(h'20010db8000000000000000000000000')</code>, anyway only the
 first one complies with <span>[<a href="#RFC5952" class="cite xref">RFC5952</a>]</span>. The encoder <span class="bcp14">MAY</span> refuse to convert the
-latter one.<a href="#section-3.2-3" class="pilcrow">¶</a></p>
-<p id="section-3.2-4">If the schema specifies
+latter one.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
+<p id="section-3.3-4">If the schema specifies
 <code>ip-prefix</code>, an intermediate encoder <span class="bcp14">MAY</span> normalize prefixes with non-zero bits after the prefix end.
 For example, if the legacy representation of <code>ipv6-prefix</code> is 2001:db8:1::/40, the encoder
 may either refuse it as malformed or convert it to 2001:db8::/40 and represent
-as <code>54([40, h'20010db8'])</code>.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
-<p id="section-3.2-5">The encoder implementation should be clear about which normalizations are employed and how.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
-<p id="section-3.2-6">Adapted examples from <span>[<a href="#RFC9164" class="cite xref">RFC9164</a>]</span>:<a href="#section-3.2-6" class="pilcrow">¶</a></p>
-<p id="section-3.2-7">Stand-in representation of IPv6 address 2001:db8:1234:deed:beef:cafe:face:feed
-is <code>54(h'20010db81234deedbeefcafefacefeed')</code>.<a href="#section-3.2-7" class="pilcrow">¶</a></p>
-<p id="section-3.2-8">CBOR encoding of stand-in (19 bytes):<a href="#section-3.2-8" class="pilcrow">¶</a></p>
-<div class="lang-cbor-pretty sourcecode" id="section-3.2-9">
+as <code>54([40, h'20010db8'])</code>.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+<p id="section-3.3-5">The encoder implementation should be clear about which normalizations are employed and how.<a href="#section-3.3-5" class="pilcrow">¶</a></p>
+<p id="section-3.3-6">Adapted examples from <span>[<a href="#RFC9164" class="cite xref">RFC9164</a>]</span>:<a href="#section-3.3-6" class="pilcrow">¶</a></p>
+<p id="section-3.3-7">Stand-in representation of IPv6 address 2001:db8:1234:deed:beef:cafe:face:feed
+is <code>54(h'20010db81234deedbeefcafefacefeed')</code>.<a href="#section-3.3-7" class="pilcrow">¶</a></p>
+<p id="section-3.3-8">CBOR encoding of stand-in (19 bytes):<a href="#section-3.3-8" class="pilcrow">¶</a></p>
+<div class="lang-cbor-pretty sourcecode" id="section-3.3-9">
 <pre>
 D8 36                                  # tag(54)
    50                                  # bytes(16)
       20010DB81234DEEDBEEFCAFEFACEFEED
-</pre><a href="#section-3.2-9" class="pilcrow">¶</a>
+</pre><a href="#section-3.3-9" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2-10">CBOR encoding of legacy representation (40 bytes):<a href="#section-3.2-10" class="pilcrow">¶</a></p>
-<div class="lang-cbor-pretty sourcecode" id="section-3.2-11">
+<p id="section-3.3-10">CBOR encoding of legacy representation (40 bytes):<a href="#section-3.3-10" class="pilcrow">¶</a></p>
+<div class="lang-cbor-pretty sourcecode" id="section-3.3-11">
 <pre>
 78 26                                   # text(38)
    323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
-</pre><a href="#section-3.2-11" class="pilcrow">¶</a>
+</pre><a href="#section-3.3-11" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2-12">Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is
-<code>54([48, h'20010db81234'])</code>.<a href="#section-3.2-12" class="pilcrow">¶</a></p>
-<p id="section-3.2-13">CBOR encoding of stand-in (12 bytes):<a href="#section-3.2-13" class="pilcrow">¶</a></p>
-<div class="lang-cbor-pretty sourcecode" id="section-3.2-14">
+<p id="section-3.3-12">Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is
+<code>54([48, h'20010db81234'])</code>.<a href="#section-3.3-12" class="pilcrow">¶</a></p>
+<p id="section-3.3-13">CBOR encoding of stand-in (12 bytes):<a href="#section-3.3-13" class="pilcrow">¶</a></p>
+<div class="lang-cbor-pretty sourcecode" id="section-3.3-14">
 <pre>
 D8 36                 # tag(54)
    82                 # array(2)
       18 30           # unsigned(48)
       46              # bytes(6)
          20010DB81234 # " \u0001\r\xB8\u00124"
-</pre><a href="#section-3.2-14" class="pilcrow">¶</a>
+</pre><a href="#section-3.3-14" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2-15">CBOR encoding of legacy representation (19 bytes):<a href="#section-3.2-15" class="pilcrow">¶</a></p>
-<div class="lang-cbor-pretty sourcecode" id="section-3.2-16">
+<p id="section-3.3-15">CBOR encoding of legacy representation (19 bytes):<a href="#section-3.3-15" class="pilcrow">¶</a></p>
+<div class="lang-cbor-pretty sourcecode" id="section-3.3-16">
 <pre>
 72                                      # text(18)
    323030313A6462383A313233343A3A2F3438 # "2001:db8:1234::/48"
-</pre><a href="#section-3.2-16" class="pilcrow">¶</a>
+</pre><a href="#section-3.3-16" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2-17">Stand-in representation of IPv6 link-local address fe80::0202:02ff:ffff:fe03:0303/64%eth0 is
-<code>54([h'fe8000000000020202fffffffe030303', 64, 'eth0'])</code>.<a href="#section-3.2-17" class="pilcrow">¶</a></p>
-<p id="section-3.2-18">CBOR encoding of stand-in (27 bytes):<a href="#section-3.2-18" class="pilcrow">¶</a></p>
-<div class="lang-cbor-pretty sourcecode" id="section-3.2-19">
+<p id="section-3.3-17">Stand-in representation of IPv6 link-local address fe80::0202:02ff:ffff:fe03:0303/64%eth0 is
+<code>54([h'fe8000000000020202fffffffe030303', 64, 'eth0'])</code>.<a href="#section-3.3-17" class="pilcrow">¶</a></p>
+<p id="section-3.3-18">CBOR encoding of stand-in (27 bytes):<a href="#section-3.3-18" class="pilcrow">¶</a></p>
+<div class="lang-cbor-pretty sourcecode" id="section-3.3-19">
 <pre>
 D8 36                                   # tag(54)
    83                                   # array(3)
@@ -1610,36 +1727,36 @@ D8 36                                   # tag(54)
       18 40                             # unsigned(64)
       44                                # bytes(4)
          65746830                       # "eth0"
-</pre><a href="#section-3.2-19" class="pilcrow">¶</a>
+</pre><a href="#section-3.3-19" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2-20">CBOR encoding of legacy representation (40 bytes):<a href="#section-3.2-20" class="pilcrow">¶</a></p>
-<div class="lang-cbor-pretty sourcecode" id="section-3.2-21">
+<p id="section-3.3-20">CBOR encoding of legacy representation (40 bytes):<a href="#section-3.3-20" class="pilcrow">¶</a></p>
+<div class="lang-cbor-pretty sourcecode" id="section-3.3-21">
 <pre>
 78 26                                   # text(38)
    666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
-</pre><a href="#section-3.2-21" class="pilcrow">¶</a>
+</pre><a href="#section-3.3-21" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2-22">TO DO: adapt more examples from <span>[<a href="#RFC9164" class="cite xref">RFC9164</a>]</span><a href="#section-3.2-22" class="pilcrow">¶</a></p>
-<p id="section-3.2-23">TO DO: Check how the unions in <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span> and <span>[<a href="#I-D.ietf-netmod-rfc6991-bis" class="cite xref">I-D.ietf-netmod-rfc6991-bis</a>]</span> interact
+<p id="section-3.3-22">TO DO: adapt more examples from <span>[<a href="#RFC9164" class="cite xref">RFC9164</a>]</span><a href="#section-3.3-22" class="pilcrow">¶</a></p>
+<p id="section-3.3-23">TO DO: Check how the unions in <span>[<a href="#RFC6021" class="cite xref">RFC6021</a>]</span> and <span>[<a href="#I-D.ietf-netmod-rfc6991-bis" class="cite xref">I-D.ietf-netmod-rfc6991-bis</a>]</span> interact
 with this.  E.g., the union ip-address needs to be parsed to decide
-between tag 54 and tag 52.<a href="#section-3.2-23" class="pilcrow">¶</a></p>
+between tag 54 and tag 52.<a href="#section-3.3-23" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="union-handling">
-<section id="section-3.3">
+<section id="section-3.4">
         <h3 id="name-union-handling">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-union-handling" class="section-name selfRef">Union handling</a>
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-union-handling" class="section-name selfRef">Union handling</a>
         </h3>
-<p id="section-3.3-1">When the schema specifies a union data type for a node, there are
-additional requirements on the encoder and decoder.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<p id="section-3.3-2">An encoder which is fully aware of data semantics <span class="bcp14">MUST</span> use the appropriate
-data type, even though it isn't formally specified by the schema.<a href="#section-3.3-2" class="pilcrow">¶</a></p>
-<p id="section-3.3-3">If an intermediate encoder doesn't fully understand the data semantics,
+<p id="section-3.4-1">When the schema specifies a union data type for a node, there are
+additional requirements on the encoder and decoder.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">An encoder which is fully aware of data semantics <span class="bcp14">MUST</span> use the appropriate
+data type, even though it isn't formally specified by the schema.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">If an intermediate encoder doesn't fully understand the data semantics,
 it needs to find out which type the data actually is to choose the right stand-in.
 If more types are possible, it <span class="bcp14">MAY</span> choose any of these which allow for an Unambiguous Round Trip,
-otherwise it <span class="bcp14">SHOULD</span> keep the legacy representation.<a href="#section-3.3-3" class="pilcrow">¶</a></p>
-<p id="section-3.3-4">If a decoder receives data for a union-typed node, it <span class="bcp14">MUST</span> accept any data type
-of the union, even though it may violate additional constraints outside the schema.<a href="#section-3.3-4" class="pilcrow">¶</a></p>
+otherwise it <span class="bcp14">SHOULD</span> keep the legacy representation.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-4">If a decoder receives data for a union-typed node, it <span class="bcp14">MUST</span> accept any data type
+of the union, even though it may violate additional constraints outside the schema.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1775,26 +1892,60 @@ place of legacy representations, <span class="bcp14">MUST</span> indicate this t
       <h2 id="name-iana-considerations">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<div id="stand-in-tags-1">
+<div id="iana-113">
 <section id="section-7.1">
-        <h3 id="name-stand-in-tags-2">
-<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-stand-in-tags-2" class="section-name selfRef">stand-in tags?</a>
+        <h3 id="name-new-cbor-tags">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-new-cbor-tags" class="section-name selfRef">New CBOR Tags</a>
         </h3>
-<p id="section-7.1-1">ISSUE: Do we want to have a separate registry for stand-in tags?<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<p id="section-7.1-2">They already are CBOR tags and thus in the registry, but might
+<p id="section-7.1-1">In the registry "<a href="https://www.iana.org/assignments/cbor-tags#cbor-tags" class="relref">CBOR Tags</a>" <span>[<a href="#IANA.cbor-tags" class="cite xref">IANA.cbor-tags</a>]</span>,
+IANA is requested to assign the tag in <a href="#tab-new-tags" class="auto internal xref">Table 4</a>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<span id="name-new-cbor-tag-defined-by-thi"></span><div id="tab-new-tags">
+<table class="center" id="table-4">
+          <caption>
+<a href="#table-4" class="selfRef">Table 4</a>:
+<a href="#name-new-cbor-tag-defined-by-thi" class="selfRef">New CBOR Tag Defined by this Specification</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">Tag</th>
+              <th class="text-left" rowspan="1" colspan="1">Data Item</th>
+              <th class="text-left" rowspan="1" colspan="1">Semantics</th>
+              <th class="text-left" rowspan="1" colspan="1">Reference</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">CPA113</td>
+              <td class="text-left" rowspan="1" colspan="1">byte string</td>
+              <td class="text-left" rowspan="1" colspan="1">Expected Later Encoding: colon-separated hexadecimal representation of a byte string</td>
+              <td class="text-left" rowspan="1" colspan="1">draft-bormann-yang-standin, <a href="#hex-tags" class="auto internal xref">Section 3.2</a>
+</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+</section>
+</div>
+<div id="stand-in-tags-1">
+<section id="section-7.2">
+        <h3 id="name-stand-in-tags-2">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-stand-in-tags-2" class="section-name selfRef">stand-in tags?</a>
+        </h3>
+<p id="section-7.2-1">ISSUE: Do we want to have a separate registry for stand-in tags?<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.2-2">They already are CBOR tags and thus in the registry, but might
 get lost in the bulk of that (and are only identified as YANG-CBOR
-stand-in Tags in the specification).<a href="#section-7.1-2" class="pilcrow">¶</a></p>
+stand-in Tags in the specification).<a href="#section-7.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="media-type-parameters">
-<section id="section-7.2">
+<section id="section-7.3">
         <h3 id="name-media-type-parameters">
-<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-media-type-parameters" class="section-name selfRef">media-type parameters</a>
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-media-type-parameters" class="section-name selfRef">media-type parameters</a>
         </h3>
-<p id="section-7.2-1">ISSUE: Should the use of stand-in tags be mentioned in the various
-YANG-CBOR-based media types (as a media type parameter)?<a href="#section-7.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2-2">Compare how application/yang-data+cbor can use id=name/id=sid to
-indicate another encoding decision.<a href="#section-7.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.3-1">ISSUE: Should the use of stand-in tags be mentioned in the various
+YANG-CBOR-based media types (as a media type parameter)?<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">Compare how application/yang-data+cbor can use id=name/id=sid to
+indicate another encoding decision.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1824,6 +1975,10 @@ indicate another encoding decision.<a href="#section-7.2-2" class="pilcrow">¶</
         <dd>
 <span class="refAuthor">Schönwälder, J.</span>, <span class="refTitle">"Common YANG Data Types"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netmod-rfc6991-bis-16</span>, <time datetime="2024-08-07" class="refDate">7 August 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc6991-bis-16">https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc6991-bis-16</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="IANA.cbor-tags">[IANA.cbor-tags]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR) Tags"</span>, <span>&lt;<a href="https://www.iana.org/assignments/cbor-tags">https://www.iana.org/assignments/cbor-tags</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC5952">[RFC5952]</dt>
         <dd>
 <span class="refAuthor">Kawamura, S.</span> and <span class="refAuthor">M. Kawashima</span>, <span class="refTitle">"A Recommendation for IPv6 Address Text Representation"</span>, <span class="seriesInfo">RFC 5952</span>, <span class="seriesInfo">DOI 10.17487/RFC5952</span>, <time datetime="2010-08" class="refDate">August 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5952">https://www.rfc-editor.org/rfc/rfc5952</a>&gt;</span>. </dd>
@@ -1844,6 +1999,10 @@ indicate another encoding decision.<a href="#section-7.2-2" class="pilcrow">¶</
         <dd>
 <span class="refAuthor">Veillette, M., Ed.</span>, <span class="refAuthor">Petrov, I., Ed.</span>, <span class="refAuthor">Pelov, A.</span>, <span class="refAuthor">Bormann, C.</span>, and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"Encoding of Data Modeled with YANG in the Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">RFC 9254</span>, <span class="seriesInfo">DOI 10.17487/RFC9254</span>, <time datetime="2022-07" class="refDate">July 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9254">https://www.rfc-editor.org/rfc/rfc9254</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC9562">[RFC9562]</dt>
+        <dd>
+<span class="refAuthor">Davis, K.</span>, <span class="refAuthor">Peabody, B.</span>, and <span class="refAuthor">P. Leach</span>, <span class="refTitle">"Universally Unique IDentifiers (UUIDs)"</span>, <span class="seriesInfo">RFC 9562</span>, <span class="seriesInfo">DOI 10.17487/RFC9562</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9562">https://www.rfc-editor.org/rfc/rfc9562</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="STD94">[STD94]</dt>
       <dd>
 <div class="refInstance">Internet Standard 94, <span>&lt;<a href="https://www.rfc-editor.org/info/std94">https://www.rfc-editor.org/info/std94</a>&gt;</span>.<br><span>At the time of writing, this STD comprises the following:</span>
@@ -1861,6 +2020,14 @@ indicate another encoding decision.<a href="#section-7.2-2" class="pilcrow">¶</
 <a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="I-D.bormann-cbor-notable-tags">[I-D.bormann-cbor-notable-tags]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"Notable CBOR Tags"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-bormann-cbor-notable-tags-11</span>, <time datetime="2024-08-13" class="refDate">13 August 2024</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-bormann-cbor-notable-tags-11">https://datatracker.ietf.org/doc/html/draft-bormann-cbor-notable-tags-11</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9542">[RFC9542]</dt>
+        <dd>
+<span class="refAuthor">Eastlake 3rd, D.</span>, <span class="refAuthor">Abley, J.</span>, and <span class="refAuthor">Y. Li</span>, <span class="refTitle">"IANA Considerations and IETF Protocol and Documentation Usage for IEEE 802 Parameters"</span>, <span class="seriesInfo">BCP 141</span>, <span class="seriesInfo">RFC 9542</span>, <span class="seriesInfo">DOI 10.17487/RFC9542</span>, <time datetime="2024-04" class="refDate">April 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9542">https://www.rfc-editor.org/rfc/rfc9542</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9557">[RFC9557]</dt>
       <dd>
 <span class="refAuthor">Sharma, U.</span> and <span class="refAuthor">C. Bormann</span>, <span class="refTitle">"Date and Time on the Internet: Timestamps with Additional Information"</span>, <span class="seriesInfo">RFC 9557</span>, <span class="seriesInfo">DOI 10.17487/RFC9557</span>, <time datetime="2024-04" class="refDate">April 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9557">https://www.rfc-editor.org/rfc/rfc9557</a>&gt;</span>. </dd>
