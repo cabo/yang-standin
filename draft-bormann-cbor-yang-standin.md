@@ -44,7 +44,7 @@ normative:
   I-D.ietf-netmod-rfc6991-bis: legacy-bis
   RFC5952:
   RFC8943: date
-  I-D.ietf-cbor-time-tag: extended-time
+  RFC9581: extended-time
   STD94: cbor
   RFC6021: yang-types
   RFC9562: uuid
@@ -189,24 +189,14 @@ date-and-time | string | {{-yang-types}} | tag 1001
 date-no-zone | string | {{-legacy-bis}} | tag 1001
 date | string | {{-legacy-bis}} | tag 1001
 time | string | {{-legacy-bis}} | tag 1001
-time-no-zone | string | {{-legacy-bis}} | tag 1001
-timeticks | uint32 | {{-yang-types}} | tag 1002
-timestamp | uint32 | {{-yang-types}} | tag 1001
-hours32        | int32 | {{-legacy-bis}} | tag 1002
-minutes32      | int32 | {{-legacy-bis}} | tag 1002
-seconds32      | int32 | {{-legacy-bis}} | tag 1002
-centiseconds32 | int32 | {{-legacy-bis}} | tag 1002
-milliseconds32 | int32 | {{-legacy-bis}} | tag 1002
-microseconds32 | int32 | {{-legacy-bis}} | tag 1002
-microseconds64 | int64 | {{-legacy-bis}} | tag 1002
-nanoseconds32  | int32 | {{-legacy-bis}} | tag 1002
-nanoseconds64  | int64 | {{-legacy-bis}} | tag 1002
+time-no-zone | string | {{-legacy-bis}} | 1001
 {: title="Legacy representations in ietf-yang-types"}
 
-Tag 1001 {{-extended-time}} can unambigously stand for all the aforementioned
-types of values.
+The tag 1001 {{-extended-time}} can unambigously stand for all the
+aforementioned types of values. Values of type `time` and `time-no-zone`
+are encoded with a date of 1 January 1970.
 
-If the encoder supports tags 1001 and 1002, it MUST NOT use tags 100 and 1 as stand-ins.
+If the encoder supports tag 1001, it MUST NOT use tags 100 and 1 as stand-ins.
 Intolerant decoders should specify which kind of tags they expect.
 
 
