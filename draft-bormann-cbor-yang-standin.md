@@ -46,9 +46,13 @@ normative:
   RFC8943: date
   STD94: cbor
   RFC6021: yang-types
+  RFC9562: uuid
+  IANA.cbor-tags:
 
 informative:
   RFC9557: ixdtf
+  RFC9542: mac-address
+  I-D.bormann-cbor-notable-tags: notable
 
 --- abstract
 
@@ -159,7 +163,7 @@ YANG type | base type | specification | stand-in
 date-and-time | string | {{-yang-types}} | tag 1
 date | string | {{-legacy-bis}} | (none)
 date-no-zone | string | {{-legacy-bis}} | tag 100
-{: title="Legacy representations in ietf-yang-types"}
+{: title="Legacy date and date/time representations in ietf-yang-types"}
 
 Tag 1 ({{Section 3.4.2 of RFC8949@-cbor}}) can unambiguously stand in for all `date-and-time` values that:
 
@@ -177,6 +181,80 @@ without fractional seconds and a floating-point tag content for values
 that have fractional seconds given.
 
 Tag 100 {{-date}} can unambiguously stand in for all `date-no-zone` values.
+
+
+## `ietf-yang-types`: Tags 37 (UUID) and CPA113 (hex-string) {#hex-tags}
+
+{{Section 3 of -legacy-bis}} defines the following types in `ietf-yang-types`:
+
+| YANG type    | base type | specification | stand-in   |
+| uuid         | string    | {{-legacy-bis}} | tag 37     |
+| hex-string   | string    | {{-legacy-bis}} | tag CPA113 |
+| mac-address  | string    | {{-yang-types}} | tag CPA113 |
+| phys-address | string    | {{-yang-types}} | tag CPA113 |
+{: #tab-hex title="Legacy UUID and colon-separated hexadecimal representations in ietf-yang-types"}
+
+These types are hexadecimal representations of byte strings, adorned
+in various ways.
+
+`uuid` stands for a 16-byte byte string ({{Section 4 of -uuid}}),
+represented in hexadecimal with ASCII minus/hyphen characters added in
+specific positions.
+Tag 37 (see also Section 7 of {{-notable}}) can be used as a binary
+stand-in for this adorned hexadecimal representation.
+According to the description of `uuid` in {{Section 3 of -legacy-bis}},
+"the canonical representation uses lowercase characters".
+For consistency with this specification, an intermediate decoder of a
+tag 37 stand-in MUST use lowercase characters in the uuid hex string
+generated.
+
+`hex-string`, and the similar, but more specific types `mac-address`
+and `phys-address`, stand for byte strings in various lengths (exactly
+6 bytes for `mac-address`, variable-length for the others),
+represented in hexadecimal with ASCII colon characters added between
+the representations of each of the bytes.
+This specification defines tag number CPA113 {{iana-113}} to be an additional
+"Expected Later Encoding" tag (similar to tag 23, see {{Section 3.4.5.2
+of RFC8949@-cbor}}), except that the expected encoding of CPA113
+includes colons and uses lowercase hex digits.
+
+The following example implementation of the transformation in a
+decoder shows the use of lowercase hex characters (`%02x` as opposed
+to `%02X`) and the insertion of colon characters between the
+hex-represented bytes:
+
+~~~ ruby
+def tag_cpa113_to_legacy(s)
+  s.bytes.map{|x| "%02x" % x}.join(":")
+end
+~~~
+
+Note: {{Section 2.4 of RFC9542}} defines tag number 48 for MAC
+addresses.
+This could be used in place of tag CPA113, but only for MAC addresses,
+not for other byte strings of a similar form.
+This specification therefore requests IANA to assign a new CBOR tag that can be
+used as a stand-in for all instances of colon-separated text strings
+of hexadecimally represented bytes, as shown in {{tab-hex}}.
+
+Note Related tags have not been defined so far for tag 21 or 22
+defined alongside tag 23, as YANG has a base type "binary" that is
+encoded in base64 classic in YANG-XML and YANG-JSON, but already
+encoded in a binary byte string in YANG-CBOR; use cases that might
+actually use base type "string" for base64-encoded data in YANG have
+not been considered.  However, tag 21 or 22 could be used as stand-in
+tags if that is useful for some specific YANG model not considered
+here.
+
+[^cpa]
+
+[^cpa]: RFC-Editor: This document uses the CPA (code point allocation)
+      convention described in [I-D.bormann-cbor-draft-numbers].  For
+      each usage of the term "CPA", please remove the prefix "CPA"
+      from the indicated value and replace the residue with the value
+      assigned by IANA; perform an analogous substitution for all other
+      occurrences of the prefix "CPA" in the document.  Finally,
+      please remove this note.
 
 ## `ietf-inet-types`: Tags 54 and 52 (IP addresses and prefixes)
 
@@ -395,6 +473,16 @@ TODO Security
 
 
 # IANA Considerations
+
+## New CBOR Tags {#iana-113}
+
+In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
+IANA is requested to assign the tag in {{tab-new-tags}}.
+
+| Tag    | Data Item   | Semantics                                                                            | Reference                              |
+| CPA113 | byte string | Expected Later Encoding: colon-separated hexadecimal representation of a byte string | draft-bormann-yang-standin, {{hex-tags}} |
+{: #tab-new-tags title="New CBOR Tag Defined by this Specification"}
+
 
 ## stand-in tags?
 
