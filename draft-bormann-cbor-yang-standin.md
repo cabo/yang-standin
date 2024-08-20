@@ -466,22 +466,6 @@ declaration blocks in order to align their encoders and decoders. The actual
 realization of the handshake is out of the scope of this document, we only
 specify the data structure used for it.
 
-## Partial validation on decoder {#partial-validation}
-
-If the decoder has an incomplete (outdated) YANG schema, the natural choice
-would be to simply drop the unknown nodes in the data tree. The decoder may
-also choose to parse the data anyway to try presenting it to the end user even
-without knowing the full semantics. The encoder may tag some or all occurences
-of groupings of one type to help the decoders recognize them and parse them
-with full semantics knowledge even though parts of the data tree path are
-unknown.
-
-The encoder MUST designate all the grouping tags in the stand-in declaration
-block in the `tagmarks` list.
-
-This specification defines tag numbers CPA2048 through CPA4095 {{iana-113}} to
-serve the purpose of partial validation grouping designators.
-
 ## Stand-in declaration block YANG module
 
 ~~~ yang
@@ -504,19 +488,6 @@ module cbor-yang-standin-declaration-block {
     }
   }
 
-  grouping tagmark {
-    leaf tag {
-      type uint64;
-      description "CBOR tag value";
-      mandatory true;
-    }
-
-    leaf grouping {
-      type string;
-      description "Fully qualified YANG grouping path to be marked by this tag";
-    }
-  }
-
   list required {
     uses standin;
     description "Stand-in tags always required to be used";
@@ -527,11 +498,6 @@ module cbor-yang-standin-declaration-block {
     uses standin;
     description "Stand-in tags supported but not strictly required";
     config false;
-  }
-
-  list tagmarks {
-    uses tagmark;
-    description "Tags marking certain grouping occurences";
   }
 }
 ~~~
@@ -545,11 +511,10 @@ TODO Security
 ## New CBOR Tags {#iana-113}
 
 In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
-IANA is requested to assign the tags in {{tab-new-tags}}.
+IANA is requested to assign the tag in {{tab-new-tags}}.
 
 | Tag    | Data Item   | Semantics                                                                            | Reference                              |
 | CPA113 | byte string | Expected Later Encoding: colon-separated hexadecimal representation of a byte string | draft-bormann-yang-standin, {{hex-tags}} |
-| CPA2048-CPA4095 | multiple | Tag mark for decoder convenience | draft-bormann-yang-stadnin, {{partial-validation}} |
 {: #tab-new-tags title="New CBOR Tag Defined by this Specification"}
 
 
