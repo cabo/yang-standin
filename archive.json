@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-18T00:56:45.535964+00:00",
+  "timestamp": "2024-08-20T00:53:16.696051+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -118,15 +118,15 @@
       "id": "I_kwDOLF7SWM6RYdnm",
       "title": "support RFC 6991 hex-string and related",
       "url": "https://github.com/cabo/yang-standin/issues/5",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "cabo",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "RFC 6991 defines hex-string as well as the related phys-address and mac-address.\r\nThey all are hex-strings built out of 2 hex digits per byte, with colons (':') interspersed.\r\n\r\nmac-address is exactly 6 bytes:\r\n\r\n         pattern '[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}';\r\n\r\nhex-string and phys-address are zero or more bytes:\r\n\r\n         pattern '([0-9a-fA-F]{2}(:[0-9a-fA-F]{2})*)?';\r\n\r\nWo do have tag 48 for a MAC address in this hex-string form, but this probably could cause validation issues if we use that for lengths not allowed for MAC addresses.\r\n\r\nhex-strings are canonically lower-case, but upper-case is allowed as well.  Not sure what the incidence for upper case is.  Might need two new tags: hex-string (lower case), hex-string (upper case).",
       "createdAt": "2024-07-31T04:46:19Z",
-      "updatedAt": "2024-08-15T14:51:12Z",
-      "closedAt": null,
+      "updatedAt": "2024-08-19T14:55:23Z",
+      "closedAt": "2024-08-19T14:55:23Z",
       "comments": [
         {
           "author": "marenamat",
@@ -539,26 +539,177 @@
       "id": "PR_kwDOLF7SWM54fTZ2",
       "title": "Close #5: define tag CPA113, also explain tag 37 for UUID",
       "url": "https://github.com/cabo/yang-standin/pull/9",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "cabo",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-08-15T17:04:16Z",
-      "updatedAt": "2024-08-15T17:04:16Z",
+      "updatedAt": "2024-08-19T14:55:22Z",
       "baseRepository": "cabo/yang-standin",
       "baseRefName": "main",
       "baseRefOid": "982aa82701bc2c62c5b297c5895965961cc6dafa",
       "headRepository": "cabo/yang-standin",
       "headRefName": "hex-string",
       "headRefOid": "bbf3425c5943b63522513d0291e3be3c50a82a84",
+      "closedAt": "2024-08-19T14:55:22Z",
+      "mergedAt": "2024-08-19T14:55:22Z",
+      "mergedBy": "marenamat",
+      "mergeCommit": {
+        "oid": "0e6aef26e905dceb67078dfa121df712b171bd14"
+      },
+      "comments": [
+        {
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This seems all to work well, and the allocation of the new tag also makes a good sense. Well spotted that these hex strings would make use of standins as well as the already covered types. Thanks!",
+          "createdAt": "2024-08-19T14:55:14Z",
+          "updatedAt": "2024-08-19T14:55:14Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 10,
+      "id": "PR_kwDOLF7SWM54uM5D",
+      "title": "Extended the standin usage texts",
+      "url": "https://github.com/cabo/yang-standin/pull/10",
+      "state": "OPEN",
+      "author": "marenamat",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "this is my try on reworking the standin usage sections, and on defining how to specify the standin usage in standalone messages\r\n\r\nthere are _lots_ of formally bad wordings, i wanted first to state my intent to have something for discussion before actually putting the time into proper formal specification",
+      "createdAt": "2024-08-19T11:11:51Z",
+      "updatedAt": "2024-08-19T22:39:45Z",
+      "baseRepository": "cabo/yang-standin",
+      "baseRefName": "main",
+      "baseRefOid": "0e6aef26e905dceb67078dfa121df712b171bd14",
+      "headRepository": "marenamat/yang-standin",
+      "headRefName": "maria-extended",
+      "headRefOid": "a65f8ebe516a5907cf86be8407219b51f8b07622",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "body": "rebased on current `main`",
+          "createdAt": "2024-08-19T15:23:30Z",
+          "updatedAt": "2024-08-19T15:23:30Z"
+        },
+        {
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\u2026 and pushed another change, now with the stand-in declaration YANG module actually valid (hopefully) and with an added proposed feature of tagmarking groupings.\r\n\r\nThe simplest usage I can think of: the server has some memory usage statistics and it is provided splitted by logical functional parts of the server. When a new logical part is added, the old client app/lib doesn't know about it but it can get at least the information that \"this specific part of the data is actually memory usage statistics\" and display it well to the user. Without the tagmarking, it would see just a map of weird numbers.",
+          "createdAt": "2024-08-19T16:32:46Z",
+          "updatedAt": "2024-08-19T16:32:46Z"
+        },
+        {
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "body": "> \u2026 proposed feature of tagmarking groupings.\r\n\r\nNow my mind finally came to a conclusion that this is probably not needed as soon as we adopt SIDs. This is much harder than I expected, tbh!\ud83e\udd26\ud83c\udffc\u200d\u2640\ufe0f",
+          "createdAt": "2024-08-19T22:39:44Z",
+          "updatedAt": "2024-08-19T22:39:44Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDOLF7SWM6F1Igc",
+          "commit": {
+            "abbreviatedOid": "ac5b7ac"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "Quick first reaction.\r\nWill look more closely later today.",
+          "createdAt": "2024-08-19T11:19:53Z",
+          "updatedAt": "2024-08-19T11:24:10Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "That is RFC 9581 now.",
+              "createdAt": "2024-08-19T11:19:53Z",
+              "updatedAt": "2024-08-19T11:24:10Z"
+            },
+            {
+              "originalPosition": 47,
+              "body": "I didn't see a need to do these, as they already are binary (integers).",
+              "createdAt": "2024-08-19T11:21:05Z",
+              "updatedAt": "2024-08-19T11:24:10Z"
+            },
+            {
+              "originalPosition": 145,
+              "body": "That is opposite to what I would have decided -- I would have accepted a binary standin for a string that doesn't have a known date/time-y schema node.",
+              "createdAt": "2024-08-19T11:23:44Z",
+              "updatedAt": "2024-08-19T11:24:10Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6F26-Y",
+          "commit": {
+            "abbreviatedOid": "ac5b7ac"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-19T14:51:07Z",
+          "updatedAt": "2024-08-19T14:51:07Z",
+          "comments": [
+            {
+              "originalPosition": 145,
+              "body": "This paragraph is explicitly targeted on intermediate encoders without schema. Let's say the intermediate encoder chooses hex string over date, and encodes `15:32:46` as `43 15 32 46`. But the schema (which the intermediate encoder isn't aware of) says `time`. This looks quite confusing for me when expecting either `68 31 35 3A 33 32 3A 34 36` or \u2026 aha, we don't have a tag for just a time not bound to a date, probably. That looks like an issue.\r\n\r\nAnyway, what I wanted to say, is that one string may actually have many different meanings depending on context, which is what we are already experiencing in BIRD configuration language. With that, I'm advocating for \"standins strictly only with schema\", otherwise we're getting into a rabbit hole of reinterpreting e.g. times to hex strings, or even some weirder things with e.g. BGP large communities \u2026 which can be also `15:32:46`, see draft-ietf-idr-bgp-model-17 and `bgp-large-community-type` \u2026 but this time encoded probably as something like `4C 00 00 00 0F 00 00 00 20 00 00 00 2E` probably with an appropriate tag. And that's what the implementors of CBOR decoders are going to hate us for if we allow it.",
+              "createdAt": "2024-08-19T14:51:07Z",
+              "updatedAt": "2024-08-19T14:51:07Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6F3Fdo",
+          "commit": {
+            "abbreviatedOid": "ac5b7ac"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-19T15:07:52Z",
+          "updatedAt": "2024-08-19T15:07:53Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "fixed, thanks",
+              "createdAt": "2024-08-19T15:07:52Z",
+              "updatedAt": "2024-08-19T15:07:53Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6F3FxO",
+          "commit": {
+            "abbreviatedOid": "ac5b7ac"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-19T15:08:19Z",
+          "updatedAt": "2024-08-19T15:08:19Z",
+          "comments": [
+            {
+              "originalPosition": 47,
+              "body": "you are completely right, dropped",
+              "createdAt": "2024-08-19T15:08:19Z",
+              "updatedAt": "2024-08-19T15:08:20Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
