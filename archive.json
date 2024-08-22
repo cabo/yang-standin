@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-20T00:53:16.696051+00:00",
+  "timestamp": "2024-08-22T00:54:29.874913+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -582,13 +582,13 @@
       "labels": [],
       "body": "this is my try on reworking the standin usage sections, and on defining how to specify the standin usage in standalone messages\r\n\r\nthere are _lots_ of formally bad wordings, i wanted first to state my intent to have something for discussion before actually putting the time into proper formal specification",
       "createdAt": "2024-08-19T11:11:51Z",
-      "updatedAt": "2024-08-19T22:39:45Z",
+      "updatedAt": "2024-08-20T14:21:14Z",
       "baseRepository": "cabo/yang-standin",
       "baseRefName": "main",
       "baseRefOid": "0e6aef26e905dceb67078dfa121df712b171bd14",
       "headRepository": "marenamat/yang-standin",
       "headRefName": "maria-extended",
-      "headRefOid": "a65f8ebe516a5907cf86be8407219b51f8b07622",
+      "headRefOid": "66382d7d5096306d59bc24099a5e8ac611837e68",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -706,6 +706,68 @@
               "body": "you are completely right, dropped",
               "createdAt": "2024-08-19T15:08:19Z",
               "updatedAt": "2024-08-19T15:08:20Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6F_5sv",
+          "commit": {
+            "abbreviatedOid": "66382d7"
+          },
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "A few more detail comments, but I think we need to adjust our direction at some point.\r\nI wanted to keep this really simple, not inviting a lot of complexity.\r\nThis of course means there will be limited functionality, but I'm sure 80 % of the benefit can be had with 5 % of the complexity.",
+          "createdAt": "2024-08-20T14:07:28Z",
+          "updatedAt": "2024-08-20T14:21:14Z",
+          "comments": [
+            {
+              "originalPosition": 44,
+              "body": "Why?  Tags 100 and 1 are significantly more compact.",
+              "createdAt": "2024-08-20T14:07:28Z",
+              "updatedAt": "2024-08-20T14:21:14Z"
+            },
+            {
+              "originalPosition": 45,
+              "body": "This assumes an encoder encodes for a specific decoder.\r\nThis work will deploy much faster if encoders can simply jump the gun and encode.  So I think lots of optional functionality gets in the way of deployment massively.\r\n(I probably also need some examples for how you want to use tag 1001 -- just encoding a timezone hint for date and time that will be dicarded anyway doesn't sound like a good reason for 1001.)",
+              "createdAt": "2024-08-20T14:10:31Z",
+              "updatedAt": "2024-08-20T14:21:14Z"
+            },
+            {
+              "originalPosition": 65,
+              "body": "I still like this as a constraint on the emitting system.",
+              "createdAt": "2024-08-20T14:12:03Z",
+              "updatedAt": "2024-08-20T14:21:14Z"
+            },
+            {
+              "originalPosition": 145,
+              "body": "Do you have an example for a rfc 6991 \"time\"?\r\nI wasn't planning to spend time on this; tag 1001 of course can model this as the duration from a start-of-day (which is even more compact than a hex0string :-).",
+              "createdAt": "2024-08-20T14:14:03Z",
+              "updatedAt": "2024-08-20T14:21:14Z"
+            },
+            {
+              "originalPosition": 143,
+              "body": "I wouldn't even mention this.",
+              "createdAt": "2024-08-20T14:15:09Z",
+              "updatedAt": "2024-08-20T14:21:14Z"
+            },
+            {
+              "originalPosition": 147,
+              "body": "That would be a massive change to existing protocols.\r\nKills deployment.",
+              "createdAt": "2024-08-20T14:15:53Z",
+              "updatedAt": "2024-08-20T14:21:14Z"
+            },
+            {
+              "originalPosition": 213,
+              "body": "Well, new types are added all the time.\r\nRunning this via a registry has the problem that the people adding types generally don't know or care about standin-tags.\r\nSo someone else would need to step in.\r\nThis is on of the reasons why I thought pattern-matching would be the best way foreard.",
+              "createdAt": "2024-08-20T14:18:31Z",
+              "updatedAt": "2024-08-20T14:21:14Z"
+            },
+            {
+              "originalPosition": 220,
+              "body": "This parameter does not make a lot of sense for ACCEPT.",
+              "createdAt": "2024-08-20T14:19:05Z",
+              "updatedAt": "2024-08-20T14:21:14Z"
             }
           ]
         }
