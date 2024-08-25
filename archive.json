@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-08-22T00:54:29.874913+00:00",
+  "timestamp": "2024-08-25T00:58:04.656881+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -582,7 +582,7 @@
       "labels": [],
       "body": "this is my try on reworking the standin usage sections, and on defining how to specify the standin usage in standalone messages\r\n\r\nthere are _lots_ of formally bad wordings, i wanted first to state my intent to have something for discussion before actually putting the time into proper formal specification",
       "createdAt": "2024-08-19T11:11:51Z",
-      "updatedAt": "2024-08-20T14:21:14Z",
+      "updatedAt": "2024-08-22T08:27:01Z",
       "baseRepository": "cabo/yang-standin",
       "baseRefName": "main",
       "baseRefOid": "0e6aef26e905dceb67078dfa121df712b171bd14",
@@ -768,6 +768,126 @@
               "body": "This parameter does not make a lot of sense for ACCEPT.",
               "createdAt": "2024-08-20T14:19:05Z",
               "updatedAt": "2024-08-20T14:21:14Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6GVl2r",
+          "commit": {
+            "abbreviatedOid": "66382d7"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-22T08:13:21Z",
+          "updatedAt": "2024-08-22T08:13:21Z",
+          "comments": [
+            {
+              "originalPosition": 44,
+              "body": "Well, I thought I had a reason when I was writing it and then it just stayed there. I'm ok with dropping this now as I don't have a reason now.",
+              "createdAt": "2024-08-22T08:13:21Z",
+              "updatedAt": "2024-08-22T08:13:21Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6GVobt",
+          "commit": {
+            "abbreviatedOid": "66382d7"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-22T08:18:09Z",
+          "updatedAt": "2024-08-22T08:18:09Z",
+          "comments": [
+            {
+              "originalPosition": 220,
+              "body": "Not exactly sure what you're here about.\r\n",
+              "createdAt": "2024-08-22T08:18:09Z",
+              "updatedAt": "2024-08-22T08:18:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6GVpTv",
+          "commit": {
+            "abbreviatedOid": "66382d7"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-22T08:19:49Z",
+          "updatedAt": "2024-08-22T08:19:50Z",
+          "comments": [
+            {
+              "originalPosition": 213,
+              "body": "The registry would be more like informative than actually normative\u2026 but this probably shows that there is a different solution, maybe just a table on the cbor.io website or something like that.",
+              "createdAt": "2024-08-22T08:19:49Z",
+              "updatedAt": "2024-08-22T08:19:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6GVraP",
+          "commit": {
+            "abbreviatedOid": "66382d7"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-22T08:23:19Z",
+          "updatedAt": "2024-08-22T08:23:19Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "I don't see much of a use of \"encoding for everybody / decoding from everybody\" without some more specs. This is kinda coupled with the principle of \"no standin without a schema\" for me\u2026 but i can be wrong / oblivious to something. ",
+              "createdAt": "2024-08-22T08:23:19Z",
+              "updatedAt": "2024-08-22T08:23:19Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6GVsWO",
+          "commit": {
+            "abbreviatedOid": "66382d7"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-22T08:25:06Z",
+          "updatedAt": "2024-08-22T08:25:06Z",
+          "comments": [
+            {
+              "originalPosition": 45,
+              "body": "Also the 1001 tag should be usable e.g. for sending microsecond / nanosecond abaolute time directly without recalculating to floats. Gonna produce a specific example in the evening.",
+              "createdAt": "2024-08-22T08:25:06Z",
+              "updatedAt": "2024-08-22T08:25:06Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOLF7SWM6GVtaE",
+          "commit": {
+            "abbreviatedOid": "66382d7"
+          },
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-08-22T08:27:01Z",
+          "updatedAt": "2024-08-22T08:27:01Z",
+          "comments": [
+            {
+              "originalPosition": 147,
+              "body": "Are you referencing the in-message negotiation? (i'm confused by the github frontend probably) ",
+              "createdAt": "2024-08-22T08:27:01Z",
+              "updatedAt": "2024-08-22T08:27:01Z"
             }
           ]
         }
