@@ -5,8 +5,8 @@
 CBOR (Concise Binary Object Representation) Maint. and Ext.   C. Bormann
 Internet-Draft                                    Universität Bremen TZI
 Intended status: Standards Track                              M. Matejka
-Expires: 20 February 2025                                         CZ.NIC
-                                                          19 August 2024
+Expires: 4 September 2025                                         CZ.NIC
+                                                            3 March 2025
 
 
                       Stand-in Tags for YANG-CBOR
@@ -60,11 +60,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 20 February 2025.
+   This Internet-Draft will expire on 4 September 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -605,8 +605,9 @@ Table of Contents
    [I-D.ietf-netmod-rfc6991-bis]
               Schönwälder, J., "Common YANG Data Types", Work in
               Progress, Internet-Draft, draft-ietf-netmod-rfc6991-bis-
-              16, 7 August 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-netmod-rfc6991-bis-16>.
+              17, 21 October 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
+              rfc6991-bis-17>.
 
    [IANA.cbor-tags]
               IANA, "Concise Binary Object Representation (CBOR) Tags",
@@ -654,9 +655,9 @@ Table of Contents
 
    [I-D.bormann-cbor-notable-tags]
               Bormann, C., "Notable CBOR Tags", Work in Progress,
-              Internet-Draft, draft-bormann-cbor-notable-tags-11, 13
-              August 2024, <https://datatracker.ietf.org/doc/html/draft-
-              bormann-cbor-notable-tags-11>.
+              Internet-Draft, draft-bormann-cbor-notable-tags-12, 12
+              February 2025, <https://datatracker.ietf.org/doc/html/
+              draft-bormann-cbor-notable-tags-12>.
 
    [RFC9542]  Eastlake 3rd, D., Abley, J., and Y. Li, "IANA
               Considerations and IETF Protocol and Documentation Usage
