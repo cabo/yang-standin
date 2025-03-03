@@ -7,7 +7,6 @@ This is the working area for the individual Internet-Draft, "Stand-in Tags for Y
 * [Individual Draft](https://datatracker.ietf.org/doc/html/draft-bormann-cbor-yang-standin)
 * [Compare Editor's Copy to Individual Draft](https://cabo.github.io/yang-standin/#go.draft-bormann-cbor-yang-standin.diff)
 
-[Access all branches](https://cabo.github.io/yang-standin)
 
 ## Contributing
 
