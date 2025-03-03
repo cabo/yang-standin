@@ -5,8 +5,8 @@
 CBOR (Concise Binary Object Representation) Maint. and Ext.   C. Bormann
 Internet-Draft                                    Universität Bremen TZI
 Intended status: Standards Track                              M. Matejka
-Expires: 15 February 2025                                         CZ.NIC
-                                                          14 August 2024
+Expires: 4 September 2025                                         CZ.NIC
+                                                            3 March 2025
 
 
                       Stand-in Tags for YANG-CBOR
@@ -60,11 +60,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 15 February 2025.
+   This Internet-Draft will expire on 4 September 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -82,8 +82,9 @@ Table of Contents
    2.  Conventions and Definitions
    3.  Stand-In Tags
      3.1.  ietf-yang-types: Tag 1 (Date/Time) and Tag 100 (Date)
-     3.2.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
-     3.3.  Union handling
+     3.2.  ietf-yang-types: Tags 37 (UUID) and CPA113 (hex-string)
+     3.3.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
+     3.4.  Union handling
    4.  Using Stand-In Tags
      4.1.  Defining Stand-In Usage in Schema
      4.2.  Original stand-ins
@@ -91,8 +92,9 @@ Table of Contents
    5.  Negotiation
    6.  Security Considerations
    7.  IANA Considerations
-     7.1.  stand-in tags?
-     7.2.  media-type parameters
+     7.1.  New CBOR Tags
+     7.2.  stand-in tags?
+     7.3.  media-type parameters
    8.  References
      8.1.  Normative References
      8.2.  Informative References
@@ -190,7 +192,8 @@ Table of Contents
     | date-no-zone  |string| [I-D.ietf-netmod-rfc6991-bis] | tag 100  |
     +---------------+------+-------------------------------+----------+
 
-             Table 1: Legacy representations in ietf-yang-types
+        Table 1: Legacy date and date/time representations in ietf-
+                                 yang-types
 
    Tag 1 (Section 3.4.2 of RFC 8949 [STD94]) can unambiguously stand in
    for all date-and-time values that:
@@ -215,7 +218,89 @@ Table of Contents
    Tag 100 [RFC8943] can unambiguously stand in for all date-no-zone
    values.
 
-3.2.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
+3.2.  ietf-yang-types: Tags 37 (UUID) and CPA113 (hex-string)
+
+   Section 3 of [I-D.ietf-netmod-rfc6991-bis] defines the following
+   types in ietf-yang-types:
+
+   +==============+========+===============================+==========+
+   | YANG type    | base   | specification                 | stand-in |
+   |              | type   |                               |          |
+   +==============+========+===============================+==========+
+   | uuid         | string | [I-D.ietf-netmod-rfc6991-bis] | tag 37   |
+   +--------------+--------+-------------------------------+----------+
+   | hex-string   | string | [I-D.ietf-netmod-rfc6991-bis] | tag      |
+   |              |        |                               | CPA113   |
+   +--------------+--------+-------------------------------+----------+
+   | mac-address  | string | [RFC6021]                     | tag      |
+   |              |        |                               | CPA113   |
+   +--------------+--------+-------------------------------+----------+
+   | phys-address | string | [RFC6021]                     | tag      |
+   |              |        |                               | CPA113   |
+   +--------------+--------+-------------------------------+----------+
+
+           Table 2: Legacy UUID and colon-separated hexadecimal
+                   representations in ietf- yang-types
+
+   These types are hexadecimal representations of byte strings, adorned
+   in various ways.
+
+   uuid stands for a 16-byte byte string (Section 4 of [RFC9562]),
+   represented in hexadecimal with ASCII minus/hyphen characters added
+   in specific positions.  Tag 37 (see also Section 7 of
+   [I-D.bormann-cbor-notable-tags]) can be used as a binary stand-in for
+   this adorned hexadecimal representation.  According to the
+   description of uuid in Section 3 of [I-D.ietf-netmod-rfc6991-bis],
+   "the canonical representation uses lowercase characters".  For
+   consistency with this specification, an intermediate decoder of a tag
+   37 stand-in MUST use lowercase characters in the uuid hex string
+   generated.
+
+   hex-string, and the similar, but more specific types mac-address and
+   phys-address, stand for byte strings in various lengths (exactly 6
+   bytes for mac-address, variable-length for the others), represented
+   in hexadecimal with ASCII colon characters added between the
+   representations of each of the bytes.  This specification defines tag
+   number CPA113 Section 7.1 to be an additional "Expected Later
+   Encoding" tag (similar to tag 23, see Section 3.4.5.2 of RFC 8949
+   [STD94]), except that the expected encoding of CPA113 includes colons
+   and uses lowercase hex digits.
+
+   The following example implementation of the transformation in a
+   decoder shows the use of lowercase hex characters (%02x as opposed to
+   %02X) and the insertion of colon characters between the hex-
+   represented bytes:
+
+   def tag_cpa113_to_legacy(s)
+     s.bytes.map{|x| "%02x" % x}.join(":")
+   end
+
+   Note: Section 2.4 of [RFC9542] defines tag number 48 for MAC
+   addresses.  This could be used in place of tag CPA113, but only for
+   MAC addresses, not for other byte strings of a similar form.  This
+   specification therefore requests IANA to assign a new CBOR tag that
+   can be used as a stand-in for all instances of colon-separated text
+   strings of hexadecimally represented bytes, as shown in Table 2.
+
+   Note Related tags have not been defined so far for tag 21 or 22
+   defined alongside tag 23, as YANG has a base type "binary" that is
+   encoded in base64 classic in YANG-XML and YANG-JSON, but already
+   encoded in a binary byte string in YANG-CBOR; use cases that might
+   actually use base type "string" for base64-encoded data in YANG have
+   not been considered.  However, tag 21 or 22 could be used as stand-in
+   tags if that is useful for some specific YANG model not considered
+   here.
+
+
+   // RFC-Editor: This document uses the CPA (code point allocation)
+   // convention described in [I-D.bormann-cbor-draft-numbers].  For
+   // each usage of the term "CPA", please remove the prefix "CPA" from
+   // the indicated value and replace the residue with the value
+   // assigned by IANA; perform an analogous substitution for all other
+   // occurrences of the prefix "CPA" in the document.  Finally, please
+   // remove this note.
+
+3.3.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
 
    Section 4 of [I-D.ietf-netmod-rfc6991-bis] defines in ietf-inet-
    types:
@@ -272,7 +357,7 @@ Table of Contents
    |prefix       |              |                               |      |
    +-------------+--------------+-------------------------------+------+
 
-             Table 2: Legacy representations in ietf-yang-types
+             Table 3: Legacy representations in ietf-yang-types
 
    An intermediate encoder MAY normalize IPv6 addresses and prefixes
    that do not comply with [RFC5952] but can be converted into the
@@ -349,7 +434,7 @@ Table of Contents
    [I-D.ietf-netmod-rfc6991-bis] interact with this.  E.g., the union
    ip-address needs to be parsed to decide between tag 54 and tag 52.
 
-3.3.  Union handling
+3.4.  Union handling
 
    When the schema specifies a union data type for a node, there are
    additional requirements on the encoder and decoder.
@@ -465,7 +550,26 @@ Table of Contents
 
 7.  IANA Considerations
 
-7.1.  stand-in tags?
+7.1.  New CBOR Tags
+
+   In the registry "CBOR Tags" [IANA.cbor-tags], IANA is requested to
+   assign the tag in Table 4.
+
+   +========+========+==================+=============================+
+   | Tag    | Data   | Semantics        | Reference                   |
+   |        | Item   |                  |                             |
+   +========+========+==================+=============================+
+   | CPA113 | byte   | Expected Later   | draft-bormann-yang-standin, |
+   |        | string | Encoding: colon- | Section 3.2                 |
+   |        |        | separated        |                             |
+   |        |        | hexadecimal      |                             |
+   |        |        | representation   |                             |
+   |        |        | of a byte string |                             |
+   +--------+--------+------------------+-----------------------------+
+
+           Table 4: New CBOR Tag Defined by this Specification
+
+7.2.  stand-in tags?
 
    ISSUE: Do we want to have a separate registry for stand-in tags?
 
@@ -473,7 +577,7 @@ Table of Contents
    lost in the bulk of that (and are only identified as YANG-CBOR stand-
    in Tags in the specification).
 
-7.2.  media-type parameters
+7.3.  media-type parameters
 
    ISSUE: Should the use of stand-in tags be mentioned in the various
    YANG-CBOR-based media types (as a media type parameter)?
@@ -501,8 +605,13 @@ Table of Contents
    [I-D.ietf-netmod-rfc6991-bis]
               Schönwälder, J., "Common YANG Data Types", Work in
               Progress, Internet-Draft, draft-ietf-netmod-rfc6991-bis-
-              16, 7 August 2024, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-netmod-rfc6991-bis-16>.
+              17, 21 October 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
+              rfc6991-bis-17>.
+
+   [IANA.cbor-tags]
+              IANA, "Concise Binary Object Representation (CBOR) Tags",
+              <https://www.iana.org/assignments/cbor-tags>.
 
    [RFC5952]  Kawamura, S. and M. Kawashima, "A Recommendation for IPv6
               Address Text Representation", RFC 5952,
@@ -529,6 +638,10 @@ Table of Contents
               RFC 9254, DOI 10.17487/RFC9254, July 2022,
               <https://www.rfc-editor.org/rfc/rfc9254>.
 
+   [RFC9562]  Davis, K., Peabody, B., and P. Leach, "Universally Unique
+              IDentifiers (UUIDs)", RFC 9562, DOI 10.17487/RFC9562, May
+              2024, <https://www.rfc-editor.org/rfc/rfc9562>.
+
    [STD94]    Internet Standard 94,
               <https://www.rfc-editor.org/info/std94>.
               At the time of writing, this STD comprises the following:
@@ -539,6 +652,18 @@ Table of Contents
               <https://www.rfc-editor.org/info/rfc8949>.
 
 8.2.  Informative References
+
+   [I-D.bormann-cbor-notable-tags]
+              Bormann, C., "Notable CBOR Tags", Work in Progress,
+              Internet-Draft, draft-bormann-cbor-notable-tags-12, 12
+              February 2025, <https://datatracker.ietf.org/doc/html/
+              draft-bormann-cbor-notable-tags-12>.
+
+   [RFC9542]  Eastlake 3rd, D., Abley, J., and Y. Li, "IANA
+              Considerations and IETF Protocol and Documentation Usage
+              for IEEE 802 Parameters", BCP 141, RFC 9542,
+              DOI 10.17487/RFC9542, April 2024,
+              <https://www.rfc-editor.org/rfc/rfc9542>.
 
    [RFC9557]  Sharma, U. and C. Bormann, "Date and Time on the Internet:
               Timestamps with Additional Information", RFC 9557,
