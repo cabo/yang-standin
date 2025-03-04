@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-01-30T00:57:39.132621+00:00",
+  "timestamp": "2025-03-04T01:02:27.497404+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -582,13 +582,13 @@
       "labels": [],
       "body": "this is my try on reworking the standin usage sections, and on defining how to specify the standin usage in standalone messages\r\n\r\nthere are _lots_ of formally bad wordings, i wanted first to state my intent to have something for discussion before actually putting the time into proper formal specification",
       "createdAt": "2024-08-19T11:11:51Z",
-      "updatedAt": "2024-08-22T08:27:01Z",
+      "updatedAt": "2025-03-03T22:59:18Z",
       "baseRepository": "cabo/yang-standin",
       "baseRefName": "main",
-      "baseRefOid": "0e6aef26e905dceb67078dfa121df712b171bd14",
+      "baseRefOid": "92aaf9b7d96e655943dc7a00e2439fbc637aecfd",
       "headRepository": "marenamat/yang-standin",
       "headRefName": "maria-extended",
-      "headRefOid": "66382d7d5096306d59bc24099a5e8ac611837e68",
+      "headRefOid": "3d8ad10145daf54ea54e69d33b40e49b73e77c37",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -614,6 +614,13 @@
           "body": "> \u2026 proposed feature of tagmarking groupings.\r\n\r\nNow my mind finally came to a conclusion that this is probably not needed as soon as we adopt SIDs. This is much harder than I expected, tbh!\ud83e\udd26\ud83c\udffc\u200d\u2640\ufe0f",
           "createdAt": "2024-08-19T22:39:44Z",
           "updatedAt": "2024-08-19T22:39:44Z"
+        },
+        {
+          "author": "cabo",
+          "authorAssociation": "OWNER",
+          "body": "Apologies for submitting -01 without merging this -- I have 62 minutes left and won't manage to do this otherwise...\r\nIt would be good to have the draft active (not expired) before Bangkok.\r\nWe can submit  a -02 on March 16th.",
+          "createdAt": "2025-03-03T22:59:16Z",
+          "updatedAt": "2025-03-03T22:59:16Z"
         }
       ],
       "reviews": [
@@ -892,6 +899,34 @@
           ]
         }
       ]
+    },
+    {
+      "number": 11,
+      "id": "PR_kwDOLF7SWM6NOB5L",
+      "title": "Fix the i-d template",
+      "url": "https://github.com/cabo/yang-standin/pull/11",
+      "state": "MERGED",
+      "author": "cabo",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-03-03T22:48:26Z",
+      "updatedAt": "2025-03-03T22:49:04Z",
+      "baseRepository": "cabo/yang-standin",
+      "baseRefName": "main",
+      "baseRefOid": "0e6aef26e905dceb67078dfa121df712b171bd14",
+      "headRepository": "cabo/yang-standin",
+      "headRefName": "fix-i-d-template",
+      "headRefOid": "f1b0e1c9f4b5c06f71ee75e59e728cb4001adeb6",
+      "closedAt": "2025-03-03T22:49:04Z",
+      "mergedAt": "2025-03-03T22:49:04Z",
+      "mergedBy": "cabo",
+      "mergeCommit": {
+        "oid": "92aaf9b7d96e655943dc7a00e2439fbc637aecfd"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
