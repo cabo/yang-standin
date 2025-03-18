@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-03-16T01:07:44.219640+00:00",
+  "timestamp": "2025-03-18T01:03:11.966398+00:00",
   "repo": "cabo/yang-standin",
   "labels": [
     {
@@ -582,7 +582,7 @@
       "labels": [],
       "body": "this is my try on reworking the standin usage sections, and on defining how to specify the standin usage in standalone messages\r\n\r\nthere are _lots_ of formally bad wordings, i wanted first to state my intent to have something for discussion before actually putting the time into proper formal specification",
       "createdAt": "2024-08-19T11:11:51Z",
-      "updatedAt": "2025-03-03T22:59:18Z",
+      "updatedAt": "2025-03-17T08:12:53Z",
       "baseRepository": "cabo/yang-standin",
       "baseRefName": "main",
       "baseRefOid": "92aaf9b7d96e655943dc7a00e2439fbc637aecfd",
@@ -621,6 +621,13 @@
           "body": "Apologies for submitting -01 without merging this -- I have 62 minutes left and won't manage to do this otherwise...\r\nIt would be good to have the draft active (not expired) before Bangkok.\r\nWe can submit  a -02 on March 16th.",
           "createdAt": "2025-03-03T22:59:16Z",
           "updatedAt": "2025-03-03T22:59:16Z"
+        },
+        {
+          "author": "marenamat",
+          "authorAssociation": "COLLABORATOR",
+          "body": "No problem, I have been overloaded by lots of other things lately, so thank you for submitting -01, and I'm expecting to look into this draft again during this spring.",
+          "createdAt": "2025-03-17T08:12:51Z",
+          "updatedAt": "2025-03-17T08:12:51Z"
         }
       ],
       "reviews": [
