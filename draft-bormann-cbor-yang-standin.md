@@ -377,6 +377,106 @@ otherwise it SHOULD keep the legacy representation.
 If a decoder receives data for a union-typed node, it MUST accept any data type
 of the union, even though it may violate additional constraints outside the schema.
 
+If the encoder is fully aware of data semantics and the union has only
+a single enumeration-typed subtype option it MAY choose to encode the enumeration
+as if the type aws not declared as a part of the union. The resulting value MUST be tagged.
+
+If the encoder is fully aware of data semantics and the union has only
+a single bits-types subtype option it MAY chose to encode the bits as if the type was not declared as a part of the union. The resuling value MUST be tagged.
+
+TO DO: Do we need to introduce a flattened union terminology?
+
+~~~ yang
+leaf single-or-multiple {
+  // counter example of multi enumerations union with pedantic understanding
+  // this should not be taken as an union with single enumeration subtype
+  type union {
+    type enumeration {
+      enum val_one;
+      enum val_two;
+    }
+    type union {
+      type string;
+      type enumeration {
+        enum val_three { value 1; }; // collide with union/enumeration/val_one
+      }
+    }
+    type union {
+      type enumeration {
+        enum val_rand { value 42; } // do not collide
+      }
+    }
+  }
+}
+~~~
+
+*Example*
+
+~~~ yang
+leaf complex {
+  type union {
+    type uint16;
+    type enumeration {
+      enum unknown { value 1; } // default would be 0
+    }
+    type bits {
+      bit capability_a { position 2; }
+      bit capability_b { position 3; }
+    }
+  }
+}
+~~~
+
+Legacy representation of the "unknown" enumeration `complex` leaf value.
+
+~~~ cbor-diag
+D8 2B                # tag(43)
+   67                # text(7)
+      756E6B6E6F776E # "unknown"
+~~~
+
+Stand-in tag representation.
+
+~~~ cbor-diag
+D8 2B  # tag(43)
+   00  # unsigned(0)
+~~~
+
+Legacy representation of both "capability_a" and "capability_b" bits set of `complex` leaf value.
+
+~~~ cbor-diag
+D8 2C    # tag(44)
+   78 19 # text(25)
+      6361706162696C6974795F61206361706162696C6974795F62
+      # "capability_a capability_b"
+~~~
+
+Stand-in tag representation.
+
+~~~ cbor-diag
+D8 2C    # tag(44)
+   41    # bytes(1)
+      06
+~~~
+
+TO DO: This approach would save a lot of bytes, especially for the bits but may create some hurdles for interoperability and/or extensibility.
+However, I wanted this rules to be in similar manner to the time tags: "If the usage of stand-in tag would save and be lossless then the decoder
+may perform it."
+
+Authors of YANG models writing models that are extension of existing data model should take care to prevent interoperability issues.
+The actions that break interoperability are as follows:
+- Adding new 'enum' values in enumeration type.
+- Adding new 'bit' values in bits type.
+- Adding new enumeration subtype.
+- Adding new bits subtype.
+
+Ideally, the extension authors should contact the original authors and discuss the layout of enumeration/bits value space allocation.
+
+TO DO: Should we consider even more complex action like: The decoder may try to merge all the enumerations into one and if the value-name pair don't collide
+on names or values (not both at the same time) then the enumeration used for encoding is the merged one?
+
+TO DO: If approved, mention this in IANA considerations (we extend CBOR tags 43, 44).
+
 # Using Stand-In Tags
 
 ## Defining Stand-In Usage in Schema
