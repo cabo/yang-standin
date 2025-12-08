@@ -377,6 +377,21 @@ otherwise it SHOULD keep the legacy representation.
 If a decoder receives data for a union-typed node, it MUST accept any data type
 of the union, even though it may violate additional constraints outside the schema.
 
+## Derived types and indirection
+
+When a stand-in tag type is used as a base type of some derived type
+the rules for stand-in tag apply. If the derived type has some restrictions those
+restrictions also apply.
+
+If the target type of leafref is a stand-in tag typed the stand-in tag rules also apply.
+
+TO DO: Is the following section useful? Doesn't it make the specification too complex?
+
+The author YANG model may require to use the legacy representation over the efficient
+stand-in representation. Then the description of the specific place, where this applies,
+needs to clearly and explicitly state that this derived type should not be encoded according
+to the stand-in rules.
+
 # Using Stand-In Tags
 
 ## Defining Stand-In Usage in Schema
