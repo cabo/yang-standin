@@ -159,11 +159,11 @@ are only used when an Unambiguous Round Trip can be achieved.
 
 {{Section 3 of -legacy-bis}} defines the following types in `ietf-yang-types`:
 
-YANG type | base type | specification | stand-in
-date-and-time | string | {{-yang-types}} | tag 1
-date | string | {{-legacy-bis}} | (none)
-date-no-zone | string | {{-legacy-bis}} | tag 100
-{: title="Legacy date and date/time representations in ietf-yang-types"}
+YANG type     | base type | specification   | stand-in
+date-and-time | string    | {{-yang-types}} | tag 1
+date          | string    | {{-legacy-bis}} | (none)
+date-no-zone  | string    | {{-legacy-bis}} | tag 100
+{: title="Legacy date and date/time representation in ietf-yang-types"}
 
 Tag 1 ({{Section 3.4.2 of RFC8949@-cbor}}) can unambiguously stand in for all `date-and-time` values that:
 
@@ -183,11 +183,11 @@ that have fractional seconds given.
 Tag 100 {{-date}} can unambiguously stand in for all `date-no-zone` values.
 
 
-## `ietf-yang-types`: Tags 37 (UUID) and CPA113 (hex-string) {#hex-tags}
+## `ietf-yang-types`: Tags 37 (UUID), CPA113 (hex-string) and CPA114 (dotted-quad) {#hex-tags}
 
 {{Section 3 of -legacy-bis}} defines the following types in `ietf-yang-types`:
 
-| YANG type    | base type | specification | stand-in   |
+| YANG type    | base type | specification   | stand-in   |
 | uuid         | string    | {{-legacy-bis}} | tag 37     |
 | hex-string   | string    | {{-legacy-bis}} | tag CPA113 |
 | mac-address  | string    | {{-yang-types}} | tag CPA113 |
@@ -247,6 +247,29 @@ tags if that is useful for some specific YANG model not considered
 here.
 
 [^cpa]
+
+| YANG type    | base type | specification   | stand-in   |
+| dotted-quad  | string    | {{-yang-types}} | tag CPA114 |
+{: #tab-hex title="Legacy dotted quad representation in ietf-yang-types"}
+
+`dotted-quad` stands for 4-byte byte string ({{Section 3 of -yang-types}}),
+represented in decimal byte values characters with ASCII dot characters in between
+the byte boundaries.
+Tag CPA114 can be used as a binary stand-in for this adorned binary representation.
+
+IANA will assign CPA114 as the CBOR tag to indicate a dotted-quad.
+The enclosed data item is a 4-byte octet string. It is expected that when the data is being
+displayed e.g. to human operator, the data will be transformed into a string of
+4 decimal numbers from the network-ordered byte string separeted by ASCII dot character.
+
+[^cpa]
+
+TO DO: Better formulation of the dotted-quad expected later encoding.
+TO DO: Should the tagged value be byte string or just integer?
+  Binary string may be better for constrained environment their (possibly) fixed length.
+TO DO: Should we fix the 4-byte length or make it more generic with arbitraty length
+  byte strings? (For usage as IPv4 similar identifier -- see ietf-ospf.yang --
+  the 4-byte length is sufficient and brings less complexity)
 
 [^cpa]: RFC-Editor: This document uses the CPA (code point allocation)
       convention described in [I-D.bormann-cbor-draft-numbers].  For
@@ -479,8 +502,10 @@ TODO Security
 In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
 IANA is requested to assign the tag in {{tab-new-tags}}.
 
-| Tag    | Data Item   | Semantics                                                                            | Reference                              |
-| CPA113 | byte string | Expected Later Encoding: colon-separated hexadecimal representation of a byte string | draft-bormann-yang-standin, {{hex-tags}} |
+| Tag    | Data Item        | Semantics                                                                            | Reference                                |
+| CPA113 | byte string      | Expected Later Encoding: colon-separated hexadecimal representation of a byte string | draft-bormann-yang-standin, {{hex-tags}} |
+| CPA114 | unsigned integer | Expected Later Encoding: dot-separeted decimal representation of network-byte-order ordered bytes of the integer.
+                                                                                                                   | draft-bormann-yang-standin, {{hex-tags}} |
 {: #tab-new-tags title="New CBOR Tag Defined by this Specification"}
 
 
