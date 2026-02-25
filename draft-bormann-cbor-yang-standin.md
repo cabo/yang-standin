@@ -376,7 +376,7 @@ CBOR encoding of legacy representation (10 bytes):
 
 Stand-in representation of IPv4 prefix 192.0.2.0/24 is `52([24, h'c0000200'])`.
 
-CBOR encoding of stand-in (14 bytes):
+CBOR encoding of stand-in (10 bytes):
 
 ~~~ cbor-pretty
 D8 34             # tag(52)
@@ -395,7 +395,7 @@ CBOR encoding of legacy representation (13 bytes):
 
 Stand-in representation of IPv4 address combined with prefix 192.0.2.1/24 is `52([h'c0000201', 24])`.
 
-CBOR encoding of stand-in (14 bytes):
+CBOR encoding of stand-in (10 bytes):
 
 ~~~ cbor-pretty
 D8 34             # tag(52)
