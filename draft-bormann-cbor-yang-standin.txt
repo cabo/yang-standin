@@ -5,8 +5,8 @@
 CBOR (Concise Binary Object Representation) Maint. and Ext.   C. Bormann
 Internet-Draft                                    Universität Bremen TZI
 Intended status: Standards Track                              M. Matejka
-Expires: 4 September 2025                                         CZ.NIC
-                                                            3 March 2025
+Expires: 29 August 2026                                           CZ.NIC
+                                                        25 February 2026
 
 
                       Stand-in Tags for YANG-CBOR
@@ -60,11 +60,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 September 2025.
+   This Internet-Draft will expire on 29 August 2026.
 
 Copyright Notice
 
-   Copyright (c) 2025 IETF Trust and the persons identified as the
+   Copyright (c) 2026 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -392,6 +392,7 @@ Table of Contents
 
    78 26                                   # text(38)
       323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
+      # "2001:db8:1234:deed:beef:cafe:face:feed"
 
    Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is 54([48,
    h'20010db81234']).
@@ -427,8 +428,52 @@ Table of Contents
 
    78 26                                   # text(38)
       666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
+      # "fe80::0202:02ff:ffff:fe03:0303/64%eth0"
 
-   TO DO: adapt more examples from [RFC9164]
+   Stand-in representation of IPv4 address 192.0.2.1 is 52(h'c0000201').
+
+   CBOR encoding of stand-in (7 bytes):
+
+   D8 34          # tag(52)
+      68          # bytes(4)
+         C0000201
+
+   CBOR encoding of legacy representation (10 bytes):
+
+   69                    # text(9)
+      3139322e302e322e31 # "192.0.2.1"
+
+   Stand-in representation of IPv4 prefix 192.0.2.0/24 is 52([24,
+   h'c0000200']).
+
+   CBOR encoding of stand-in (10 bytes):
+
+   D8 34             # tag(52)
+      82             # array(2)
+         18 18       # unsigned(24)
+         48          # bytes(4)
+            C0000200
+
+   CBOR encoding of legacy representation (13 bytes):
+
+   6C                          # text(12)
+      3139322e302e322e302f3234 # "192.0.2.0/24"
+
+   Stand-in representation of IPv4 address combined with prefix
+   192.0.2.1/24 is 52([h'c0000201', 24]).
+
+   CBOR encoding of stand-in (10 bytes):
+
+   D8 34             # tag(52)
+      82             # array(2)
+         48          # bytes(4)
+            C0000201
+         18 18       # unsigned(24)
+
+   CBOR encoding of legacy representation (13 bytes):
+
+   6C                          # text(12)
+      3139322e302e322e312f3234 # "192.0.2.1/24"
 
    TO DO: Check how the unions in [RFC6021] and
    [I-D.ietf-netmod-rfc6991-bis] interact with this.  E.g., the union
@@ -605,9 +650,8 @@ Table of Contents
    [I-D.ietf-netmod-rfc6991-bis]
               Schönwälder, J., "Common YANG Data Types", Work in
               Progress, Internet-Draft, draft-ietf-netmod-rfc6991-bis-
-              17, 21 October 2024,
-              <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
-              rfc6991-bis-17>.
+              18, 23 June 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-netmod-rfc6991-bis-18>.
 
    [IANA.cbor-tags]
               IANA, "Concise Binary Object Representation (CBOR) Tags",
@@ -655,9 +699,9 @@ Table of Contents
 
    [I-D.bormann-cbor-notable-tags]
               Bormann, C., "Notable CBOR Tags", Work in Progress,
-              Internet-Draft, draft-bormann-cbor-notable-tags-12, 12
-              February 2025, <https://datatracker.ietf.org/doc/html/
-              draft-bormann-cbor-notable-tags-12>.
+              Internet-Draft, draft-bormann-cbor-notable-tags-15, 11
+              February 2026, <https://datatracker.ietf.org/doc/html/
+              draft-bormann-cbor-notable-tags-15>.
 
    [RFC9542]  Eastlake 3rd, D., Abley, J., and Y. Li, "IANA
               Considerations and IETF Protocol and Documentation Usage
