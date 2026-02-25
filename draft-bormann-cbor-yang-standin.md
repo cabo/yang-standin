@@ -311,6 +311,7 @@ CBOR encoding of legacy representation (40 bytes):
 ~~~ cbor-pretty
 78 26                                   # text(38)
    323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
+   # "2001:db8:1234:deed:beef:cafe:face:feed"
 ~~~
 
 Stand-in representation of IPv6 prefix 2001:db8:1234::/48 is
@@ -353,9 +354,63 @@ CBOR encoding of legacy representation (40 bytes):
 ~~~ cbor-pretty
 78 26                                   # text(38)
    666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
+   # "fe80::0202:02ff:ffff:fe03:0303/64%eth0"
 ~~~
 
-TO DO: adapt more examples from {{-cbor-ip}}
+Stand-in representation of IPv4 address 192.0.2.1 is `52(h'c0000201')`.
+
+CBOR encoding of stand-in (7 bytes):
+
+~~~ cbor-pretty
+D8 34          # tag(52)
+   68          # bytes(4)
+      C0000201
+~~~
+
+CBOR encoding of legacy representation (10 bytes):
+
+~~~ cbor-pretty
+69                    # text(9)
+   3139322e302e322e31 # "192.0.2.1"
+~~~
+
+Stand-in representation of IPv4 prefix 192.0.2.0/24 is `52([24, h'c0000200'])`.
+
+CBOR encoding of stand-in (10 bytes):
+
+~~~ cbor-pretty
+D8 34             # tag(52)
+   82             # array(2)
+      18 18       # unsigned(24)
+      48          # bytes(4)
+         C0000200
+~~~
+
+CBOR encoding of legacy representation (13 bytes):
+
+~~~ cbor-pretty
+6C                          # text(12)
+   3139322e302e322e302f3234 # "192.0.2.0/24"
+~~~
+
+Stand-in representation of IPv4 address combined with prefix 192.0.2.1/24 is `52([h'c0000201', 24])`.
+
+CBOR encoding of stand-in (10 bytes):
+
+~~~ cbor-pretty
+D8 34             # tag(52)
+   82             # array(2)
+      48          # bytes(4)
+         C0000201
+      18 18       # unsigned(24)
+~~~
+
+CBOR encoding of legacy representation (13 bytes):
+
+~~~ cbor-pretty
+6C                          # text(12)
+   3139322e302e322e312f3234 # "192.0.2.1/24"
+~~~
 
 TO DO: Check how the unions in {{-yang-types}} and {{-legacy-bis}} interact
 with this.  E.g., the union ip-address needs to be parsed to decide
