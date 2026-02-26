@@ -48,12 +48,15 @@ normative:
   STD94: cbor
   RFC6021: yang-types
   RFC9562: uuid
+  RFC7951: yang-json
+  RFC9595: yang-cbor-sid
   IANA.cbor-tags:
 
 informative:
   RFC9557: ixdtf
   RFC9542: mac-address
   I-D.bormann-cbor-notable-tags: notable
+  BCP215: yang-tree
 
 --- abstract
 
@@ -96,67 +99,21 @@ Stand-in tag:
 Encoder:
 : The party which generates (sends) CBOR data described by YANG.
 
-Intermediate Encoder:
-: An encoder which isn't the original author of the data, converting it
-  from legacy representation.
-
-Aggressive Intermediate Encoder:
-: An intermediate encoder that might choose to discard some
-  information of a legacy representation in order to be able to use a
-  stand-in tag.
-  Such a choice may be based on knowledge of the Decoder's handling of
-  such information (e.g, to accommodate intolerant decoders), or it
-  may be a general characteristic of the service provided by the
-  intermediate encoder (e.g., in order to serve as a legacy-eschewing
-  encoder).
-
-Legacy-Eschewing Encoder:
-: An encoder that does not generate legacy representations in places
-  where a stand-in tag might instead be used.
-  An intermediate encoder may need to be aggressive to achieve this.
-
 Decoder:
 : The party which receives and parses CBOR data described by YANG.
-
-Intolerant Decoder:
-: A decoder that does not accept legacy representations in places
-  where a stand-in tag might instead be used.
-  Such a decoder is designed to interoperate only with an
-  legacy-eschewing encoder.
-
-Intermediate Decoder:
-: A decoder which isn't the final recipient of the data, converting it
-  to legacy representation.
-
-Data Transfer:
-: A series of actions, generally beginning by data origination, encoding,
-  continuing by optional intermediate transcoding, sending and receiving,
-  and finally decoding and consuming.
-
-Round Trip:
-: Part of a data transfer between an encoder generating CBOR data with
-  stand-in tags and a decoder parsing the data.
-
-Legacy Round Trip:
-: A Round Trip where the encoder is an intermediate encoder or the decoder is
-  an intermediate decoder and any of these converts from or to the
-  legacy representation.
-
-Unambiguous Round Trip:
-: A Legacy Round Trip that provides exactly the same legacy representation
-  (not just semantically equivalent).
-  The stand-in tag is also said to "unambiguously stand in" for the
-  legacy representation.
 
 {::boilerplate bcp14-tagged-bcp14}
 
 # Stand-In Tags
 
-This document defines two sets of stand-in tags.
-Where information starts out in a legacy representation, these tags
-are only used when an Unambiguous Round Trip can be achieved.
+This document defines a new content type and encoding of YANG-modeled
+data, based on {{-yang-cbor}}. Whenever a stand-in tag is defined
+for a specific type, the encoding as specified in this document
+may be used. Otherwise, the encoding is as specified in {{-yang-cbor}}.
 
-## `ietf-yang-types`: Tag 1 (Date/Time) and Tag 100 (Date)
+This section defines several standard stand-in tags for general use.
+
+## `ietf-yang-types`: Tag 1 (Date/Time) and Tag 100 (Date) {#tag-date-time-basic}
 
 {{Section 3 of -legacy-bis}} defines the following types in `ietf-yang-types`:
 
@@ -180,7 +137,7 @@ that have fractional seconds given.
 
 Tag 100 {{-date}} can unambiguously stand in for all `date-no-zone` values.
 
-## `ietf-yang-types`: Tag 1001 (Extended Date and Time)
+## `ietf-yang-types`: Tag 1001 (Extended Date and Time) {#tag-date-time-extended}
 
 {{Section 3 of -legacy-bis}} defines the following types in `ietf-yang-types`:
 
@@ -195,10 +152,6 @@ time-no-zone | string | {{-legacy-bis}} | 1001
 The tag 1001 {{-extended-time}} can unambigously stand for all the
 aforementioned types of values. Values of type `time` and `time-no-zone`
 are encoded with a date of 1 January 1970.
-
-If the encoder supports tag 1001, it MUST NOT use tags 100 and 1 as stand-ins.
-Intolerant decoders should specify which kind of tags they expect.
-
 
 ## `ietf-yang-types`: Tags 37 (UUID) and CPA113 (hex-string) {#hex-tags}
 
@@ -221,9 +174,6 @@ Tag 37 (see also Section 7 of {{-notable}}) can be used as a binary
 stand-in for this adorned hexadecimal representation.
 According to the description of `uuid` in {{Section 3 of -legacy-bis}},
 "the canonical representation uses lowercase characters".
-For consistency with this specification, an intermediate decoder of a
-tag 37 stand-in MUST use lowercase characters in the uuid hex string
-generated.
 
 `hex-string`, and the similar, but more specific types `mac-address`
 and `phys-address`, stand for byte strings in various lengths (exactly
@@ -294,21 +244,6 @@ ip-address-and-prefix | union | {{-legacy-bis}} | (see union)
 ipv6-address-and-prefix | string | {{-legacy-bis}} | tag 54
 ipv4-address-and-prefix | string | {{-legacy-bis}} | tag 52
 {: title="Legacy representations in ietf-yang-types"}
-
-An intermediate encoder MAY normalize IPv6 addresses and prefixes that do not comply with {{RFC5952}}
-but can be converted into the stand-in representation.
-For example, IPv6 address written as 2001:db8:: is the same as 2001:0db8::0:0 and both would
-be converted to `54(h'20010db8000000000000000000000000')`, anyway only the
-first one complies with {{RFC5952}}. The encoder MAY refuse to convert the
-latter one.
-
-If the schema specifies
-`ip-prefix`, an intermediate encoder MAY normalize prefixes with non-zero bits after the prefix end.
-For example, if the legacy representation of `ipv6-prefix` is 2001:db8:1::/40, the encoder
-may either refuse it as malformed or convert it to 2001:db8::/40 and represent
-as `54([40, h'20010db8'])`.
-
-The encoder implementation should be clear about which normalizations are employed and how.
 
 Adapted examples from {{-cbor-ip}}:
 
@@ -429,120 +364,164 @@ CBOR encoding of legacy representation (13 bytes):
    3139322e302e322e312f3234 # "192.0.2.1/24"
 ~~~
 
-TO DO: Check how the unions in {{-yang-types}} and {{-legacy-bis}} interact
-with this.  E.g., the union ip-address needs to be parsed to decide
-between tag 54 and tag 52.
-
 ## Union handling
 
 When the schema specifies a union data type for a node, there are
-additional requirements on the encoder and decoder.
-
-An encoder which is fully aware of data semantics MUST use the appropriate
-data type, even though it isn't formally specified by the schema.
-
-If an intermediate encoder doesn't fully understand the data semantics,
-it needs to find out which type the data actually is to choose the right stand-in.
-If more types are possible, it MAY choose any of these which allow for an Unambiguous Round Trip,
-otherwise it SHOULD keep the legacy representation.
-
-If a decoder receives data for a union-typed node, it MUST accept any data type
-of the union, even though it may violate additional constraints outside the schema.
+additional requirements on the encoder and decoder. The encoder MUST
+be fully aware of data semantics and use the appropriate data type
+and encoding. The decoder MUST use the data type information for further
+processing, in a similar way as specified in {{Section 6.10 of -yang-json}}.
 
 # Using Stand-In Tags
 
-## Defining Stand-In Usage in Schema
+Document encoded using stand-in tags is not compatible with a document
+encoded according to only {{-yang-cbor}}. It's also not easily possible
+to specify the actual usage of stand-in tags globally, as types
+may get e.g. subtyped or unionized.
 
-Requiring modifications to a YANG model in order to use it with
-stand-in tags would pose significant deployment hurdles to using
-stand-in tags.
+It has been already specified in {{-yang-cbor}} that item names may be
+replaced by schema identifiers, and that replacement table (SID file),
+specified in {{-yang-cbor-sid}}, needs to be distributed alongside the
+YANG modules for the encoded data to make any sense.
 
-A YANG model may want to restrict the information content in such a
-way that stand-in tags can always be used, e.g., by using date-no-zone
-in place of date where that is applicable, or by excluding features of
-a YANG data type that cannot be represented in a stand-in-tag.
+This document specifies an additional file, a Standin file, which shall
+be distributed in a similar way to how SID files are distributed, whenever
+possible. The Standin files SHOULD maintain the same lifecycle as SID
+files to help interoperability.
 
-ISSUE: Should this document define such restricted types, e.g.:
+## Standin File Format
 
-~~~ yang
-  typedef efficient-date-and-time {
-    type date-and-time {
-      pattern '.*-00:00'
-    }
-    description
-      "The efficient-date-and-time type is a profile of the
-       date-and-time that is intended to always enable using a
-       stand-in tag as per ((this document)), e.g., by not expressing
-       a time-zone-offset.
-       Not all restrictions that make this possible are expressed in
-       the above YANG string pattern.";
-  }
+Standin files are used to specify which exact standins are used in the
+described encoding. The following tree diagram {{-yang-tree}} provides
+an overview of the data model:
+
+~~~yang-tree
+module: ietf-cbor-standin-file
+
+TODO
+
 ~~~
 
-(This particular example is additionally problematic since the usual
-way to indicate the absence of time zone information in ISO 8601
-date-times is using `Z` as the time zone indicated, not `-00:00` as is
-required by {{Section 3 of -legacy-bis}} but not allowed by ISO 8601;
-see {{-ixdtf}} for additional discussion of this.)
-[^no8601reference]
+The standin file specifies the encoding for all nodes of a specific type,
+or for a singular sid. The encoding of the standin file SHOULD be CBOR with SIDs
 
-[^no8601reference]: Note that this paragraph does not reference ISO
-    8601 because that is complicated and best done by consulting {{-ixdtf}}.
+~~~yang
+module ietf-cbor-standin-file {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-cbor-standin-file";
+  prefix standin;
 
-## Original stand-ins
+  ... TODO formal headers
 
-The simplest situation is when no intermediate encoders and decoders are
-involved in the data transfer, therefore the round trip is not legacy.
-In this case, no conversions are involved and data is validated using the
-schema extension from the previous section.
+  identity value-encoding {
+    description "Base identity for standin value encoding";
+  }
 
-## Legacy Round Trip
+  identity default {
+    base value-encoding;
+    description "Encoding without any standin tag.";
+    reference "{{-yang-cbor}}";
+  }
 
-Producing a stand-in MUST be triggered by schema usage. Intermediate encoders
-MUST NOT encode stand-ins when no schema is available.
+  identity tag-date-time-basic {
+    base value-encoding;
+    description "Use representation with tags 1 and 100 to encode date and time";
+    reference "{{tag-date-time-basic}}";
+  }
 
-It's generally not recommended to do a legacy round trip where both the encoder
-and decoder are converting from and to the legacy representation.
+  identity tag-date-time-extended {
+    base value-encoding;
+    description "Use representation with tag 1001 to encode date and time";
+    reference "{{tag-date-time-extended}}";
+  }
 
-# Negotiation
+  identity tag-uuid {
+    base value-encoding;
+    description "Use representation with tag 37 to encode UUIDs";
+    reference "{{tag-uuid}}";
+  }
 
-Introducing stand-in tags in YANG-CBOR requires some form of consent
-between the producer and the consumer of YANG-CBOR information:
+  ...
 
-* A producer that creates YANG-CBOR containing stand-in tags needs to
-  know whether the consumer supports stand-in tags, and, possibly,
-  which specific stand-in tags it supports.  We speak about the
-  _capability_ of a consumer to consume stand-in tags.
-  A producer MUST NOT employ stand-in tags unless it knows about the
-  capabilities of the consumer.
-  A consumer SHOULD indicate its capabilities for consuming stand-in tags.
+  identity ipv6-address {
+    base value-encoding;
+    description "Use representation with tag 54 to encode IPv6 addresses";
+  }
 
-* A consumer may not want to implement certain legacy text-based
-  representations where more efficient (and easy to implement)
-  stand-in tags are available, i.e., it may use an intolerant decoder.
-  This places a _requirement_ on the
-  producer to use a legacy-eschewing encoder (which therefore needs to
-  have the _capability_ to produce YANG-CBOR
-  where those stand-in tags are used, in place of legacy
-  representations).
-  Where the consumer employs an intolerant decoder, stand-in tags are
-  _required_ by the consumer: for interoperating with a producer's
-  encoder, this MUST be legacy-eschewing, i.e. it MUST NOT employ
-  legacy representations.
-  A consumer that has requirements for only receiving stand-in tags in
-  place of legacy representations, MUST indicate this to the producer.
+  ...
 
-ISSUE: Where do we put those two aspects of negotiation?
+  container standin-file {
+  description "contents of the standin file";
 
-* NETCONF negotiation
-* yang-library
-* media-type parameters
-* ?
+  leaf module-name {
+    type yang:yang-identifier;
+    mandatory true;
+    description
+      "Name of the YANG module associated with this
+      standin file.";
+  }
+
+  leaf module-revision {
+    type revision-identifier;
+    description
+      "Revision of the YANG module associated with this standin
+      file.
+      This leaf is not present if no revision statement is
+      defined in the YANG module.";
+  }
+
+  leaf sid-file-version {
+    type sid-file-version-identifier;
+    default 0;
+    description
+      "Optional leaf that specifies the version number of the
+      adjacent '.sid' file which this file depends on.";
+  }
+
+  leaf description {
+    type string;
+    description
+      "Free-form meta-information about the standin file.";
+  }
+
+  list encoding {
+    config false;
+    choice encoding-variant {
+      case by-type {
+        list types {
+          key "type";
+          leaf type {
+            type string;
+            description "Type name to be encoded by the specifed standin";
+          }
+        }
+      }
+      case by-sid {
+        list sids {
+          key "sid";
+          leaf sid {
+            type sid;
+            description "SID to be encoded by the specified standim";
+//            TODO: Can this be a leafref?
+          }
+        }
+      }
+    }
+    leaf standin {
+      type identityref;
+      base standin:value-encoding;
+      description "Which value encoding to use";
+    }
+    }
+  }
+}
+
+~~~
+
 
 # Security Considerations
 
 TODO Security
-
 
 # IANA Considerations
 
@@ -556,21 +535,16 @@ IANA is requested to assign the tag in {{tab-new-tags}}.
 {: #tab-new-tags title="New CBOR Tag Defined by this Specification"}
 
 
-## stand-in tags?
-
-ISSUE: Do we want to have a separate registry for stand-in tags?
-
-They already are CBOR tags and thus in the registry, but might
-get lost in the bulk of that (and are only identified as YANG-CBOR
-stand-in Tags in the specification).
-
 ## media-type parameters
 
-ISSUE: Should the use of stand-in tags be mentioned in the various
-YANG-CBOR-based media types (as a media type parameter)?
+IANA is requested to register a value `standin` for media-type subparameter `encoding`,
+specifying that some values have been encoded using standins.
 
-Compare how application/yang-data+cbor can use id=name/id=sid to
-indicate another encoding decision.
+## Standin declaration block SID allocation
+
+IANA is requested to register a block of 50 SIDs for the
+`ietf-cbor-standin-file` module in the IETF YANG-SID Ranges
+Registry as per RFC 9595.
 
 --- back
 
