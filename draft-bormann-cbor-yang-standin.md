@@ -504,7 +504,7 @@ IANA is requested to assign the tag in {{tab-new-tags}}.
 
 | Tag    | Data Item        | Semantics                                                                            | Reference                                |
 | CPA113 | byte string      | Expected Later Encoding: colon-separated hexadecimal representation of a byte string | draft-bormann-yang-standin, {{hex-tags}} |
-| CPA114 | unsigned integer | Expected Later Encoding: dot-separeted decimal representation of network-byte-order ordered bytes of the integer.
+| CPA114 | unsigned integer | Expected Later Encoding: dot-separated decimal representation of network-byte-order ordered bytes of the integer.
                                                                                                                    | draft-bormann-yang-standin, {{hex-tags}} |
 {: #tab-new-tags title="New CBOR Tag Defined by this Specification"}
 
