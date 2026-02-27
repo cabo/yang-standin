@@ -262,10 +262,10 @@ Tag CPA114 can be used as a binary stand-in for this adorned bytewise decimal re
 
 IANA will assign CPA114 as the CBOR tag to indicate a dotted-quad.
 The enclosed data item is an unsigned integer of a size not greater
-than 4 bytes (0..0xFFFFFFFF).
+than 4 bytes (0..0xFFFFFFFF, uint32).
 It is expected that when the data is being displayed e.g. to human
 operator, the data will be shown as a string of 4 decimal numbers
-giving the number as a four bytes in network byte order, separated by
+giving the number as four bytes in network byte order, separated by
 ASCII dot characters.
 
 [^cpa]
