@@ -250,7 +250,7 @@ here.
 
 | YANG type    | base type | specification   | stand-in   |
 | dotted-quad  | string    | {{-yang-types}} | tag CPA114 |
-{: #tab-hex title="Legacy dotted quad representation in ietf-yang-types"}
+{: #tab-dotquad title="Legacy dotted quad representation in ietf-yang-types"}
 
 `dotted-quad` stands for 4-byte byte string ({{Section 3 of -yang-types}}),
 represented in decimal byte values characters with ASCII dot characters in between
