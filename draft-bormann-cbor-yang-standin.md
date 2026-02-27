@@ -49,8 +49,14 @@ normative:
   IANA.cbor-tags:
 
 informative:
-  RFC6991: yang-types-second
-  RFC6021: yang-types-first
+  RFC6991:
+    -: yang-types-second
+    ann: >
+      This specification is obsoleted by [RFC9911].
+  RFC6021:
+    -: yang-types-first
+    ann: >
+      This specification is obsoleted by [RFC6991], which is obsoleted by [RFC9911].
   RFC9557: ixdtf
   RFC9542: mac-address
   I-D.bormann-cbor-notable-tags: notable
