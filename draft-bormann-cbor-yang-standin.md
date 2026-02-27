@@ -185,7 +185,7 @@ that have fractional seconds given.
 Tag 100 {{-date}} can unambiguously stand in for all `date-no-zone` values.
 
 
-## `ietf-yang-types`: Tags 37 (UUID), CPA113 (hex-string) and CPA114 (dotted-quad) {#hex-tags}
+## `ietf-yang-types`: Tags 37 (UUID), CPA113 (hex-string), and CPA114 (dotted-quad) {#hex-tags}
 
 {{Section 3 of -yang-types-current}} defines the following types in `ietf-yang-types`:
 
@@ -239,10 +239,11 @@ This specification therefore requests IANA to assign a new CBOR tag that can be
 used as a stand-in for all instances of colon-separated text strings
 of hexadecimally represented bytes, as shown in {{tab-hex}}.
 
-Note Related tags have not been defined so far for tag 21 or 22
-defined alongside tag 23, as YANG has a base type "binary" that is
+Note: Related standin semantics have not been defined so far for tag 21 or 22
+that were defined alongside tag 23: YANG has a base type "binary" that is
 encoded in base64 classic in YANG-XML and YANG-JSON, but already
-encoded in a binary byte string in YANG-CBOR; use cases that might
+encoded in a binary byte string in YANG-CBOR.
+Use cases that might
 actually use base type "string" for base64-encoded data in YANG have
 not been considered.  However, tag 21 or 22 could be used as stand-in
 tags if that is useful for some specific YANG model not considered
@@ -311,7 +312,7 @@ ipv4-address-and-prefix | string | {{-yang-types-current}} | tag 52
 An intermediate encoder MAY normalize IPv6 addresses and prefixes that do not comply with {{RFC5952}}
 but can be converted into the stand-in representation.
 For example, IPv6 address written as 2001:db8:: is the same as 2001:0db8::0:0 and both would
-be converted to `54(h'20010db8000000000000000000000000')`, anyway only the
+be converted to `54(h'20010db8000000000000000000000000')`; only the
 first one complies with {{RFC5952}}. The encoder MAY refuse to convert the
 latter one.
 
