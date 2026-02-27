@@ -252,24 +252,29 @@ here.
 
 | YANG type    | base type | specification   | stand-in   |
 | dotted-quad  | string    | {{-yang-types-second}} | tag CPA114 |
-{: #tab-dotquad title="Legacy dotted quad representation in ietf-yang-types"}
+{: #tab-dotquad title="Legacy dotted-quad representation in ietf-yang-types"}
 
-`dotted-quad` stands for 4-byte byte string ({{Section 3 of -yang-types}}),
-represented in decimal byte values characters with ASCII dot characters in between
-the byte boundaries.
-Tag CPA114 can be used as a binary stand-in for this adorned binary representation.
+`dotted-quad` stands for an unsigned 32-bit integer ({{Section 3 of
+-yang-types-current}}), represented as a text string in decimal values
+for 4 byte values in network byte order, separated by ASCII dot characters.
+Tag CPA114 can be used as a binary stand-in for this adorned bytewise decimal representation.
 
 IANA will assign CPA114 as the CBOR tag to indicate a dotted-quad.
-The enclosed data item is a 4-byte octet string. It is expected that when the data is being
-displayed e.g. to human operator, the data will be transformed into a string of
-4 decimal numbers from the network-ordered byte string separeted by ASCII dot character.
+The enclosed data item is an unsigned integer of a size not greater
+than 4 bytes (0..0xFFFFFFFF).
+It is expected that when the data is being displayed e.g. to human
+operator, the data will be shown as a string of 4 decimal numbers
+giving the number as a four bytes in network byte order, separated by
+ASCII dot characters.
 
 [^cpa]
 
-TO DO: Better formulation of the dotted-quad expected later encoding.
-TO DO: Should the tagged value be byte string or just integer?
-  Binary string may be better for constrained environment their (possibly) fixed length.
-TO DO: Should we fix the 4-byte length or make it more generic with arbitraty length
+[^discussion-dotted-quad]
+TO DO: Better formulation of the dotted-quad expected later encoding.<br>
+PROPOSED: RFC 9911 is clear that dotted-quad stands for an unsigned
+integer that fits into 32 bits; we should not replace that with a byte
+string.<br>
+RESOLVED: Should we fix the 4-byte length or make it more generic with arbitrary length
   byte strings? (For usage as IPv4 similar identifier -- see ietf-ospf.yang --
   the 4-byte length is sufficient and brings less complexity)
 
@@ -437,7 +442,7 @@ CBOR encoding of legacy representation (13 bytes):
    3139322e302e322e312f3234 # "192.0.2.1/24"
 ~~~
 
-TO DO: Check how the unions in {{-yang-types}} and {{-legacy-bis}} interact
+TO DO: Check how the unions in {{-yang-types-current}} interact
 with this.  E.g., the union ip-address needs to be parsed to decide
 between tag 54 and tag 52.
 
@@ -489,9 +494,9 @@ ISSUE: Should this document define such restricted types, e.g.:
 
 (This particular example is additionally problematic since the usual
 way to indicate the absence of time zone information in ISO 8601
-date-times is using `Z` as the time zone indicated, not `-00:00` as is
-required by {{Section 3 of -legacy-bis}} but not allowed by ISO 8601;
-see {{-ixdtf}} for additional discussion of this.)
+date-times is using `Z` as the time zone indicated, not `-00:00` as was
+required by {{Section 3 of -yang-types-second}} but not allowed by ISO 8601;
+see {{-ixdtf}} for references to versions of ISO 8601 and additional discussion of this.)
 [^no8601reference]
 
 [^no8601reference]: Note that this paragraph does not reference ISO
