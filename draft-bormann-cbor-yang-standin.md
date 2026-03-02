@@ -63,6 +63,7 @@ informative:
   RFC9542: mac-address
   I-D.bormann-cbor-notable-tags: notable
 #  BCP215: yang-tree
+  I-D.marenamat-netmod-core-yang-transcoding: transcoding
 
 --- abstract
 
@@ -185,6 +186,8 @@ in many cases based on the type definitions of {{-yang-types-current}}.
 The detailed conditions under which certain transformations can be
 applied to YANG-CBOR data representations after these have been
 generated are TBD; several processing models are conceivable for this.
+These processing models are out of scope of this document; work has
+started in {{-transcoding}}.
 One such condition might be:
 Where information starts out in a legacy representation, these tags
 are only used when an Unambiguous Round Trip can be achieved.)
