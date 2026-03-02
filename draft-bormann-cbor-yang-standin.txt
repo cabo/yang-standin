@@ -113,8 +113,8 @@ Table of Contents
    The terminology of [RFC9254] applies.
 
    The present document focuses on a "basic" processing model where the
-   original source of YANG-modeled data serves as the encoder and the
-   decoder is part of the ultimate destination of those data.
+   original source of YANG-modeled data serves as the encoder, and where
+   the decoder is part of the ultimate destination of those data.
    // TODO: More elaborate processing models are possible and desirable;
    several of the terms defined below are defined here only so they can
    be used to discuss processing models of this kind.
@@ -151,7 +151,7 @@ Table of Contents
 
    Intolerant Decoder:  A decoder that does not accept legacy
       representations in places where a stand-in tag might instead be
-      used.  Such a decoder is designed to interoperate only with an
+      used.  Such a decoder is designed to interoperate only with a
       legacy-eschewing encoder.
 
    Intermediate Decoder:  A decoder which isn't the final recipient of
@@ -197,9 +197,12 @@ Table of Contents
    // TODO: The detailed conditions under which certain transformations
    can be applied to YANG-CBOR data representations after these have
    been generated are TBD; several processing models are conceivable for
-   this.  One such condition might be: Where information starts out in a
-   legacy representation, these tags are only used when an Unambiguous
-   Round Trip can be achieved.)
+   this.  These processing models are out of scope of the present
+   document; work has started in
+   [I-D.marenamat-netmod-core-yang-transcoding].  One such condition
+   might be: Where information starts out in a legacy representation,
+   these tags are only used when an Unambiguous Round Trip can be
+   achieved.)
 
 3.1.  ietf-yang-types: Tag 1 (Date/Time) and Tag 100 (Date)
 
@@ -304,7 +307,7 @@ Table of Contents
    can be used as a stand-in for all instances of colon-separated text
    strings of hexadecimally represented bytes, as shown in Table 2.
 
-   Note: Related standin semantics have not been defined so far for tag
+   Note: Related stand-in semantics have not been defined so far for tag
    21 or 22 that were defined alongside tag 23: YANG has a base type
    "binary" that is encoded in base64 classic in YANG-XML and YANG-JSON,
    but already encoded in a binary byte string in YANG-CBOR.  Use cases
@@ -879,6 +882,13 @@ Table of Contents
               Internet-Draft, draft-bormann-cbor-notable-tags-16, 25
               February 2026, <https://datatracker.ietf.org/doc/html/
               draft-bormann-cbor-notable-tags-16>.
+
+   [I-D.marenamat-netmod-core-yang-transcoding]
+              Matějka, M., "Transcoding Data Modeled with YANG", Work in
+              Progress, Internet-Draft, draft-marenamat-netmod-core-
+              yang-transcoding-00, 2 March 2026,
+              <https://datatracker.ietf.org/doc/html/draft-marenamat-
+              netmod-core-yang-transcoding-00>.
 
    [RFC6021]  Schoenwaelder, J., Ed., "Common YANG Data Types",
               RFC 6021, DOI 10.17487/RFC6021, October 2010,

@@ -1271,7 +1271,7 @@ information that would be found in the original form of YANG-CBOR.<a href="#sect
       </h2>
 <p id="section-2-1">The terminology of <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span> applies.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">The present document focuses on a "basic" processing model where the original
-source of YANG-modeled data serves as the encoder and the decoder is
+source of YANG-modeled data serves as the encoder, and where the decoder is
 part of the ultimate destination of those data.
 <span class="cref" id="TODO">TODO:</span> More elaborate processing models are possible and desirable; several
 of the terms defined below are defined here only so they can be used
@@ -1329,7 +1329,7 @@ An intermediate encoder may need to be aggressive to achieve this.<a href="#sect
         <dd style="margin-left: 1.5em" id="section-2-3.16">
           <p id="section-2-3.16.1">A decoder that does not accept legacy representations in places
 where a stand-in tag might instead be used.
-Such a decoder is designed to interoperate only with an
+Such a decoder is designed to interoperate only with a
 legacy-eschewing encoder.<a href="#section-2-3.16.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
@@ -1392,6 +1392,8 @@ in many cases based on the type definitions of <span>[<a href="#RFC9911" class="
 The detailed conditions under which certain transformations can be
 applied to YANG-CBOR data representations after these have been
 generated are TBD; several processing models are conceivable for this.
+These processing models are out of scope of the present document; work has
+started in <span>[<a href="#I-D.marenamat-netmod-core-yang-transcoding" class="cite xref">I-D.marenamat-netmod-core-yang-transcoding</a>]</span>.
 One such condition might be:
 Where information starts out in a legacy representation, these tags
 are only used when an Unambiguous Round Trip can be achieved.)<a href="#section-3-3" class="pilcrow">¶</a></p>
@@ -1563,7 +1565,7 @@ not for other byte strings of a similar form.
 This specification therefore requests IANA to assign a new CBOR tag that can be
 used as a stand-in for all instances of colon-separated text strings
 of hexadecimally represented bytes, as shown in <a href="#tab-hex" class="auto internal xref">Table 2</a>.<a href="#section-3.2-8" class="pilcrow">¶</a></p>
-<p id="section-3.2-9">Note: Related standin semantics have not been defined so far for tag 21 or 22
+<p id="section-3.2-9">Note: Related stand-in semantics have not been defined so far for tag 21 or 22
 that were defined alongside tag 23: YANG has a base type "binary" that is
 encoded in base64 classic in YANG-XML and YANG-JSON, but already
 encoded in a binary byte string in YANG-CBOR.
@@ -2380,6 +2382,10 @@ indicate another encoding decision.<a href="#section-7.3-2" class="pilcrow">¶</
 <dt id="I-D.bormann-cbor-notable-tags">[I-D.bormann-cbor-notable-tags]</dt>
         <dd>
 <span class="refAuthor">Bormann, C.</span>, <span class="refTitle">"Notable CBOR Tags"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-bormann-cbor-notable-tags-16</span>, <time datetime="2026-02-25" class="refDate">25 February 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-bormann-cbor-notable-tags-16">https://datatracker.ietf.org/doc/html/draft-bormann-cbor-notable-tags-16</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.marenamat-netmod-core-yang-transcoding">[I-D.marenamat-netmod-core-yang-transcoding]</dt>
+        <dd>
+<span class="refAuthor">Matějka, M.</span>, <span class="refTitle">"Transcoding Data Modeled with YANG"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-marenamat-netmod-core-yang-transcoding-00</span>, <time datetime="2026-03-02" class="refDate">2 March 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-marenamat-netmod-core-yang-transcoding-00">https://datatracker.ietf.org/doc/html/draft-marenamat-netmod-core-yang-transcoding-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6021">[RFC6021]</dt>
         <dd>
