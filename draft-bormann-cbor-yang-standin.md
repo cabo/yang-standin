@@ -380,7 +380,8 @@ CBOR encoding of legacy representation (40 bytes):
 
 ~~~ cbor-pretty
 78 26                                   # text(38)
-   323030313A6462383A313233343A646565643A626565663A636166653A666163653A66656564
+   323030313A6462383A313233343A646565643A
+   626565663A636166653A666163653A66656564
    # "2001:db8:1234:deed:beef:cafe:face:feed"
 ~~~
 
@@ -423,7 +424,8 @@ CBOR encoding of legacy representation (40 bytes):
 
 ~~~ cbor-pretty
 78 26                                   # text(38)
-   666538303A3A303230323A303266663A666666663A666530333A303330332F36342565746830
+   666538303A3A303230323A303266663A666666
+   663A666530333A303330332F36342565746830
    # "fe80::0202:02ff:ffff:fe03:0303/64%eth0"
 ~~~
 
@@ -692,3 +694,4 @@ indicate another encoding decision.
 {:unnumbered}
 
 TODO acknowledge.
+
