@@ -13,3 +13,10 @@ else
 	    https://github.com/martinthomson/i-d-template $(LIBDIR)
 endif
 endif
+
+
+prep: lists.md
+
+lists.md: draft-bormann-cbor-yang-standin.xml
+	kramdown-rfc-extract-figures-tables -trfc $< >$@.new
+	mv $@.new $@
