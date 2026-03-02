@@ -97,7 +97,7 @@ information that would be found in the original form of YANG-CBOR.
 The terminology of {{-yang-cbor}} applies.
 
 The present document focuses on a "basic" processing model where the original
-source of YANG-modeled data serves as the encoder and the decoder is
+source of YANG-modeled data serves as the encoder, and where the decoder is
 part of the ultimate destination of those data.
 [^TODO] More elaborate processing models are possible and desirable; several
 of the terms defined below are defined here only so they can be used
@@ -140,7 +140,7 @@ Decoder:
 Intolerant Decoder:
 : A decoder that does not accept legacy representations in places
   where a stand-in tag might instead be used.
-  Such a decoder is designed to interoperate only with an
+  Such a decoder is designed to interoperate only with a
   legacy-eschewing encoder.
 
 Intermediate Decoder:
@@ -186,7 +186,7 @@ in many cases based on the type definitions of {{-yang-types-current}}.
 The detailed conditions under which certain transformations can be
 applied to YANG-CBOR data representations after these have been
 generated are TBD; several processing models are conceivable for this.
-These processing models are out of scope of this document; work has
+These processing models are out of scope of the present document; work has
 started in {{-transcoding}}.
 One such condition might be:
 Where information starts out in a legacy representation, these tags
@@ -276,7 +276,7 @@ This specification therefore requests IANA to assign a new CBOR tag that can be
 used as a stand-in for all instances of colon-separated text strings
 of hexadecimally represented bytes, as shown in {{tab-hex}}.
 
-Note: Related standin semantics have not been defined so far for tag 21 or 22
+Note: Related stand-in semantics have not been defined so far for tag 21 or 22
 that were defined alongside tag 23: YANG has a base type "binary" that is
 encoded in base64 classic in YANG-XML and YANG-JSON, but already
 encoded in a binary byte string in YANG-CBOR.
