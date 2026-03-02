@@ -308,8 +308,8 @@ ASCII dot characters.
 
 [^cpa]
 
-[^discussion-dotted-quad]
-TO DO: Better formulation of the dotted-quad expected later encoding.<br>
+[^TODO]
+Better formulation of the dotted-quad expected later encoding.<br>
 PROPOSED: RFC 9911 is clear that dotted-quad stands for an unsigned
 integer that fits into 32 bits; we should not replace that with a byte
 string.<br>
