@@ -5,8 +5,8 @@
 CBOR (Concise Binary Object Representation) Maint. and Ext.   C. Bormann
 Internet-Draft                                    Universität Bremen TZI
 Intended status: Standards Track                              M. Matejka
-Expires: 29 August 2026                                           CZ.NIC
-                                                        25 February 2026
+Expires: 3 September 2026                                         CZ.NIC
+                                                            2 March 2026
 
 
                       Stand-in Tags for YANG-CBOR
@@ -60,7 +60,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 August 2026.
+   This Internet-Draft will expire on 3 September 2026.
 
 Copyright Notice
 
@@ -82,7 +82,8 @@ Table of Contents
    2.  Conventions and Definitions
    3.  Stand-In Tags
      3.1.  ietf-yang-types: Tag 1 (Date/Time) and Tag 100 (Date)
-     3.2.  ietf-yang-types: Tags 37 (UUID) and CPA113 (hex-string)
+     3.2.  ietf-yang-types: Tags 37 (UUID), CPA113 (hex-string), and
+           CPA114 (dotted-quad)
      3.3.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
      3.4.  Union handling
    4.  Using Stand-In Tags
@@ -178,29 +179,28 @@ Table of Contents
 
 3.1.  ietf-yang-types: Tag 1 (Date/Time) and Tag 100 (Date)
 
-   Section 3 of [I-D.ietf-netmod-rfc6991-bis] defines the following
-   types in ietf-yang-types:
+   Section 3 of [RFC9911] defines the following types in ietf-yang-
+   types:
 
-    +===============+======+===============================+==========+
-    | YANG type     |base  | specification                 | stand-in |
-    |               |type  |                               |          |
-    +===============+======+===============================+==========+
-    | date-and-time |string| [RFC6021]                     | tag 1    |
-    +---------------+------+-------------------------------+----------+
-    | date          |string| [I-D.ietf-netmod-rfc6991-bis] | (none)   |
-    +---------------+------+-------------------------------+----------+
-    | date-no-zone  |string| [I-D.ietf-netmod-rfc6991-bis] | tag 100  |
-    +---------------+------+-------------------------------+----------+
+         +===============+===========+===============+==========+
+         | YANG type     | base type | specification | stand-in |
+         +===============+===========+===============+==========+
+         | date-and-time | string    | [RFC6021]     | tag 1    |
+         +---------------+-----------+---------------+----------+
+         | date          | string    | [RFC9911]     | (none)   |
+         +---------------+-----------+---------------+----------+
+         | date-no-zone  | string    | [RFC9911]     | tag 100  |
+         +---------------+-----------+---------------+----------+
 
-        Table 1: Legacy date and date/time representations in ietf-
-                                 yang-types
+           Table 1: Legacy date and date/time representation in
+                             ietf-yang-types
 
    Tag 1 (Section 3.4.2 of RFC 8949 [STD94]) can unambiguously stand in
    for all date-and-time values that:
 
-   *  do not specify a time zone (note that
-      [I-D.ietf-netmod-rfc6991-bis] uses the legacy "-00:00" format for
-      time-zone-free date-times)
+   *  do not specify a time zone (note that [RFC9911] recommends using
+      "Z", but allows using the legacy "-00:00" format, for time-zone-
+      free date-times)
 
    *  are not an inserted leap second (23:59:60 or 23:59:61)
 
@@ -218,29 +218,26 @@ Table of Contents
    Tag 100 [RFC8943] can unambiguously stand in for all date-no-zone
    values.
 
-3.2.  ietf-yang-types: Tags 37 (UUID) and CPA113 (hex-string)
+3.2.  ietf-yang-types: Tags 37 (UUID), CPA113 (hex-string), and CPA114
+      (dotted-quad)
 
-   Section 3 of [I-D.ietf-netmod-rfc6991-bis] defines the following
-   types in ietf-yang-types:
+   Section 3 of [RFC9911] defines the following types in ietf-yang-
+   types:
 
-   +==============+========+===============================+==========+
-   | YANG type    | base   | specification                 | stand-in |
-   |              | type   |                               |          |
-   +==============+========+===============================+==========+
-   | uuid         | string | [I-D.ietf-netmod-rfc6991-bis] | tag 37   |
-   +--------------+--------+-------------------------------+----------+
-   | hex-string   | string | [I-D.ietf-netmod-rfc6991-bis] | tag      |
-   |              |        |                               | CPA113   |
-   +--------------+--------+-------------------------------+----------+
-   | mac-address  | string | [RFC6021]                     | tag      |
-   |              |        |                               | CPA113   |
-   +--------------+--------+-------------------------------+----------+
-   | phys-address | string | [RFC6021]                     | tag      |
-   |              |        |                               | CPA113   |
-   +--------------+--------+-------------------------------+----------+
+         +==============+===========+===============+============+
+         | YANG type    | base type | specification | stand-in   |
+         +==============+===========+===============+============+
+         | uuid         | string    | [RFC9911]     | tag 37     |
+         +--------------+-----------+---------------+------------+
+         | hex-string   | string    | [RFC9911]     | tag CPA113 |
+         +--------------+-----------+---------------+------------+
+         | mac-address  | string    | [RFC6021]     | tag CPA113 |
+         +--------------+-----------+---------------+------------+
+         | phys-address | string    | [RFC6021]     | tag CPA113 |
+         +--------------+-----------+---------------+------------+
 
-           Table 2: Legacy UUID and colon-separated hexadecimal
-                   representations in ietf- yang-types
+            Table 2: Legacy UUID and colon-separated hexadecimal
+                    representations in ietf- yang-types
 
    These types are hexadecimal representations of byte strings, adorned
    in various ways.
@@ -250,11 +247,10 @@ Table of Contents
    in specific positions.  Tag 37 (see also Section 7 of
    [I-D.bormann-cbor-notable-tags]) can be used as a binary stand-in for
    this adorned hexadecimal representation.  According to the
-   description of uuid in Section 3 of [I-D.ietf-netmod-rfc6991-bis],
-   "the canonical representation uses lowercase characters".  For
-   consistency with this specification, an intermediate decoder of a tag
-   37 stand-in MUST use lowercase characters in the uuid hex string
-   generated.
+   description of uuid in Section 3 of [RFC9911], "the canonical
+   representation uses lowercase characters".  For consistency with this
+   specification, an intermediate decoder of a tag 37 stand-in MUST use
+   lowercase characters in the uuid hex string generated.
 
    hex-string, and the similar, but more specific types mac-address and
    phys-address, stand for byte strings in various lengths (exactly 6
@@ -282,14 +278,14 @@ Table of Contents
    can be used as a stand-in for all instances of colon-separated text
    strings of hexadecimally represented bytes, as shown in Table 2.
 
-   Note Related tags have not been defined so far for tag 21 or 22
-   defined alongside tag 23, as YANG has a base type "binary" that is
-   encoded in base64 classic in YANG-XML and YANG-JSON, but already
-   encoded in a binary byte string in YANG-CBOR; use cases that might
-   actually use base type "string" for base64-encoded data in YANG have
-   not been considered.  However, tag 21 or 22 could be used as stand-in
-   tags if that is useful for some specific YANG model not considered
-   here.
+   Note: Related standin semantics have not been defined so far for tag
+   21 or 22 that were defined alongside tag 23: YANG has a base type
+   "binary" that is encoded in base64 classic in YANG-XML and YANG-JSON,
+   but already encoded in a binary byte string in YANG-CBOR.  Use cases
+   that might actually use base type "string" for base64-encoded data in
+   YANG have not been considered.  However, tag 21 or 22 could be used
+   as stand-in tags if that is useful for some specific YANG model not
+   considered here.
 
 
    // RFC-Editor: This document uses the CPA (code point allocation)
@@ -300,70 +296,97 @@ Table of Contents
    // occurrences of the prefix "CPA" in the document.  Finally, please
    // remove this note.
 
+         +=============+===========+===============+============+
+         | YANG type   | base type | specification | stand-in   |
+         +=============+===========+===============+============+
+         | dotted-quad | string    | [RFC6991]     | tag CPA114 |
+         +-------------+-----------+---------------+------------+
+
+           Table 3: Legacy dotted-quad representation in ietf-
+                                yang-types
+
+   dotted-quad stands for an unsigned 32-bit integer (Section 3 of
+   [RFC9911]), represented as a text string in decimal values for 4 byte
+   values in network byte order, separated by ASCII dot characters.  Tag
+   CPA114 can be used as a binary stand-in for this adorned bytewise
+   decimal representation.
+
+   IANA will assign CPA114 as the CBOR tag to indicate a dotted-quad.
+   The enclosed data item is an unsigned integer of a size not greater
+   than 4 bytes (0..0xFFFFFFFF, uint32).  It is expected that when the
+   data is being displayed e.g. to human operator, the data will be
+   shown as a string of 4 decimal numbers giving the number as four
+   bytes in network byte order, separated by ASCII dot characters.
+
+
+   // RFC-Editor: This document uses the CPA (code point allocation)
+   // convention described in [I-D.bormann-cbor-draft-numbers].  For
+   // each usage of the term "CPA", please remove the prefix "CPA" from
+   // the indicated value and replace the residue with the value
+   // assigned by IANA; perform an analogous substitution for all other
+   // occurrences of the prefix "CPA" in the document.  Finally, please
+   // remove this note.
+
+   [^discussion-dotted-quad] TO DO: Better formulation of the dotted-
+   quad expected later encoding.
+   PROPOSED: RFC 9911 is clear that dotted-quad stands for an unsigned
+   integer that fits into 32 bits; we should not replace that with a
+   byte string.
+   RESOLVED: Should we fix the 4-byte length or make it more generic
+   with arbitrary length byte strings?  (For usage as IPv4 similar
+   identifier -- see ietf-ospf.yang -- the 4-byte length is sufficient
+   and brings less complexity)
+
 3.3.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
 
-   Section 4 of [I-D.ietf-netmod-rfc6991-bis] defines in ietf-inet-
-   types:
+   Section 4 of [RFC9911] defines in ietf-inet-types:
 
-   +=============+==============+===============================+======+
-   |YANG type    | base type    | specification                 |stand-|
-   |             |              |                               |in    |
-   +=============+==============+===============================+======+
-   |ip-address   | union        | [RFC6021]                     |(see  |
-   |             |              |                               |union)|
-   +-------------+--------------+-------------------------------+------+
-   |ipv6-address | string       | [RFC6021]                     |tag 54|
-   +-------------+--------------+-------------------------------+------+
-   |ipv4-address | string       | [RFC6021]                     |tag 52|
-   +-------------+--------------+-------------------------------+------+
-   |ip-address-  | union        | RFC 6991                      |(see  |
-   |no-zone      |              |                               |union)|
-   +-------------+--------------+-------------------------------+------+
-   |ipv6-        | ipv6-address | RFC 6991                      |tag 54|
-   |address-no-  |              |                               |      |
-   |zone         |              |                               |      |
-   +-------------+--------------+-------------------------------+------+
-   |ipv4-        | ipv4-address | RFC 6991                      |tag 52|
-   |address-no-  |              |                               |      |
-   |zone         |              |                               |      |
-   +-------------+--------------+-------------------------------+------+
-   |ip-address-  | union        | [I-D.ietf-netmod-rfc6991-bis] |(see  |
-   |link-local   |              |                               |union)|
-   +-------------+--------------+-------------------------------+------+
-   |ipv6-        | ipv6-address | [I-D.ietf-netmod-rfc6991-bis] |tag 54|
-   |address-     |              |                               |      |
-   |link-local   |              |                               |      |
-   +-------------+--------------+-------------------------------+------+
-   |ipv4-        | ipv4-address | [I-D.ietf-netmod-rfc6991-bis] |tag 52|
-   |address-     |              |                               |      |
-   |link-local   |              |                               |      |
-   +-------------+--------------+-------------------------------+------+
-   |ip-prefix    | union        | [RFC6021]                     |(see  |
-   |             |              |                               |union)|
-   +-------------+--------------+-------------------------------+------+
-   |ipv6-prefix  | string       | [RFC6021]                     |tag 54|
-   +-------------+--------------+-------------------------------+------+
-   |ipv4-prefix  | string       | [RFC6021]                     |tag 52|
-   +-------------+--------------+-------------------------------+------+
-   |ip-address-  | union        | [I-D.ietf-netmod-rfc6991-bis] |(see  |
-   |and-prefix   |              |                               |union)|
-   +-------------+--------------+-------------------------------+------+
-   |ipv6-        | string       | [I-D.ietf-netmod-rfc6991-bis] |tag 54|
-   |address-and- |              |                               |      |
-   |prefix       |              |                               |      |
-   +-------------+--------------+-------------------------------+------+
-   |ipv4-        | string       | [I-D.ietf-netmod-rfc6991-bis] |tag 52|
-   |address-and- |              |                               |      |
-   |prefix       |              |                               |      |
-   +-------------+--------------+-------------------------------+------+
+    +=========================+==============+===============+========+
+    | YANG type               | base type    | specification |stand-in|
+    +=========================+==============+===============+========+
+    | ip-address              | union        | [RFC6021]     |(see    |
+    |                         |              |               |union)  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv6-address            | string       | [RFC6021]     |tag 54  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv4-address            | string       | [RFC6021]     |tag 52  |
+    +-------------------------+--------------+---------------+--------+
+    | ip-address-no-zone      | union        | RFC 6991      |(see    |
+    |                         |              |               |union)  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv6-address-no-zone    | ipv6-address | RFC 6991      |tag 54  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv4-address-no-zone    | ipv4-address | RFC 6991      |tag 52  |
+    +-------------------------+--------------+---------------+--------+
+    | ip-address-link-local   | union        | [RFC9911]     |(see    |
+    |                         |              |               |union)  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv6-address-link-local | ipv6-address | [RFC9911]     |tag 54  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv4-address-link-local | ipv4-address | [RFC9911]     |tag 52  |
+    +-------------------------+--------------+---------------+--------+
+    | ip-prefix               | union        | [RFC6021]     |(see    |
+    |                         |              |               |union)  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv6-prefix             | string       | [RFC6021]     |tag 54  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv4-prefix             | string       | [RFC6021]     |tag 52  |
+    +-------------------------+--------------+---------------+--------+
+    | ip-address-and-prefix   | union        | [RFC9911]     |(see    |
+    |                         |              |               |union)  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv6-address-and-prefix | string       | [RFC9911]     |tag 54  |
+    +-------------------------+--------------+---------------+--------+
+    | ipv4-address-and-prefix | string       | [RFC9911]     |tag 52  |
+    +-------------------------+--------------+---------------+--------+
 
-             Table 3: Legacy representations in ietf-yang-types
+             Table 4: Legacy representations in ietf-yang-types
 
    An intermediate encoder MAY normalize IPv6 addresses and prefixes
    that do not comply with [RFC5952] but can be converted into the
    stand-in representation.  For example, IPv6 address written as
    2001:db8:: is the same as 2001:0db8::0:0 and both would be converted
-   to 54(h'20010db8000000000000000000000000'), anyway only the first one
+   to 54(h'20010db8000000000000000000000000'); only the first one
    complies with [RFC5952].  The encoder MAY refuse to convert the
    latter one.
 
@@ -475,9 +498,9 @@ Table of Contents
    6C                          # text(12)
       3139322e302e322e312f3234 # "192.0.2.1/24"
 
-   TO DO: Check how the unions in [RFC6021] and
-   [I-D.ietf-netmod-rfc6991-bis] interact with this.  E.g., the union
-   ip-address needs to be parsed to decide between tag 54 and tag 52.
+   TO DO: Check how the unions in [RFC9911] interact with this.  E.g.,
+   the union ip-address needs to be parsed to decide between tag 54 and
+   tag 52.
 
 3.4.  Union handling
 
@@ -529,10 +552,10 @@ Table of Contents
 
    (This particular example is additionally problematic since the usual
    way to indicate the absence of time zone information in ISO 8601
-   date-times is using Z as the time zone indicated, not -00:00 as is
-   required by Section 3 of [I-D.ietf-netmod-rfc6991-bis] but not
-   allowed by ISO 8601; see [RFC9557] for additional discussion of
-   this.)
+   date-times is using Z as the time zone indicated, not -00:00 as was
+   required by Section 3 of [RFC6991] but not allowed by ISO 8601; see
+   [RFC9557] for references to versions of ISO 8601 and additional
+   discussion of this.)
    // Note that this paragraph does not reference ISO 8601 because that
    // is complicated and best done by consulting [RFC9557].
 
@@ -598,21 +621,33 @@ Table of Contents
 7.1.  New CBOR Tags
 
    In the registry "CBOR Tags" [IANA.cbor-tags], IANA is requested to
-   assign the tag in Table 4.
+   assign the tag in Table 5.
 
-   +========+========+==================+=============================+
-   | Tag    | Data   | Semantics        | Reference                   |
-   |        | Item   |                  |                             |
-   +========+========+==================+=============================+
-   | CPA113 | byte   | Expected Later   | draft-bormann-yang-standin, |
-   |        | string | Encoding: colon- | Section 3.2                 |
-   |        |        | separated        |                             |
-   |        |        | hexadecimal      |                             |
-   |        |        | representation   |                             |
-   |        |        | of a byte string |                             |
-   +--------+--------+------------------+-----------------------------+
+   +=============+==========+============================+=============+
+   | Tag         | Data     | Semantics                  | Reference   |
+   |             | Item     |                            |             |
+   +=============+==========+============================+=============+
+   | CPA113      | byte     | Expected Later Encoding:   | draft-      |
+   |             | string   | colon-separated            | bormann-    |
+   |             |          | hexadecimal representation | yang-       |
+   |             |          | of a byte string           | standin,    |
+   |             |          |                            | Section 3.2 |
+   +-------------+----------+----------------------------+-------------+
+   | CPA114      | unsigned | Expected Later Encoding:   |             |
+   |             | integer  | dot-separated decimal      |             |
+   |             |          | representation of network- |             |
+   |             |          | byte-order ordered bytes   |             |
+   |             |          | of the integer.            |             |
+   +-------------+----------+----------------------------+-------------+
+   | draft-      |          |                            |             |
+   | bormann-    |          |                            |             |
+   | yang-       |          |                            |             |
+   | standin,    |          |                            |             |
+   | Section     |          |                            |             |
+   | 3.2         |          |                            |             |
+   +-------------+----------+----------------------------+-------------+
 
-           Table 4: New CBOR Tag Defined by this Specification
+            Table 5: New CBOR Tag Defined by this Specification
 
 7.2.  stand-in tags?
 
@@ -647,12 +682,6 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-   [I-D.ietf-netmod-rfc6991-bis]
-              Schönwälder, J., "Common YANG Data Types", Work in
-              Progress, Internet-Draft, draft-ietf-netmod-rfc6991-bis-
-              18, 23 June 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-netmod-rfc6991-bis-18>.
-
    [IANA.cbor-tags]
               IANA, "Concise Binary Object Representation (CBOR) Tags",
               <https://www.iana.org/assignments/cbor-tags>.
@@ -661,10 +690,6 @@ Table of Contents
               Address Text Representation", RFC 5952,
               DOI 10.17487/RFC5952, August 2010,
               <https://www.rfc-editor.org/rfc/rfc5952>.
-
-   [RFC6021]  Schoenwaelder, J., Ed., "Common YANG Data Types",
-              RFC 6021, DOI 10.17487/RFC6021, October 2010,
-              <https://www.rfc-editor.org/rfc/rfc6021>.
 
    [RFC8943]  Jones, M., Nadalin, A., and J. Richter, "Concise Binary
               Object Representation (CBOR) Tags for Date", RFC 8943,
@@ -686,6 +711,10 @@ Table of Contents
               IDentifiers (UUIDs)", RFC 9562, DOI 10.17487/RFC9562, May
               2024, <https://www.rfc-editor.org/rfc/rfc9562>.
 
+   [RFC9911]  Schönwälder, J., Ed., "Common YANG Data Types", RFC 9911,
+              DOI 10.17487/RFC9911, December 2025,
+              <https://www.rfc-editor.org/rfc/rfc9911>.
+
    [STD94]    Internet Standard 94,
               <https://www.rfc-editor.org/info/std94>.
               At the time of writing, this STD comprises the following:
@@ -699,9 +728,20 @@ Table of Contents
 
    [I-D.bormann-cbor-notable-tags]
               Bormann, C., "Notable CBOR Tags", Work in Progress,
-              Internet-Draft, draft-bormann-cbor-notable-tags-15, 11
+              Internet-Draft, draft-bormann-cbor-notable-tags-16, 25
               February 2026, <https://datatracker.ietf.org/doc/html/
-              draft-bormann-cbor-notable-tags-15>.
+              draft-bormann-cbor-notable-tags-16>.
+
+   [RFC6021]  Schoenwaelder, J., Ed., "Common YANG Data Types",
+              RFC 6021, DOI 10.17487/RFC6021, October 2010,
+              <https://www.rfc-editor.org/rfc/rfc6021>.  This
+              specification is obsoleted by [RFC6991], which is
+              obsoleted by [RFC9911].
+
+   [RFC6991]  Schoenwaelder, J., Ed., "Common YANG Data Types",
+              RFC 6991, DOI 10.17487/RFC6991, July 2013,
+              <https://www.rfc-editor.org/rfc/rfc6991>.  This
+              specification is obsoleted by [RFC9911].
 
    [RFC9542]  Eastlake 3rd, D., Abley, J., and Y. Li, "IANA
               Considerations and IETF Protocol and Documentation Usage
