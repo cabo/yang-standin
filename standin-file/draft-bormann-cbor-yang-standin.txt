@@ -197,9 +197,11 @@ Table of Contents
    // TODO: The detailed conditions under which certain transformations
    can be applied to YANG-CBOR data representations after these have
    been generated are TBD; several processing models are conceivable for
-   this.  One such condition might be: Where information starts out in a
-   legacy representation, these tags are only used when an Unambiguous
-   Round Trip can be achieved.)
+   this.  These processing models are out of scope of this document;
+   work has started in [I-D.marenamat-netmod-core-yang-transcoding].
+   One such condition might be: Where information starts out in a legacy
+   representation, these tags are only used when an Unambiguous Round
+   Trip can be achieved.)
 
 3.1.  ietf-yang-types: Tag 1 (Date/Time) and Tag 100 (Date)
 
@@ -879,6 +881,13 @@ Table of Contents
               Internet-Draft, draft-bormann-cbor-notable-tags-16, 25
               February 2026, <https://datatracker.ietf.org/doc/html/
               draft-bormann-cbor-notable-tags-16>.
+
+   [I-D.marenamat-netmod-core-yang-transcoding]
+              Matějka, M., "Transcoding Data Modeled with YANG", Work in
+              Progress, Internet-Draft, draft-marenamat-netmod-core-
+              yang-transcoding-00, 2 March 2026,
+              <https://datatracker.ietf.org/doc/html/draft-marenamat-
+              netmod-core-yang-transcoding-00>.
 
    [RFC6021]  Schoenwaelder, J., Ed., "Common YANG Data Types",
               RFC 6021, DOI 10.17487/RFC6021, October 2010,
