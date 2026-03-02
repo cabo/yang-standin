@@ -1199,13 +1199,16 @@ information that would be found in the original form of YANG-CBOR.<a href="#sect
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-using-stand-in-tags" class="internal xref">Using Stand-In Tags</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-defining-stand-in-usage-in-" class="internal xref">Defining Stand-In Usage in Schema</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-the-standin-file" class="internal xref">The Standin File</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-original-stand-ins" class="internal xref">Original stand-ins</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-defining-stand-in-usage-in-" class="internal xref">Defining Stand-In Usage in Schema</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-legacy-round-trip" class="internal xref">Legacy Round Trip</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-original-stand-ins" class="internal xref">Original stand-ins</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
+                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="auto internal xref">4.4</a>.  <a href="#name-legacy-round-trip" class="internal xref">Legacy Round Trip</a></p>
 </li>
             </ul>
 </li>
@@ -1241,10 +1244,13 @@ information that would be found in the original form of YANG-CBOR.<a href="#sect
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-list-of-tables" class="internal xref">List of Tables</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1264,102 +1270,108 @@ information that would be found in the original form of YANG-CBOR.<a href="#sect
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
       </h2>
 <p id="section-2-1">The terminology of <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span> applies.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-2-2">
-        <dt id="section-2-2.1">Legacy representation:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.2">
-          <p id="section-2-2.2.1">The (often text-based) representation for a YANG data item as used
-in YANG-XML, YANG-JSON, and (unchanged) YANG-CBOR.<a href="#section-2-2.2.1" class="pilcrow">¶</a></p>
+<p id="section-2-2">The present document focuses on a "basic" processing model where the original
+source of YANG-modeled data serves as the encoder and the decoder is
+part of the ultimate destination of those data.
+<span class="cref" id="TODO">TODO:</span> More elaborate processing models are possible and desirable; several
+of the terms defined below are defined here only so they can be used
+to discuss processing models of this kind.<a href="#section-2-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2-3">
+        <dt id="section-2-3.1">Legacy representation:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.2">
+          <p id="section-2-3.2.1">The (often text-based) representation for a YANG data item as used
+in YANG-XML, YANG-JSON, and (unchanged) YANG-CBOR.<a href="#section-2-3.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.3">Stand-in tag:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.4">
-          <p id="section-2-2.4.1">A CBOR tag that can supply the information that is equivalent to a
+<dt id="section-2-3.3">Stand-in tag:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.4">
+          <p id="section-2-3.4.1">A CBOR tag that can supply the information that is equivalent to a
 legacy representation in a more efficient format (e.g., using binary
-data).<a href="#section-2-2.4.1" class="pilcrow">¶</a></p>
+data).<a href="#section-2-3.4.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.5">Encoder:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.6">
-          <p id="section-2-2.6.1">The party which generates (sends) CBOR data described by YANG.<a href="#section-2-2.6.1" class="pilcrow">¶</a></p>
+<dt id="section-2-3.5">Encoder:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.6">
+          <p id="section-2-3.6.1">The party which generates (sends) CBOR data described by YANG.<a href="#section-2-3.6.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.7">Intermediate Encoder:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.8">
-          <p id="section-2-2.8.1">An encoder which isn't the original author of the data, converting it
-from legacy representation.<a href="#section-2-2.8.1" class="pilcrow">¶</a></p>
+<dt id="section-2-3.7">Intermediate Encoder:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.8">
+          <p id="section-2-3.8.1">An encoder which isn't the original author of the data, converting it
+from legacy representation.<a href="#section-2-3.8.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.9">Aggressive Intermediate Encoder:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.10">
-          <p id="section-2-2.10.1">An intermediate encoder that might choose to discard some
+<dt id="section-2-3.9">Aggressive Intermediate Encoder:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.10">
+          <p id="section-2-3.10.1">An intermediate encoder that might choose to discard some
 information of a legacy representation in order to be able to use a
 stand-in tag.
 Such a choice may be based on knowledge of the Decoder's handling of
 such information (e.g, to accommodate intolerant decoders), or it
 may be a general characteristic of the service provided by the
 intermediate encoder (e.g., in order to serve as a legacy-eschewing
-encoder).<a href="#section-2-2.10.1" class="pilcrow">¶</a></p>
+encoder).<a href="#section-2-3.10.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.11">Legacy-Eschewing Encoder:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.12">
-          <p id="section-2-2.12.1">An encoder that does not generate legacy representations in places
+<dt id="section-2-3.11">Legacy-Eschewing Encoder:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.12">
+          <p id="section-2-3.12.1">An encoder that does not generate legacy representations in places
 where a stand-in tag might instead be used.
-An intermediate encoder may need to be aggressive to achieve this.<a href="#section-2-2.12.1" class="pilcrow">¶</a></p>
+An intermediate encoder may need to be aggressive to achieve this.<a href="#section-2-3.12.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.13">Decoder:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.14">
-          <p id="section-2-2.14.1">The party which receives and parses CBOR data described by YANG.<a href="#section-2-2.14.1" class="pilcrow">¶</a></p>
+<dt id="section-2-3.13">Decoder:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.14">
+          <p id="section-2-3.14.1">The party which receives and parses CBOR data described by YANG.<a href="#section-2-3.14.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.15">Intolerant Decoder:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.16">
-          <p id="section-2-2.16.1">A decoder that does not accept legacy representations in places
+<dt id="section-2-3.15">Intolerant Decoder:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.16">
+          <p id="section-2-3.16.1">A decoder that does not accept legacy representations in places
 where a stand-in tag might instead be used.
 Such a decoder is designed to interoperate only with an
-legacy-eschewing encoder.<a href="#section-2-2.16.1" class="pilcrow">¶</a></p>
+legacy-eschewing encoder.<a href="#section-2-3.16.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.17">Intermediate Decoder:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.18">
-          <p id="section-2-2.18.1">A decoder which isn't the final recipient of the data, converting it
-to legacy representation.<a href="#section-2-2.18.1" class="pilcrow">¶</a></p>
+<dt id="section-2-3.17">Intermediate Decoder:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.18">
+          <p id="section-2-3.18.1">A decoder which isn't the final recipient of the data, converting it
+to legacy representation.<a href="#section-2-3.18.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.19">Data Transfer:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.20">
-          <p id="section-2-2.20.1">A series of actions, generally beginning by data origination, encoding,
+<dt id="section-2-3.19">Data Transfer:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.20">
+          <p id="section-2-3.20.1">A series of actions, generally beginning by data origination, encoding,
 continuing by optional intermediate transcoding, sending and receiving,
-and finally decoding and consuming.<a href="#section-2-2.20.1" class="pilcrow">¶</a></p>
+and finally decoding and consuming.<a href="#section-2-3.20.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.21">Round Trip:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.22">
-          <p id="section-2-2.22.1">Part of a data transfer between an encoder generating CBOR data with
-stand-in tags and a decoder parsing the data.<a href="#section-2-2.22.1" class="pilcrow">¶</a></p>
+<dt id="section-2-3.21">Round Trip:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.22">
+          <p id="section-2-3.22.1">Part of a data transfer between an encoder generating CBOR data with
+stand-in tags and a decoder parsing the data.<a href="#section-2-3.22.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.23">Legacy Round Trip:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.24">
-          <p id="section-2-2.24.1">A Round Trip where the encoder is an intermediate encoder or the decoder is
+<dt id="section-2-3.23">Legacy Round Trip:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.24">
+          <p id="section-2-3.24.1">A Round Trip where the encoder is an intermediate encoder or the decoder is
 an intermediate decoder and any of these converts from or to the
-legacy representation.<a href="#section-2-2.24.1" class="pilcrow">¶</a></p>
+legacy representation.<a href="#section-2-3.24.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-2-2.25">Unambiguous Round Trip:</dt>
-        <dd style="margin-left: 1.5em" id="section-2-2.26">
-          <p id="section-2-2.26.1">A Legacy Round Trip that provides exactly the same legacy representation
+<dt id="section-2-3.25">Unambiguous Round Trip:</dt>
+        <dd style="margin-left: 1.5em" id="section-2-3.26">
+          <p id="section-2-3.26.1">A Legacy Round Trip that provides exactly the same legacy representation
 (not just semantically equivalent).
 The stand-in tag is also said to "unambiguously stand in" for the
-legacy representation.<a href="#section-2-2.26.1" class="pilcrow">¶</a></p>
+legacy representation.<a href="#section-2-3.26.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
-<p id="section-2-3">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
+<p id="section-2-4">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in <span>[<a href="#BCP14" class="cite xref">BCP14</a>]</span> (<a href="#RFC2119" class="auto internal xref">RFC2119</a>) (<a href="#RFC8174" class="auto internal xref">RFC8174</a>) when, and only when, they
-appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶</a></p>
+appear in all capitals, as shown here.<a href="#section-2-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="stand-in-tags">
@@ -1367,16 +1379,30 @@ appear in all capitals, as shown here.<a href="#section-2-3" class="pilcrow">¶<
       <h2 id="name-stand-in-tags">
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-stand-in-tags" class="section-name selfRef">Stand-In Tags</a>
       </h2>
-<p id="section-3-1">This document defines two sets of stand-in tags.
+<p id="section-3-1">As a complement to the representations defined in <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>, the
+present document defines efficient representations of certain types of
+YANG-modeled data, based on both existing and newly registered "stand-in" tags that are
+designed to represent the underlying data.
+Whenever a stand-in tag is defined for a specific type, the representation
+as specified in this document may be used.
+Otherwise, the encoding is as specified in <span>[<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">This section defines several standard stand-in tags for general use,
+in many cases based on the type definitions of <span>[<a href="#RFC9911" class="cite xref">RFC9911</a>]</span>.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">(<span class="cref" id="TODO_1">TODO:</span>
+The detailed conditions under which certain transformations can be
+applied to YANG-CBOR data representations after these have been
+generated are TBD; several processing models are conceivable for this.
+One such condition might be:
 Where information starts out in a legacy representation, these tags
-are only used when an Unambiguous Round Trip can be achieved.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<div id="ietf-yang-types-tag-1-datetime-and-tag-100-date">
+are only used when an Unambiguous Round Trip can be achieved.)<a href="#section-3-3" class="pilcrow">¶</a></p>
+<div id="t-1-100">
 <section id="section-3.1">
         <h3 id="name-ietf-yang-types-tag-1-date-">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-ietf-yang-types-tag-1-date-" class="section-name selfRef"><code>ietf-yang-types</code>: Tag 1 (Date/Time) and Tag 100 (Date)</a>
         </h3>
 <p id="section-3.1-1"><span><a href="https://rfc-editor.org/rfc/rfc9911#section-3" class="relref">Section 3</a> of [<a href="#RFC9911" class="cite xref">RFC9911</a>]</span> defines the following types in <code>ietf-yang-types</code>:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<span id="name-legacy-date-and-date-time-r"></span><table class="center" id="table-1">
+<span id="name-legacy-date-and-date-time-r"></span><div id="tab-legacy-ts">
+<table class="center" id="table-1">
           <caption>
 <a href="#table-1" class="selfRef">Table 1</a>:
 <a href="#name-legacy-date-and-date-time-r" class="selfRef">Legacy date and date/time representation in ietf-yang-types</a>
@@ -1416,6 +1442,7 @@ are only used when an Unambiguous Round Trip can be achieved.<a href="#section-3
             </tr>
           </tbody>
         </table>
+</div>
 <p id="section-3.1-3">Tag 1 (Section <a href="https://rfc-editor.org/rfc/rfc8949#section-3.4.2" class="relref">3.4.2</a> of RFC 8949 <span>[<a href="#STD94" class="cite xref">STD94</a>]</span>) can unambiguously stand in for all <code>date-and-time</code> values that:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-4.1">
@@ -1434,7 +1461,8 @@ for time-zone-free date-times)<a href="#section-3.1-4.1.1" class="pilcrow">¶</a
 cannot be represented in floating-point tag content in a tag 1.<a href="#section-3.1-4.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.1-5">All other <code>date-and-time</code> values stay in legacy representation.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">All other <code>date-and-time</code> values stay in legacy representation.
+(<span class="cref" id="TODO_2">TODO:</span> explore the use of tag 1001 for some of these cases.)<a href="#section-3.1-5" class="pilcrow">¶</a></p>
 <p id="section-3.1-6">Tag 1 uses an integer tag content for all <code>date-and-time</code> values
 without fractional seconds and a floating-point tag content for values
 that have fractional seconds given.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
@@ -1508,7 +1536,7 @@ According to the description of <code>uuid</code> in <span><a href="https://rfc-
 "the canonical representation uses lowercase characters".
 For consistency with this specification, an intermediate decoder of a
 tag 37 stand-in <span class="bcp14">MUST</span> use lowercase characters in the uuid hex string
-generated.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+generated (<span class="cref" id="TODO_3">TODO:</span> align with processing model).<a href="#section-3.2-4" class="pilcrow">¶</a></p>
 <p id="section-3.2-5"><code>hex-string</code>, and the similar, but more specific types <code>mac-address</code>
 and <code>phys-address</code>, stand for byte strings in various lengths (exactly
 6 bytes for <code>mac-address</code>, variable-length for the others),
@@ -1580,8 +1608,9 @@ here.<a href="#section-3.2-9" class="pilcrow">¶</a></p>
 <p id="section-3.2-12"><code>dotted-quad</code> stands for an unsigned 32-bit integer (<span><a href="https://rfc-editor.org/rfc/rfc9911#section-3" class="relref">Section 3</a> of [<a href="#RFC9911" class="cite xref">RFC9911</a>]</span>), represented as a text string in decimal values
 for 4 byte values in network byte order, separated by ASCII dot characters.
 Tag CPA114 can be used as a binary stand-in for this adorned bytewise decimal representation.<a href="#section-3.2-12" class="pilcrow">¶</a></p>
-<p id="section-3.2-13">IANA will assign CPA114 as the CBOR tag to indicate a dotted-quad.
-The enclosed data item is an unsigned integer of a size not greater
+<p id="section-3.2-13">IANA is requested to assign CPA114 as the CBOR tag to indicate a value
+that is represented by a dotted-quad in YANG.
+The tag content is an unsigned integer of a size not greater
 than 4 bytes (0..0xFFFFFFFF, uint32).
 It is expected that when the data is being displayed e.g. to human
 operator, the data will be shown as a string of 4 decimal numbers
@@ -1604,13 +1633,14 @@ RESOLVED: Should we fix the 4-byte length or make it more generic with arbitrary
   the 4-byte length is sufficient and brings less complexity)<a href="#section-3.2-15" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="ietf-inet-types-tags-54-and-52-ip-addresses-and-prefixes">
+<div id="inet-types">
 <section id="section-3.3">
         <h3 id="name-ietf-inet-types-tags-54-and">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-ietf-inet-types-tags-54-and" class="section-name selfRef"><code>ietf-inet-types</code>: Tags 54 and 52 (IP addresses and prefixes)</a>
         </h3>
 <p id="section-3.3-1"><span><a href="https://rfc-editor.org/rfc/rfc9911#section-4" class="relref">Section 4</a> of [<a href="#RFC9911" class="cite xref">RFC9911</a>]</span> defines in <code>ietf-inet-types</code>:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
-<span id="name-legacy-representations-in-i"></span><table class="center" id="table-4">
+<span id="name-legacy-representations-in-i"></span><div id="tab-legacy-yt">
+<table class="center" id="table-4">
           <caption>
 <a href="#table-4" class="selfRef">Table 4</a>:
 <a href="#name-legacy-representations-in-i" class="selfRef">Legacy representations in ietf-yang-types</a>
@@ -1740,7 +1770,9 @@ RESOLVED: Should we fix the 4-byte length or make it more generic with arbitrary
             </tr>
           </tbody>
         </table>
-<p id="section-3.3-3">An intermediate encoder <span class="bcp14">MAY</span> normalize IPv6 addresses and prefixes that do not comply with <span>[<a href="#RFC5952" class="cite xref">RFC5952</a>]</span>
+</div>
+<p id="section-3.3-3">(<span class="cref" id="TODO_4">TODO:</span> align this and next paragraph with processing model.)
+An intermediate encoder <span class="bcp14">MAY</span> normalize IPv6 addresses and prefixes that do not comply with <span>[<a href="#RFC5952" class="cite xref">RFC5952</a>]</span>
 but can be converted into the stand-in representation.
 For example, IPv6 address written as 2001:db8:: is the same as 2001:0db8::0:0 and both would
 be converted to <code>54(h'20010db8000000000000000000000000')</code>; only the
@@ -1875,8 +1907,12 @@ between tag 54 and tag 52.<a href="#section-3.3-37" class="pilcrow">¶</a></p>
 <a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-union-handling" class="section-name selfRef">Union handling</a>
         </h3>
 <p id="section-3.4-1">When the schema specifies a union data type for a node, there are
-additional requirements on the encoder and decoder.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
-<p id="section-3.4-2">An encoder which is fully aware of data semantics <span class="bcp14">MUST</span> use the appropriate
+additional requirements on the encoder and decoder. The encoder <span class="bcp14">MUST</span>
+be fully aware of data semantics and use the appropriate data type
+and encoding. The decoder <span class="bcp14">MUST</span> use the data type information for further
+processing, in a similar way as specified in <span><a href="https://rfc-editor.org/rfc/rfc7951#section-6.10" class="relref">Section 6.10</a> of [<a href="#RFC7951" class="cite xref">RFC7951</a>]</span>.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">(<span class="cref" id="TODO_5">TODO:</span> Align the rest of the section with processing models.)
+An encoder which is fully aware of data semantics <span class="bcp14">MUST</span> use the appropriate
 data type, even though it isn't formally specified by the schema.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 <p id="section-3.4-3">If an intermediate encoder doesn't fully understand the data semantics,
 it needs to find out which type the data actually is to choose the right stand-in.
@@ -1893,64 +1929,243 @@ of the union, even though it may violate additional constraints outside the sche
       <h2 id="name-using-stand-in-tags">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-using-stand-in-tags" class="section-name selfRef">Using Stand-In Tags</a>
       </h2>
-<div id="defining-stand-in-usage-in-schema">
+<div id="the-standin-file">
 <section id="section-4.1">
-        <h3 id="name-defining-stand-in-usage-in-">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-defining-stand-in-usage-in-" class="section-name selfRef">Defining Stand-In Usage in Schema</a>
+        <h3 id="name-the-standin-file">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-the-standin-file" class="section-name selfRef">The Standin File</a>
         </h3>
-<p id="section-4.1-1">Requiring modifications to a YANG model in order to use it with
+<p id="section-4.1-1">Encoder and decoder need some agreement over whether, where and how
+stand-in tags are used.
+This agreement is embodied in a "standin file", which has
+approximately the data content of <a href="#standin-file" class="auto internal xref">Table 5</a> (representation TBD):<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<span id="name-information-content-of-stan"></span><div id="standin-file">
+<table class="center" id="table-5">
+          <caption>
+<a href="#table-5" class="selfRef">Table 5</a>:
+<a href="#name-information-content-of-stan" class="selfRef">Information Content of Standin File<br>    (*) insert identityrefs from YANG module here</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">YANG typename</th>
+              <th class="text-left" rowspan="1" colspan="1">Tag number(s)</th>
+              <th class="text-left" rowspan="1" colspan="1">Description  (*)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-yang-types:date-and-time</td>
+              <td class="text-left" rowspan="1" colspan="1">1</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#t-1-100" class="auto internal xref">Section 3.1</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-yang-types:date-no-zone</td>
+              <td class="text-left" rowspan="1" colspan="1">100</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#t-1-100" class="auto internal xref">Section 3.1</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-yang-types:uuid</td>
+              <td class="text-left" rowspan="1" colspan="1">37</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#hex-tags" class="auto internal xref">Section 3.2</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-yang-types:hex-string</td>
+              <td class="text-left" rowspan="1" colspan="1">CPA113</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#hex-tags" class="auto internal xref">Section 3.2</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-yang-types:mac-address</td>
+              <td class="text-left" rowspan="1" colspan="1">CPA113</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#hex-tags" class="auto internal xref">Section 3.2</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-yang-types:phys-address</td>
+              <td class="text-left" rowspan="1" colspan="1">CPA113</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#hex-tags" class="auto internal xref">Section 3.2</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-yang-types:dotted-quad</td>
+              <td class="text-left" rowspan="1" colspan="1">CPA114</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#hex-tags" class="auto internal xref">Section 3.2</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ip-address</td>
+              <td class="text-left" rowspan="1" colspan="1">54, 52 (see union)</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv6-address</td>
+              <td class="text-left" rowspan="1" colspan="1">54</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv4-address</td>
+              <td class="text-left" rowspan="1" colspan="1">52</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ip-address-no-zone</td>
+              <td class="text-left" rowspan="1" colspan="1">54, 52 (see union)</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv6-address-no-zone</td>
+              <td class="text-left" rowspan="1" colspan="1">54</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv4-address-no-zone</td>
+              <td class="text-left" rowspan="1" colspan="1">52</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ip-address-link-local</td>
+              <td class="text-left" rowspan="1" colspan="1">54, 52 (see union)</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv6-address-link-local</td>
+              <td class="text-left" rowspan="1" colspan="1">54</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv4-address-link-local</td>
+              <td class="text-left" rowspan="1" colspan="1">52</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ip-prefix</td>
+              <td class="text-left" rowspan="1" colspan="1">54, 52 (see union)</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv6-prefix</td>
+              <td class="text-left" rowspan="1" colspan="1">54</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv4-prefix</td>
+              <td class="text-left" rowspan="1" colspan="1">52</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ip-address-and-prefix</td>
+              <td class="text-left" rowspan="1" colspan="1">54, 52 (see union)</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv6-address-and-prefix</td>
+              <td class="text-left" rowspan="1" colspan="1">54</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">ietf-inet-types:ipv4-address-and-prefix</td>
+              <td class="text-left" rowspan="1" colspan="1">52</td>
+              <td class="text-left" rowspan="1" colspan="1">
+                <a href="#inet-types" class="auto internal xref">Section 3.3</a> of RFCthis</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-4.1-3">The YANG typename is a name composed of a module name and the name of
+a type defined there, separated by a colon; names of built-in types do not
+contain a module name or a colon.
+The tag number is the number of the CBOR Tag used for representing
+certain instances of this type.
+The description is a YANG identity (identified by a SID for an
+identityref (<span><a href="https://rfc-editor.org/rfc/rfc9254#section-6.10.1" class="relref">Section 6.10.1</a> of [<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>), or, for experimental
+use, a name for an identityref (<span><a href="https://rfc-editor.org/rfc/rfc9254#section-6.10.2" class="relref">Section 6.10.2</a> of [<a href="#RFC9254" class="cite xref">RFC9254</a>]</span>))
+defined in a YANG model; the
+description of the identity either points to a section of the defining
+document that defines its usage or contains this information outright.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">(Note that there is currently no way to assign a SID to a typename;
+this could be added to the definition of a ".sid" file in <span>[<a href="#RFC9595" class="cite xref">RFC9595</a>]</span>.)<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1-5">Standin Files <span class="bcp14">SHOULD</span> generally be defined in a document such as the
+present one; they <span class="bcp14">SHOULD NOT</span> be liberally made up for specific applications
+(unless there are overriding concerns motivating choosing ultimate
+efficiency over interoperability).<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="defining-stand-in-usage-in-schema">
+<section id="section-4.2">
+        <h3 id="name-defining-stand-in-usage-in-">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-defining-stand-in-usage-in-" class="section-name selfRef">Defining Stand-In Usage in Schema</a>
+        </h3>
+<p id="section-4.2-1">Requiring modifications to a YANG model in order to use it with
 stand-in tags would pose significant deployment hurdles to using
-stand-in tags.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.1-2">A YANG model may want to restrict the information content in such a
+stand-in tags.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">A YANG model may want to restrict the information content of the
+YANG-modeled data it describes in such a
 way that stand-in tags can always be used, e.g., by using date-no-zone
 in place of date where that is applicable, or by excluding features of
-a YANG data type that cannot be represented in a stand-in-tag.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.1-3">ISSUE: Should this document define such restricted types, e.g.:<a href="#section-4.1-3" class="pilcrow">¶</a></p>
-<div class="lang-yang sourcecode" id="section-4.1-4">
+a YANG data type that cannot be represented in a stand-in-tag.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">ISSUE: Should this document define such restricted types, e.g.:<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<div class="lang-yang sourcecode" id="section-4.2-4">
 <pre>
   typedef efficient-date-and-time {
     type date-and-time {
-      pattern '.*-00:00'
+      pattern '.*Z'
     }
     description
       "The efficient-date-and-time type is a profile of the
-       date-and-time that is intended to always enable using a
+       date-and-time type that is intended to always enable using a
        stand-in tag as per ((this document)), e.g., by not expressing
        a time-zone-offset.
        Not all restrictions that make this possible are expressed in
        the above YANG string pattern.";
   }
-</pre><a href="#section-4.1-4" class="pilcrow">¶</a>
+</pre><a href="#section-4.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-4.1-5">(This particular example is additionally problematic since the usual
+<p id="section-4.2-5">(This particular example is additionally problematic since the usual
 way to indicate the absence of time zone information in ISO 8601
-date-times is using <code>Z</code> as the time zone indicated, not <code>-00:00</code> as was
-required by <span><a href="https://rfc-editor.org/rfc/rfc6991#section-3" class="relref">Section 3</a> of [<a href="#RFC6991" class="cite xref">RFC6991</a>]</span> but not allowed by ISO 8601;
+date-times is using <code>Z</code> as the time zone indicated as specified in
+<span><a href="https://rfc-editor.org/rfc/rfc9911#section-3" class="relref">Section 3</a> of [<a href="#RFC9911" class="cite xref">RFC9911</a>]</span>, not <code>-00:00</code> as was
+previously required by <span><a href="https://rfc-editor.org/rfc/rfc6991#section-3" class="relref">Section 3</a> of [<a href="#RFC6991" class="cite xref">RFC6991</a>]</span> but not allowed by ISO 8601;
 see <span>[<a href="#RFC9557" class="cite xref">RFC9557</a>]</span> for references to versions of ISO 8601 and additional discussion of this.)
 <span class="cref" id="no8601reference">Note that this paragraph does not reference ISO
-8601 because that is complicated and best done by consulting <span>[<a href="#RFC9557" class="cite xref">RFC9557</a>]</span>.</span><a href="#section-4.1-5" class="pilcrow">¶</a></p>
+8601 because that is complicated and best done by consulting <span>[<a href="#RFC9557" class="cite xref">RFC9557</a>]</span>.</span><a href="#section-4.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="original-stand-ins">
-<section id="section-4.2">
+<section id="section-4.3">
         <h3 id="name-original-stand-ins">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-original-stand-ins" class="section-name selfRef">Original stand-ins</a>
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-original-stand-ins" class="section-name selfRef">Original stand-ins</a>
         </h3>
-<p id="section-4.2-1">The simplest situation is when no intermediate encoders and decoders are
+<p id="section-4.3-1">The simplest situation is when no intermediate encoders and decoders are
 involved in the data transfer, therefore the round trip is not legacy.
 In this case, no conversions are involved and data is validated using the
-schema extension from the previous section.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+schema extension from the previous section.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="legacy-round-trip">
-<section id="section-4.3">
+<section id="section-4.4">
         <h3 id="name-legacy-round-trip">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-legacy-round-trip" class="section-name selfRef">Legacy Round Trip</a>
+<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-legacy-round-trip" class="section-name selfRef">Legacy Round Trip</a>
         </h3>
-<p id="section-4.3-1">Producing a stand-in <span class="bcp14">MUST</span> be triggered by schema usage. Intermediate encoders
-<span class="bcp14">MUST NOT</span> encode stand-ins when no schema is available.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<p id="section-4.3-2">It's generally not recommended to do a legacy round trip where both the encoder
-and decoder are converting from and to the legacy representation.<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<p id="section-4.4-1">Producing a stand-in <span class="bcp14">MUST</span> be triggered by schema usage. Intermediate encoders
+<span class="bcp14">MUST NOT</span> encode stand-ins when no schema is available.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
+<p id="section-4.4-2">It's generally not recommended to do a legacy round trip where both the encoder
+and decoder are converting from and to the legacy representation.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1960,20 +2175,21 @@ and decoder are converting from and to the legacy representation.<a href="#secti
       <h2 id="name-negotiation">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-negotiation" class="section-name selfRef">Negotiation</a>
       </h2>
-<p id="section-5-1">Introducing stand-in tags in YANG-CBOR requires some form of consent
-between the producer and the consumer of YANG-CBOR information:<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">(<span class="cref" id="TODO_6">TODO:</span> Align with processing models.)<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">Introducing stand-in tags in YANG-CBOR requires some form of consent
+between the producer and the consumer of YANG-CBOR information:<a href="#section-5-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5-2.1">
-          <p id="section-5-2.1.1">A producer that creates YANG-CBOR containing stand-in tags needs to
+<li class="normal" id="section-5-3.1">
+          <p id="section-5-3.1.1">A producer that creates YANG-CBOR containing stand-in tags needs to
 know whether the consumer supports stand-in tags, and, possibly,
 which specific stand-in tags it supports.  We speak about the
 <em>capability</em> of a consumer to consume stand-in tags.
 A producer <span class="bcp14">MUST NOT</span> employ stand-in tags unless it knows about the
 capabilities of the consumer.
-A consumer <span class="bcp14">SHOULD</span> indicate its capabilities for consuming stand-in tags.<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
+A consumer <span class="bcp14">SHOULD</span> indicate its capabilities for consuming stand-in tags.<a href="#section-5-3.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-5-2.2">
-          <p id="section-5-2.2.1">A consumer may not want to implement certain legacy text-based
+        <li class="normal" id="section-5-3.2">
+          <p id="section-5-3.2.1">A consumer may not want to implement certain legacy text-based
 representations where more efficient (and easy to implement)
 stand-in tags are available, i.e., it may use an intolerant decoder.
 This places a <em>requirement</em> on the
@@ -1986,22 +2202,22 @@ Where the consumer employs an intolerant decoder, stand-in tags are
 encoder, this <span class="bcp14">MUST</span> be legacy-eschewing, i.e. it <span class="bcp14">MUST NOT</span> employ
 legacy representations.
 A consumer that has requirements for only receiving stand-in tags in
-place of legacy representations, <span class="bcp14">MUST</span> indicate this to the producer.<a href="#section-5-2.2.1" class="pilcrow">¶</a></p>
+place of legacy representations, <span class="bcp14">MUST</span> indicate this to the producer.<a href="#section-5-3.2.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
-<p id="section-5-3">ISSUE: Where do we put those two aspects of negotiation?<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">ISSUE: Where do we put those two aspects of negotiation?<a href="#section-5-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5-4.1">
-          <p id="section-5-4.1.1">NETCONF negotiation<a href="#section-5-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-5-5.1">
+          <p id="section-5-5.1.1">NETCONF negotiation<a href="#section-5-5.1.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-5-4.2">
-          <p id="section-5-4.2.1">yang-library<a href="#section-5-4.2.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-5-5.2">
+          <p id="section-5-5.2.1">yang-library<a href="#section-5-5.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-5-4.3">
-          <p id="section-5-4.3.1">media-type parameters<a href="#section-5-4.3.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-5-5.3">
+          <p id="section-5-5.3.1">media-type parameters<a href="#section-5-5.3.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-5-4.4">
-          <p id="section-5-4.4.1">?<a href="#section-5-4.4.1" class="pilcrow">¶</a></p>
+        <li class="normal" id="section-5-5.4">
+          <p id="section-5-5.4.1">?<a href="#section-5-5.4.1" class="pilcrow">¶</a></p>
 </li>
       </ul>
 </section>
@@ -2025,11 +2241,11 @@ place of legacy representations, <span class="bcp14">MUST</span> indicate this t
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-new-cbor-tags" class="section-name selfRef">New CBOR Tags</a>
         </h3>
 <p id="section-7.1-1">In the registry "<a href="https://www.iana.org/assignments/cbor-tags#cbor-tags" class="relref">CBOR Tags</a>" <span>[<a href="#IANA.cbor-tags" class="cite xref">IANA.cbor-tags</a>]</span>,
-IANA is requested to assign the tag in <a href="#tab-new-tags" class="auto internal xref">Table 5</a>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+IANA is requested to assign the tag in <a href="#tab-new-tags" class="auto internal xref">Table 6</a>.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
 <span id="name-new-cbor-tag-defined-by-thi"></span><div id="tab-new-tags">
-<table class="center" id="table-5">
+<table class="center" id="table-6">
           <caption>
-<a href="#table-5" class="selfRef">Table 5</a>:
+<a href="#table-6" class="selfRef">Table 6</a>:
 <a href="#name-new-cbor-tag-defined-by-thi" class="selfRef">New CBOR Tag Defined by this Specification</a>
           </caption>
 <thead>
@@ -2071,10 +2287,7 @@ IANA is requested to assign the tag in <a href="#tab-new-tags" class="auto inter
         <h3 id="name-stand-in-tags-2">
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-stand-in-tags-2" class="section-name selfRef">stand-in tags?</a>
         </h3>
-<p id="section-7.2-1">ISSUE: Do we want to have a separate registry for stand-in tags?<a href="#section-7.2-1" class="pilcrow">¶</a></p>
-<p id="section-7.2-2">They already are CBOR tags and thus in the registry, but might
-get lost in the bulk of that (and are only identified as YANG-CBOR
-stand-in Tags in the specification).<a href="#section-7.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.2-1">ISSUE: Do we want to have a separate registry for stand-in files?<a href="#section-7.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="media-type-parameters">
@@ -2084,7 +2297,7 @@ stand-in Tags in the specification).<a href="#section-7.2-2" class="pilcrow">¶<
         </h3>
 <p id="section-7.3-1">ISSUE: Should the use of stand-in tags be mentioned in the various
 YANG-CBOR-based media types (as a media type parameter)?<a href="#section-7.3-1" class="pilcrow">¶</a></p>
-<p id="section-7.3-2">Compare how application/yang-data+cbor can use id=name/id=sid to
+<p id="section-7.3-2">Compare how application/yang-data+cbor can use parameters id=name/id=sid to
 indicate another encoding decision.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2119,6 +2332,10 @@ indicate another encoding decision.<a href="#section-7.3-2" class="pilcrow">¶</
         <dd>
 <span class="refAuthor">Kawamura, S.</span> and <span class="refAuthor">M. Kawashima</span>, <span class="refTitle">"A Recommendation for IPv6 Address Text Representation"</span>, <span class="seriesInfo">RFC 5952</span>, <span class="seriesInfo">DOI 10.17487/RFC5952</span>, <time datetime="2010-08" class="refDate">August 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5952">https://www.rfc-editor.org/rfc/rfc5952</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC7951">[RFC7951]</dt>
+        <dd>
+<span class="refAuthor">Lhotka, L.</span>, <span class="refTitle">"JSON Encoding of Data Modeled with YANG"</span>, <span class="seriesInfo">RFC 7951</span>, <span class="seriesInfo">DOI 10.17487/RFC7951</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc7951">https://www.rfc-editor.org/rfc/rfc7951</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8943">[RFC8943]</dt>
         <dd>
 <span class="refAuthor">Jones, M.</span>, <span class="refAuthor">Nadalin, A.</span>, and <span class="refAuthor">J. Richter</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR) Tags for Date"</span>, <span class="seriesInfo">RFC 8943</span>, <span class="seriesInfo">DOI 10.17487/RFC8943</span>, <time datetime="2020-11" class="refDate">November 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8943">https://www.rfc-editor.org/rfc/rfc8943</a>&gt;</span>. </dd>
@@ -2134,6 +2351,10 @@ indicate another encoding decision.<a href="#section-7.3-2" class="pilcrow">¶</
 <dt id="RFC9562">[RFC9562]</dt>
         <dd>
 <span class="refAuthor">Davis, K.</span>, <span class="refAuthor">Peabody, B.</span>, and <span class="refAuthor">P. Leach</span>, <span class="refTitle">"Universally Unique IDentifiers (UUIDs)"</span>, <span class="seriesInfo">RFC 9562</span>, <span class="seriesInfo">DOI 10.17487/RFC9562</span>, <time datetime="2024-05" class="refDate">May 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9562">https://www.rfc-editor.org/rfc/rfc9562</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9595">[RFC9595]</dt>
+        <dd>
+<span class="refAuthor">Veillette, M., Ed.</span>, <span class="refAuthor">Pelov, A., Ed.</span>, <span class="refAuthor">Petrov, I., Ed.</span>, <span class="refAuthor">Bormann, C.</span>, and <span class="refAuthor">M. Richardson</span>, <span class="refTitle">"YANG Schema Item iDentifier (YANG SID)"</span>, <span class="seriesInfo">RFC 9595</span>, <span class="seriesInfo">DOI 10.17487/RFC9595</span>, <time datetime="2024-07" class="refDate">July 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9595">https://www.rfc-editor.org/rfc/rfc9595</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9911">[RFC9911]</dt>
         <dd>
@@ -2183,16 +2404,61 @@ indicate another encoding decision.<a href="#section-7.3-2" class="pilcrow">¶</
 </div>
 </section>
 </div>
-<div id="acknowledgments">
+<div id="list-of-tables">
 <section id="appendix-A">
+      <h2 id="name-list-of-tables">
+<a href="#name-list-of-tables" class="section-name selfRef">List of Tables</a>
+      </h2>
+<span class="break"></span><dl class="dlCompact dlParallel" id="appendix-A-1">
+        <dt id="appendix-A-1.1">
+<a href="#tab-legacy-ts" class="auto internal xref">Table 1</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-A-1.2">
+          <p id="appendix-A-1.2.1"><a href="#tab-legacy-ts" class="internal xref">Legacy date and date/time representation in ietf-yang-types</a><a href="#appendix-A-1.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-A-1.3">
+<a href="#tab-hex" class="auto internal xref">Table 2</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-A-1.4">
+          <p id="appendix-A-1.4.1"><a href="#tab-hex" class="internal xref">Legacy UUID and colon-separated hexadecimal representations in ietf-yang-types</a><a href="#appendix-A-1.4.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-A-1.5">
+<a href="#tab-dotquad" class="auto internal xref">Table 3</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-A-1.6">
+          <p id="appendix-A-1.6.1"><a href="#tab-dotquad" class="internal xref">Legacy dotted-quad representation in ietf-yang-types</a><a href="#appendix-A-1.6.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-A-1.7">
+<a href="#tab-legacy-yt" class="auto internal xref">Table 4</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-A-1.8">
+          <p id="appendix-A-1.8.1"><a href="#tab-legacy-yt" class="internal xref">Legacy representations in ietf-yang-types</a><a href="#appendix-A-1.8.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-A-1.9">
+<a href="#standin-file" class="auto internal xref">Table 5</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-A-1.10">
+          <p id="appendix-A-1.10.1"><a href="#standin-file" class="internal xref">Information Content of Standin File     (*) insert identityrefs from YANG module here</a><a href="#appendix-A-1.10.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="appendix-A-1.11">
+<a href="#tab-new-tags" class="auto internal xref">Table 6</a>:</dt>
+        <dd style="margin-left: 5.5em" id="appendix-A-1.12">
+          <p id="appendix-A-1.12.1"><a href="#tab-new-tags" class="internal xref">New CBOR Tag Defined by this Specification</a><a href="#appendix-A-1.12.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-B">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1">TODO acknowledge.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-B">
+<section id="appendix-C">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>

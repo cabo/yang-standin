@@ -87,9 +87,10 @@ Table of Contents
      3.3.  ietf-inet-types: Tags 54 and 52 (IP addresses and prefixes)
      3.4.  Union handling
    4.  Using Stand-In Tags
-     4.1.  Defining Stand-In Usage in Schema
-     4.2.  Original stand-ins
-     4.3.  Legacy Round Trip
+     4.1.  The Standin File
+     4.2.  Defining Stand-In Usage in Schema
+     4.3.  Original stand-ins
+     4.4.  Legacy Round Trip
    5.  Negotiation
    6.  Security Considerations
    7.  IANA Considerations
@@ -99,6 +100,7 @@ Table of Contents
    8.  References
      8.1.  Normative References
      8.2.  Informative References
+   List of Tables
    Acknowledgments
    Authors' Addresses
 
@@ -109,6 +111,13 @@ Table of Contents
 2.  Conventions and Definitions
 
    The terminology of [RFC9254] applies.
+
+   The present document focuses on a "basic" processing model where the
+   original source of YANG-modeled data serves as the encoder and the
+   decoder is part of the ultimate destination of those data.
+   // TODO: More elaborate processing models are possible and desirable;
+   several of the terms defined below are defined here only so they can
+   be used to discuss processing models of this kind.
 
    Legacy representation:  The (often text-based) representation for a
       YANG data item as used in YANG-XML, YANG-JSON, and (unchanged)
@@ -173,9 +182,24 @@ Table of Contents
 
 3.  Stand-In Tags
 
-   This document defines two sets of stand-in tags.  Where information
-   starts out in a legacy representation, these tags are only used when
-   an Unambiguous Round Trip can be achieved.
+   As a complement to the representations defined in [RFC9254], the
+   present document defines efficient representations of certain types
+   of YANG-modeled data, based on both existing and newly registered
+   "stand-in" tags that are designed to represent the underlying data.
+   Whenever a stand-in tag is defined for a specific type, the
+   representation as specified in this document may be used.  Otherwise,
+   the encoding is as specified in [RFC9254].
+
+   This section defines several standard stand-in tags for general use,
+   in many cases based on the type definitions of [RFC9911].
+
+   (
+   // TODO: The detailed conditions under which certain transformations
+   can be applied to YANG-CBOR data representations after these have
+   been generated are TBD; several processing models are conceivable for
+   this.  One such condition might be: Where information starts out in a
+   legacy representation, these tags are only used when an Unambiguous
+   Round Trip can be achieved.)
 
 3.1.  ietf-yang-types: Tag 1 (Date/Time) and Tag 100 (Date)
 
@@ -209,7 +233,8 @@ Table of Contents
    *  do not have fractional parts of the seconds with a precision that
       cannot be represented in floating-point tag content in a tag 1.
 
-   All other date-and-time values stay in legacy representation.
+   All other date-and-time values stay in legacy representation. (
+   // TODO: explore the use of tag 1001 for some of these cases.)
 
    Tag 1 uses an integer tag content for all date-and-time values
    without fractional seconds and a floating-point tag content for
@@ -250,7 +275,8 @@ Table of Contents
    description of uuid in Section 3 of [RFC9911], "the canonical
    representation uses lowercase characters".  For consistency with this
    specification, an intermediate decoder of a tag 37 stand-in MUST use
-   lowercase characters in the uuid hex string generated.
+   lowercase characters in the uuid hex string generated (
+   // TODO: align with processing model).
 
    hex-string, and the similar, but more specific types mac-address and
    phys-address, stand for byte strings in various lengths (exactly 6
@@ -311,12 +337,13 @@ Table of Contents
    CPA114 can be used as a binary stand-in for this adorned bytewise
    decimal representation.
 
-   IANA will assign CPA114 as the CBOR tag to indicate a dotted-quad.
-   The enclosed data item is an unsigned integer of a size not greater
-   than 4 bytes (0..0xFFFFFFFF, uint32).  It is expected that when the
-   data is being displayed e.g. to human operator, the data will be
-   shown as a string of 4 decimal numbers giving the number as four
-   bytes in network byte order, separated by ASCII dot characters.
+   IANA is requested to assign CPA114 as the CBOR tag to indicate a
+   value that is represented by a dotted-quad in YANG.  The tag content
+   is an unsigned integer of a size not greater than 4 bytes
+   (0..0xFFFFFFFF, uint32).  It is expected that when the data is being
+   displayed e.g. to human operator, the data will be shown as a string
+   of 4 decimal numbers giving the number as four bytes in network byte
+   order, separated by ASCII dot characters.
 
 
    // RFC-Editor: This document uses the CPA (code point allocation)
@@ -382,13 +409,14 @@ Table of Contents
 
              Table 4: Legacy representations in ietf-yang-types
 
-   An intermediate encoder MAY normalize IPv6 addresses and prefixes
-   that do not comply with [RFC5952] but can be converted into the
-   stand-in representation.  For example, IPv6 address written as
-   2001:db8:: is the same as 2001:0db8::0:0 and both would be converted
-   to 54(h'20010db8000000000000000000000000'); only the first one
-   complies with [RFC5952].  The encoder MAY refuse to convert the
-   latter one.
+   (
+   // TODO: align this and next paragraph with processing model.)  An
+   intermediate encoder MAY normalize IPv6 addresses and prefixes that
+   do not comply with [RFC5952] but can be converted into the stand-in
+   representation.  For example, IPv6 address written as 2001:db8:: is
+   the same as 2001:0db8::0:0 and both would be converted to
+   54(h'20010db8000000000000000000000000'); only the first one complies
+   with [RFC5952].  The encoder MAY refuse to convert the latter one.
 
    If the schema specifies ip-prefix, an intermediate encoder MAY
    normalize prefixes with non-zero bits after the prefix end.  For
@@ -505,9 +533,15 @@ Table of Contents
 3.4.  Union handling
 
    When the schema specifies a union data type for a node, there are
-   additional requirements on the encoder and decoder.
+   additional requirements on the encoder and decoder.  The encoder MUST
+   be fully aware of data semantics and use the appropriate data type
+   and encoding.  The decoder MUST use the data type information for
+   further processing, in a similar way as specified in Section 6.10 of
+   [RFC7951].
 
-   An encoder which is fully aware of data semantics MUST use the
+   (
+   // TODO: Align the rest of the section with processing models.)  An
+   encoder which is fully aware of data semantics MUST use the
    appropriate data type, even though it isn't formally specified by the
    schema.
 
@@ -523,27 +557,132 @@ Table of Contents
 
 4.  Using Stand-In Tags
 
-4.1.  Defining Stand-In Usage in Schema
+4.1.  The Standin File
+
+   Encoder and decoder need some agreement over whether, where and how
+   stand-in tags are used.  This agreement is embodied in a "standin
+   file", which has approximately the data content of Table 5
+   (representation TBD):
+
+   +=========================================+===========+=============+
+   | YANG typename                           | Tag       | Description |
+   |                                         | number(s) | (*)         |
+   +=========================================+===========+=============+
+   | ietf-yang-types:date-and-time           | 1         | Section 3.1 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-yang-types:date-no-zone            | 100       | Section 3.1 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-yang-types:uuid                    | 37        | Section 3.2 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-yang-types:hex-string              | CPA113    | Section 3.2 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-yang-types:mac-address             | CPA113    | Section 3.2 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-yang-types:phys-address            | CPA113    | Section 3.2 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-yang-types:dotted-quad             | CPA114    | Section 3.2 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ip-address              | 54, 52    | Section 3.3 |
+   |                                         | (see      | of RFCthis  |
+   |                                         | union)    |             |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv6-address            | 54        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv4-address            | 52        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ip-address-no-zone      | 54, 52    | Section 3.3 |
+   |                                         | (see      | of RFCthis  |
+   |                                         | union)    |             |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv6-address-no-zone    | 54        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv4-address-no-zone    | 52        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ip-address-link-local   | 54, 52    | Section 3.3 |
+   |                                         | (see      | of RFCthis  |
+   |                                         | union)    |             |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv6-address-link-local | 54        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv4-address-link-local | 52        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ip-prefix               | 54, 52    | Section 3.3 |
+   |                                         | (see      | of RFCthis  |
+   |                                         | union)    |             |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv6-prefix             | 54        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv4-prefix             | 52        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ip-address-and-prefix   | 54, 52    | Section 3.3 |
+   |                                         | (see      | of RFCthis  |
+   |                                         | union)    |             |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv6-address-and-prefix | 54        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+   | ietf-inet-types:ipv4-address-and-prefix | 52        | Section 3.3 |
+   |                                         |           | of RFCthis  |
+   +-----------------------------------------+-----------+-------------+
+
+                Table 5: Information Content of Standin File
+               (*) insert identityrefs from YANG module here
+
+   The YANG typename is a name composed of a module name and the name of
+   a type defined there, separated by a colon; names of built-in types
+   do not contain a module name or a colon.  The tag number is the
+   number of the CBOR Tag used for representing certain instances of
+   this type.  The description is a YANG identity (identified by a SID
+   for an identityref (Section 6.10.1 of [RFC9254]), or, for
+   experimental use, a name for an identityref (Section 6.10.2 of
+   [RFC9254])) defined in a YANG model; the description of the identity
+   either points to a section of the defining document that defines its
+   usage or contains this information outright.
+
+   (Note that there is currently no way to assign a SID to a typename;
+   this could be added to the definition of a ".sid" file in [RFC9595].)
+
+   Standin Files SHOULD generally be defined in a document such as the
+   present one; they SHOULD NOT be liberally made up for specific
+   applications (unless there are overriding concerns motivating
+   choosing ultimate efficiency over interoperability).
+
+4.2.  Defining Stand-In Usage in Schema
 
    Requiring modifications to a YANG model in order to use it with
    stand-in tags would pose significant deployment hurdles to using
    stand-in tags.
 
-   A YANG model may want to restrict the information content in such a
-   way that stand-in tags can always be used, e.g., by using date-no-
-   zone in place of date where that is applicable, or by excluding
-   features of a YANG data type that cannot be represented in a stand-
-   in-tag.
+   A YANG model may want to restrict the information content of the
+   YANG-modeled data it describes in such a way that stand-in tags can
+   always be used, e.g., by using date-no-zone in place of date where
+   that is applicable, or by excluding features of a YANG data type that
+   cannot be represented in a stand-in-tag.
 
    ISSUE: Should this document define such restricted types, e.g.:
 
      typedef efficient-date-and-time {
        type date-and-time {
-         pattern '.*-00:00'
+         pattern '.*Z'
        }
        description
          "The efficient-date-and-time type is a profile of the
-          date-and-time that is intended to always enable using a
+          date-and-time type that is intended to always enable using a
           stand-in tag as per ((this document)), e.g., by not expressing
           a time-zone-offset.
           Not all restrictions that make this possible are expressed in
@@ -552,21 +691,22 @@ Table of Contents
 
    (This particular example is additionally problematic since the usual
    way to indicate the absence of time zone information in ISO 8601
-   date-times is using Z as the time zone indicated, not -00:00 as was
-   required by Section 3 of [RFC6991] but not allowed by ISO 8601; see
-   [RFC9557] for references to versions of ISO 8601 and additional
-   discussion of this.)
+   date-times is using Z as the time zone indicated as specified in
+   Section 3 of [RFC9911], not -00:00 as was previously required by
+   Section 3 of [RFC6991] but not allowed by ISO 8601; see [RFC9557] for
+   references to versions of ISO 8601 and additional discussion of
+   this.)
    // Note that this paragraph does not reference ISO 8601 because that
    // is complicated and best done by consulting [RFC9557].
 
-4.2.  Original stand-ins
+4.3.  Original stand-ins
 
    The simplest situation is when no intermediate encoders and decoders
    are involved in the data transfer, therefore the round trip is not
    legacy.  In this case, no conversions are involved and data is
    validated using the schema extension from the previous section.
 
-4.3.  Legacy Round Trip
+4.4.  Legacy Round Trip
 
    Producing a stand-in MUST be triggered by schema usage.  Intermediate
    encoders MUST NOT encode stand-ins when no schema is available.
@@ -576,6 +716,9 @@ Table of Contents
    representation.
 
 5.  Negotiation
+
+   (
+   // TODO: Align with processing models.)
 
    Introducing stand-in tags in YANG-CBOR requires some form of consent
    between the producer and the consumer of YANG-CBOR information:
@@ -621,7 +764,7 @@ Table of Contents
 7.1.  New CBOR Tags
 
    In the registry "CBOR Tags" [IANA.cbor-tags], IANA is requested to
-   assign the tag in Table 5.
+   assign the tag in Table 6.
 
    +=============+==========+============================+=============+
    | Tag         | Data     | Semantics                  | Reference   |
@@ -647,23 +790,19 @@ Table of Contents
    | 3.2         |          |                            |             |
    +-------------+----------+----------------------------+-------------+
 
-            Table 5: New CBOR Tag Defined by this Specification
+            Table 6: New CBOR Tag Defined by this Specification
 
 7.2.  stand-in tags?
 
-   ISSUE: Do we want to have a separate registry for stand-in tags?
-
-   They already are CBOR tags and thus in the registry, but might get
-   lost in the bulk of that (and are only identified as YANG-CBOR stand-
-   in Tags in the specification).
+   ISSUE: Do we want to have a separate registry for stand-in files?
 
 7.3.  media-type parameters
 
    ISSUE: Should the use of stand-in tags be mentioned in the various
    YANG-CBOR-based media types (as a media type parameter)?
 
-   Compare how application/yang-data+cbor can use id=name/id=sid to
-   indicate another encoding decision.
+   Compare how application/yang-data+cbor can use parameters id=name/
+   id=sid to indicate another encoding decision.
 
 8.  References
 
@@ -691,6 +830,10 @@ Table of Contents
               DOI 10.17487/RFC5952, August 2010,
               <https://www.rfc-editor.org/rfc/rfc5952>.
 
+   [RFC7951]  Lhotka, L., "JSON Encoding of Data Modeled with YANG",
+              RFC 7951, DOI 10.17487/RFC7951, August 2016,
+              <https://www.rfc-editor.org/rfc/rfc7951>.
+
    [RFC8943]  Jones, M., Nadalin, A., and J. Richter, "Concise Binary
               Object Representation (CBOR) Tags for Date", RFC 8943,
               DOI 10.17487/RFC8943, November 2020,
@@ -710,6 +853,11 @@ Table of Contents
    [RFC9562]  Davis, K., Peabody, B., and P. Leach, "Universally Unique
               IDentifiers (UUIDs)", RFC 9562, DOI 10.17487/RFC9562, May
               2024, <https://www.rfc-editor.org/rfc/rfc9562>.
+
+   [RFC9595]  Veillette, M., Ed., Pelov, A., Ed., Petrov, I., Ed.,
+              Bormann, C., and M. Richardson, "YANG Schema Item
+              iDentifier (YANG SID)", RFC 9595, DOI 10.17487/RFC9595,
+              July 2024, <https://www.rfc-editor.org/rfc/rfc9595>.
 
    [RFC9911]  Schönwälder, J., Ed., "Common YANG Data Types", RFC 9911,
               DOI 10.17487/RFC9911, December 2025,
@@ -753,6 +901,18 @@ Table of Contents
               Timestamps with Additional Information", RFC 9557,
               DOI 10.17487/RFC9557, April 2024,
               <https://www.rfc-editor.org/rfc/rfc9557>.
+
+List of Tables
+
+   Table 1:   Legacy date and date/time representation in
+              ietf-yang-types
+   Table 2:   Legacy UUID and colon-separated hexadecimal
+              representations in ietf-yang-types
+   Table 3:   Legacy dotted-quad representation in ietf-yang-types
+   Table 4:   Legacy representations in ietf-yang-types
+   Table 5:   Information Content of Standin File (*) insert
+              identityrefs from YANG module here
+   Table 6:   New CBOR Tag Defined by this Specification
 
 Acknowledgments
 
