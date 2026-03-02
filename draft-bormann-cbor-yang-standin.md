@@ -41,15 +41,22 @@ author:
 normative:
   RFC9254: yang-cbor
   RFC9164: cbor-ip
-  I-D.ietf-netmod-rfc6991-bis: legacy-bis
-  RFC5952:
+  RFC9911: yang-types-current
+  RFC5952: ipv6-address-text
   RFC8943: date
   STD94: cbor
-  RFC6021: yang-types
   RFC9562: uuid
   IANA.cbor-tags:
 
 informative:
+  RFC6991:
+    -: yang-types-second
+    ann: >
+      This specification is obsoleted by [RFC9911].
+  RFC6021:
+    -: yang-types-first
+    ann: >
+      This specification is obsoleted by [RFC6991], which is obsoleted by [RFC9911].
   RFC9557: ixdtf
   RFC9542: mac-address
   I-D.bormann-cbor-notable-tags: notable
@@ -157,18 +164,19 @@ are only used when an Unambiguous Round Trip can be achieved.
 
 ## `ietf-yang-types`: Tag 1 (Date/Time) and Tag 100 (Date)
 
-{{Section 3 of -legacy-bis}} defines the following types in `ietf-yang-types`:
+{{Section 3 of -yang-types-current}} defines the following types in `ietf-yang-types`:
 
-YANG type | base type | specification | stand-in
-date-and-time | string | {{-yang-types}} | tag 1
-date | string | {{-legacy-bis}} | (none)
-date-no-zone | string | {{-legacy-bis}} | tag 100
-{: title="Legacy date and date/time representations in ietf-yang-types"}
+YANG type     | base type | specification   | stand-in
+date-and-time | string    | {{-yang-types-first}} | tag 1
+date          | string    | {{-yang-types-current}} | (none)
+date-no-zone  | string    | {{-yang-types-current}} | tag 100
+{: title="Legacy date and date/time representation in ietf-yang-types"}
 
 Tag 1 ({{Section 3.4.2 of RFC8949@-cbor}}) can unambiguously stand in for all `date-and-time` values that:
 
-* do not specify a time zone (note that {{-legacy-bis}}
-uses the legacy "`-00:00`" format for time-zone-free date-times)
+* do not specify a time zone (note that {{-yang-types-current}}
+recommends using "`Z`", but allows using the legacy "`-00:00`" format,
+for time-zone-free date-times)
 * are not an inserted leap second (23:59:60 or 23:59:61)
 * do not have trailing zeroes in the fractional part of the seconds.
 * do not have fractional parts of the seconds with a precision that
@@ -183,15 +191,15 @@ that have fractional seconds given.
 Tag 100 {{-date}} can unambiguously stand in for all `date-no-zone` values.
 
 
-## `ietf-yang-types`: Tags 37 (UUID) and CPA113 (hex-string) {#hex-tags}
+## `ietf-yang-types`: Tags 37 (UUID), CPA113 (hex-string), and CPA114 (dotted-quad) {#hex-tags}
 
-{{Section 3 of -legacy-bis}} defines the following types in `ietf-yang-types`:
+{{Section 3 of -yang-types-current}} defines the following types in `ietf-yang-types`:
 
-| YANG type    | base type | specification | stand-in   |
-| uuid         | string    | {{-legacy-bis}} | tag 37     |
-| hex-string   | string    | {{-legacy-bis}} | tag CPA113 |
-| mac-address  | string    | {{-yang-types}} | tag CPA113 |
-| phys-address | string    | {{-yang-types}} | tag CPA113 |
+| YANG type    | base type | specification   | stand-in   |
+| uuid         | string    | {{-yang-types-current}} | tag 37     |
+| hex-string   | string    | {{-yang-types-current}} | tag CPA113 |
+| mac-address  | string    | {{-yang-types-first}} | tag CPA113 |
+| phys-address | string    | {{-yang-types-first}} | tag CPA113 |
 {: #tab-hex title="Legacy UUID and colon-separated hexadecimal representations in ietf-yang-types"}
 
 These types are hexadecimal representations of byte strings, adorned
@@ -202,7 +210,7 @@ represented in hexadecimal with ASCII minus/hyphen characters added in
 specific positions.
 Tag 37 (see also Section 7 of {{-notable}}) can be used as a binary
 stand-in for this adorned hexadecimal representation.
-According to the description of `uuid` in {{Section 3 of -legacy-bis}},
+According to the description of `uuid` in {{Section 3 of -yang-types-current}},
 "the canonical representation uses lowercase characters".
 For consistency with this specification, an intermediate decoder of a
 tag 37 stand-in MUST use lowercase characters in the uuid hex string
@@ -237,16 +245,45 @@ This specification therefore requests IANA to assign a new CBOR tag that can be
 used as a stand-in for all instances of colon-separated text strings
 of hexadecimally represented bytes, as shown in {{tab-hex}}.
 
-Note Related tags have not been defined so far for tag 21 or 22
-defined alongside tag 23, as YANG has a base type "binary" that is
+Note: Related standin semantics have not been defined so far for tag 21 or 22
+that were defined alongside tag 23: YANG has a base type "binary" that is
 encoded in base64 classic in YANG-XML and YANG-JSON, but already
-encoded in a binary byte string in YANG-CBOR; use cases that might
+encoded in a binary byte string in YANG-CBOR.
+Use cases that might
 actually use base type "string" for base64-encoded data in YANG have
 not been considered.  However, tag 21 or 22 could be used as stand-in
 tags if that is useful for some specific YANG model not considered
 here.
 
 [^cpa]
+
+| YANG type    | base type | specification   | stand-in   |
+| dotted-quad  | string    | {{-yang-types-second}} | tag CPA114 |
+{: #tab-dotquad title="Legacy dotted-quad representation in ietf-yang-types"}
+
+`dotted-quad` stands for an unsigned 32-bit integer ({{Section 3 of
+-yang-types-current}}), represented as a text string in decimal values
+for 4 byte values in network byte order, separated by ASCII dot characters.
+Tag CPA114 can be used as a binary stand-in for this adorned bytewise decimal representation.
+
+IANA will assign CPA114 as the CBOR tag to indicate a dotted-quad.
+The enclosed data item is an unsigned integer of a size not greater
+than 4 bytes (0..0xFFFFFFFF, uint32).
+It is expected that when the data is being displayed e.g. to human
+operator, the data will be shown as a string of 4 decimal numbers
+giving the number as four bytes in network byte order, separated by
+ASCII dot characters.
+
+[^cpa]
+
+[^discussion-dotted-quad]
+TO DO: Better formulation of the dotted-quad expected later encoding.<br>
+PROPOSED: RFC 9911 is clear that dotted-quad stands for an unsigned
+integer that fits into 32 bits; we should not replace that with a byte
+string.<br>
+RESOLVED: Should we fix the 4-byte length or make it more generic with arbitrary length
+  byte strings? (For usage as IPv4 similar identifier -- see ietf-ospf.yang --
+  the 4-byte length is sufficient and brings less complexity)
 
 [^cpa]: RFC-Editor: This document uses the CPA (code point allocation)
       convention described in [I-D.bormann-cbor-draft-numbers].  For
@@ -258,30 +295,30 @@ here.
 
 ## `ietf-inet-types`: Tags 54 and 52 (IP addresses and prefixes)
 
-{{Section 4 of -legacy-bis}} defines in `ietf-inet-types`:
+{{Section 4 of -yang-types-current}} defines in `ietf-inet-types`:
 
 YANG type | base type | specification | stand-in
-ip-address | union | {{-yang-types}} | (see union)
-ipv6-address | string | {{-yang-types}} | tag 54
-ipv4-address | string | {{-yang-types}} | tag 52
+ip-address | union | {{-yang-types-first}} | (see union)
+ipv6-address | string | {{-yang-types-first}} | tag 54
+ipv4-address | string | {{-yang-types-first}} | tag 52
 ip-address-no-zone | union | RFC 6991 | (see union)
 ipv6-address-no-zone | ipv6-address | RFC 6991 | tag 54
 ipv4-address-no-zone | ipv4-address | RFC 6991 | tag 52
-ip-address-link-local | union | {{-legacy-bis}} | (see union)
-ipv6-address-link-local | ipv6-address | {{-legacy-bis}} | tag 54
-ipv4-address-link-local | ipv4-address | {{-legacy-bis}} | tag 52
-ip-prefix | union | {{-yang-types}} | (see union)
-ipv6-prefix | string | {{-yang-types}} | tag 54
-ipv4-prefix | string | {{-yang-types}} | tag 52
-ip-address-and-prefix | union | {{-legacy-bis}} | (see union)
-ipv6-address-and-prefix | string | {{-legacy-bis}} | tag 54
-ipv4-address-and-prefix | string | {{-legacy-bis}} | tag 52
+ip-address-link-local | union | {{-yang-types-current}} | (see union)
+ipv6-address-link-local | ipv6-address | {{-yang-types-current}} | tag 54
+ipv4-address-link-local | ipv4-address | {{-yang-types-current}} | tag 52
+ip-prefix | union | {{-yang-types-first}} | (see union)
+ipv6-prefix | string | {{-yang-types-first}} | tag 54
+ipv4-prefix | string | {{-yang-types-first}} | tag 52
+ip-address-and-prefix | union | {{-yang-types-current}} | (see union)
+ipv6-address-and-prefix | string | {{-yang-types-current}} | tag 54
+ipv4-address-and-prefix | string | {{-yang-types-current}} | tag 52
 {: title="Legacy representations in ietf-yang-types"}
 
 An intermediate encoder MAY normalize IPv6 addresses and prefixes that do not comply with {{RFC5952}}
 but can be converted into the stand-in representation.
 For example, IPv6 address written as 2001:db8:: is the same as 2001:0db8::0:0 and both would
-be converted to `54(h'20010db8000000000000000000000000')`, anyway only the
+be converted to `54(h'20010db8000000000000000000000000')`; only the
 first one complies with {{RFC5952}}. The encoder MAY refuse to convert the
 latter one.
 
@@ -412,7 +449,7 @@ CBOR encoding of legacy representation (13 bytes):
    3139322e302e322e312f3234 # "192.0.2.1/24"
 ~~~
 
-TO DO: Check how the unions in {{-yang-types}} and {{-legacy-bis}} interact
+TO DO: Check how the unions in {{-yang-types-current}} interact
 with this.  E.g., the union ip-address needs to be parsed to decide
 between tag 54 and tag 52.
 
@@ -464,9 +501,9 @@ ISSUE: Should this document define such restricted types, e.g.:
 
 (This particular example is additionally problematic since the usual
 way to indicate the absence of time zone information in ISO 8601
-date-times is using `Z` as the time zone indicated, not `-00:00` as is
-required by {{Section 3 of -legacy-bis}} but not allowed by ISO 8601;
-see {{-ixdtf}} for additional discussion of this.)
+date-times is using `Z` as the time zone indicated, not `-00:00` as was
+required by {{Section 3 of -yang-types-second}} but not allowed by ISO 8601;
+see {{-ixdtf}} for references to versions of ISO 8601 and additional discussion of this.)
 [^no8601reference]
 
 [^no8601reference]: Note that this paragraph does not reference ISO
@@ -534,8 +571,10 @@ TODO Security
 In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
 IANA is requested to assign the tag in {{tab-new-tags}}.
 
-| Tag    | Data Item   | Semantics                                                                            | Reference                              |
-| CPA113 | byte string | Expected Later Encoding: colon-separated hexadecimal representation of a byte string | draft-bormann-yang-standin, {{hex-tags}} |
+| Tag    | Data Item        | Semantics                                                                            | Reference                                |
+| CPA113 | byte string      | Expected Later Encoding: colon-separated hexadecimal representation of a byte string | draft-bormann-yang-standin, {{hex-tags}} |
+| CPA114 | unsigned integer | Expected Later Encoding: dot-separated decimal representation of network-byte-order ordered bytes of the integer.
+                                                                                                                   | draft-bormann-yang-standin, {{hex-tags}} |
 {: #tab-new-tags title="New CBOR Tag Defined by this Specification"}
 
 
